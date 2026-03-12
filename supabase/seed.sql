@@ -1,7 +1,7 @@
 insert into public.community_links (label, url, type)
 values
-  ('Grup WhatsApp', 'https://chat.whatsapp.com/Fnt16OcbGoJFl4uM148nu9', 'whatsapp'),
-  ('Pagina Facebook', 'https://www.facebook.com/cortinanorth', 'facebook_page'),
+  ('Grup WhatsApp', 'https://chat.whatsapp.com/JukCLwGhlkH0Lgx7vaq8CU', 'whatsapp'),
+  ('Pagina Facebook', 'https://www.facebook.com/share/14XDoK32UFF/?mibextid=wwXIfr', 'facebook_page'),
   ('Grup Facebook', 'https://www.facebook.com/groups/1495237625295689', 'facebook_group')
 on conflict (type) do update
 set label = excluded.label,

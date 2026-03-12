@@ -9,6 +9,7 @@ import type {
   AssociationProgress,
   CommunityLink,
   Issue,
+  PublicIssue,
   Resident,
   UpdateItem,
   VoteProposalWithStats,
@@ -88,6 +89,25 @@ export async function getPublicUpdates(): Promise<UpdateItem[]> {
   }
 
   return data;
+}
+
+export async function getPublicIssues(): Promise<PublicIssue[]> {
+  if (!hasAdminSupabaseEnv()) {
+    return [];
+  }
+
+  const supabase = createAdminSupabaseClient();
+  if (!supabase) {
+    return [];
+  }
+
+  const { data } = await supabase
+    .from("issues")
+    .select("id, category, title, description, attachment_urls, status, created_at")
+    .order("created_at", { ascending: false })
+    .limit(20);
+
+  return data ?? [];
 }
 
 export async function getAdminResidents(building?: string): Promise<Resident[]> {

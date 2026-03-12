@@ -32,6 +32,16 @@ export interface Issue {
   created_at: string;
 }
 
+export interface PublicIssue {
+  id: string;
+  category: string;
+  title: string;
+  description: string;
+  attachment_urls: string[];
+  status: IssueStatus;
+  created_at: string;
+}
+
 export interface CommunityLink {
   id: string;
   label: string;

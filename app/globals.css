@@ -3,8 +3,13 @@
 @tailwind utilities;
 
 :root {
-  --background: #f8fafc;
-  --foreground: #0f172a;
+  --background: #f5f7fb;
+  --foreground: #1f2937;
+  --brand-blue: #005eb8;
+  --brand-blue-dark: #004799;
+  --brand-red: #e31e24;
+  --surface: #ffffff;
+  --surface-muted: #f1f5f9;
 }
 
 html {
@@ -18,7 +23,7 @@ body {
 }
 
 ::selection {
-  background: rgba(16, 185, 129, 0.18);
+  background: rgba(0, 94, 184, 0.18);
 }
 
 * {
@@ -29,5 +34,5 @@ h1,
 h2,
 h3,
 h4 {
-  font-family: var(--font-heading), serif;
+  font-family: var(--font-body), sans-serif;
 }

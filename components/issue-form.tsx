@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { startTransition, useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 
 import { FormSubmit } from "@/components/form-submit";
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
@@ -36,6 +37,7 @@ const maxImages = 3;
 const maxImageSize = 5 * 1024 * 1024;
 
 export function IssueForm() {
+  const router = useRouter();
   const formRef = useRef<HTMLFormElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [state, setState] = useState<FormState>(initialState);
@@ -64,6 +66,9 @@ export function IssueForm() {
       previews.forEach((item) => URL.revokeObjectURL(item.url));
       setPreviews([]);
       setLocalPhotoError("");
+      startTransition(() => {
+        router.refresh();
+      });
     }
   }
 
@@ -122,7 +127,7 @@ export function IssueForm() {
   }
 
   return (
-    <Card id="sesizare" className="scroll-mt-24 rounded-[2rem] p-5 sm:p-6">
+    <Card className="rounded-[2rem] p-5 sm:p-6">
       <CardTitle>Trimite o sesizare</CardTitle>
       <CardDescription className="mt-3">
         Spune pe scurt problema. Dacă lași telefon sau email, putem reveni mai ușor cu un răspuns.
