@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 
+import { AdminDeleteVoteMessageButton } from "@/components/admin-delete-vote-message-button";
 import { AdminImageGallery } from "@/components/admin-image-gallery";
 import { AdminProposalForm } from "@/components/admin-proposal-form";
 import { AdminProposalStatusForm } from "@/components/admin-proposal-status-form";
@@ -21,13 +22,13 @@ const residentOptions = [
 ];
 
 const issueOptions = [
-  { label: "Nouă", value: "noua" },
-  { label: "În analiză", value: "in_analiza" },
-  { label: "Rezolvată", value: "rezolvata" },
+  { label: "Noua", value: "noua" },
+  { label: "In analiza", value: "in_analiza" },
+  { label: "Rezolvata", value: "rezolvata" },
 ];
 
 export const metadata = {
-  title: "Admin | Asociația Blocului",
+  title: "Admin | Asociatia Blocului",
 };
 
 export default async function AdminPage({
@@ -59,16 +60,16 @@ export default async function AdminPage({
     <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
       <SectionHeading
         eyebrow="Admin"
-        title="Vizualizare simplă și gestionare de bază"
-        description="Zona de admin este intenționat minimă. Accesul se face cu cheia setată în variabila `ADMIN_ACCESS_KEY`."
+        title="Vizualizare simpla si gestionare de baza"
+        description="Zona de admin este intentionat minima. Accesul se face cu cheia setata in variabila `ADMIN_ACCESS_KEY`."
       />
 
       {!isConfigured || isPlaceholderKey || !isAuthorized ? (
         <Card className="mt-8 border-amber-200 bg-amber-50">
           <CardTitle>Acces neconfigurat</CardTitle>
           <CardDescription className="mt-3 text-amber-900">
-            Setează `ADMIN_ACCESS_KEY` în `.env.local`, apoi deschide această pagină cu
-            `?key=valoarea-ta`. Fără cheia corectă, datele nu sunt afișate.
+            Seteaza `ADMIN_ACCESS_KEY` in `.env.local`, apoi deschide aceasta pagina cu
+            `?key=valoarea-ta`. Fara cheia corecta, datele nu sunt afisate.
           </CardDescription>
         </Card>
       ) : null}
@@ -78,9 +79,9 @@ export default async function AdminPage({
           <Card>
             <div className="flex items-center justify-between gap-4">
               <div>
-                <CardTitle>Votează schimbările</CardTitle>
+                <CardTitle>Voteaza schimbarile</CardTitle>
                 <CardDescription className="mt-2">
-                  Creezi subiecte noi de vot, vezi rezultatele și închizi votul când este nevoie.
+                  Creezi subiecte noi de vot, vezi rezultatele si inchizi votul cand este nevoie.
                 </CardDescription>
               </div>
               <Badge>{proposals.length} propuneri</Badge>
@@ -104,7 +105,7 @@ export default async function AdminPage({
                                   : "bg-slate-100 text-slate-700"
                               }
                             >
-                              {proposal.status === "open" ? "Deschis" : "Închis"}
+                              {proposal.status === "open" ? "Deschis" : "Inchis"}
                             </Badge>
                           </div>
                           <CardDescription>{proposal.description}</CardDescription>
@@ -138,7 +139,7 @@ export default async function AdminPage({
                       </div>
 
                       <div className="mt-5">
-                        <p className="text-sm font-semibold text-slate-900">Mesaje lăsate la vot</p>
+                        <p className="text-sm font-semibold text-slate-900">Mesaje lasate la vot</p>
                         <div className="mt-3 space-y-3">
                           {proposal.comments.length ? (
                             proposal.comments.slice(0, 6).map((comment) => (
@@ -158,13 +159,19 @@ export default async function AdminPage({
                                   </span>
                                 </div>
                                 <p className="mt-2 text-sm leading-6 text-slate-600">
-                                  {comment.reason || "Fără mesaj adăugat."}
+                                  {comment.reason || "Fara mesaj adaugat."}
                                 </p>
+                                {comment.reason ? (
+                                  <AdminDeleteVoteMessageButton
+                                    voteId={comment.id}
+                                    adminKey={adminKey}
+                                  />
+                                ) : null}
                               </div>
                             ))
                           ) : (
                             <p className="text-sm text-slate-500">
-                              Încă nu există mesaje pentru această propunere.
+                              Inca nu exista mesaje pentru aceasta propunere.
                             </p>
                           )}
                         </div>
@@ -173,9 +180,9 @@ export default async function AdminPage({
                   ))
                 ) : (
                   <Card className="rounded-3xl border border-dashed border-slate-200 p-5 shadow-none">
-                    <CardTitle>Nu există încă propuneri publicate</CardTitle>
+                    <CardTitle>Nu exista inca propuneri publicate</CardTitle>
                     <CardDescription className="mt-2">
-                      Folosește formularul din stânga pentru a adăuga primul subiect de vot.
+                      Foloseste formularul din stanga pentru a adauga primul subiect de vot.
                     </CardDescription>
                   </Card>
                 )}
@@ -186,21 +193,21 @@ export default async function AdminPage({
           <Card>
             <div className="flex items-center justify-between gap-4">
               <div>
-                <CardTitle>Înscrieri</CardTitle>
+                <CardTitle>Inscrieri</CardTitle>
                 <CardDescription className="mt-2">
-                  Ultimele 100 de înscrieri salvate în Supabase.
+                  Ultimele 100 de inscrieri salvate in Supabase.
                 </CardDescription>
               </div>
-              <Badge>{residents.length} înregistrări</Badge>
+              <Badge>{residents.length} inregistrari</Badge>
             </div>
 
             <form className="mt-6 grid gap-3 sm:max-w-xs" method="get">
               <input type="hidden" name="key" value={adminKey} />
               <label className="text-sm font-medium text-slate-800" htmlFor="building-filter">
-                Filtrează după clădire
+                Filtreaza dupa cladire
               </label>
               <Select id="building-filter" name="building" defaultValue={selectedBuilding}>
-                <option value="">Toate clădirile</option>
+                <option value="">Toate cladirile</option>
                 {buildingOptions.map((building) => (
                   <option key={building} value={building}>
                     {building}
@@ -211,7 +218,7 @@ export default async function AdminPage({
                 type="submit"
                 className="h-11 rounded-2xl bg-slate-100 px-4 text-sm font-medium text-slate-900"
               >
-                Aplică filtrul
+                Aplica filtrul
               </button>
             </form>
 
@@ -220,7 +227,7 @@ export default async function AdminPage({
                 <thead>
                   <tr>
                     <TableHead>Nume</TableHead>
-                    <TableHead>Clădire</TableHead>
+                    <TableHead>Cladire</TableHead>
                     <TableHead>Contact</TableHead>
                     <TableHead>Statut</TableHead>
                     <TableHead>Acces vot</TableHead>
@@ -248,7 +255,7 @@ export default async function AdminPage({
                               : "bg-amber-50 text-amber-700"
                           }`}
                         >
-                          {resident.password_hash ? "Parolă setată" : "Fără parolă"}
+                          {resident.password_hash ? "Parola setata" : "Fara parola"}
                         </span>
                       </TableCell>
                       <TableCell>{formatDate(resident.created_at)}</TableCell>
@@ -261,10 +268,7 @@ export default async function AdminPage({
                             options={residentOptions}
                             adminKey={adminKey}
                           />
-                          <AdminResetPasswordForm
-                            residentId={resident.id}
-                            adminKey={adminKey}
-                          />
+                          <AdminResetPasswordForm residentId={resident.id} adminKey={adminKey} />
                         </div>
                       </TableCell>
                     </tr>
@@ -277,12 +281,12 @@ export default async function AdminPage({
           <Card>
             <div className="flex items-center justify-between gap-4">
               <div>
-                <CardTitle>Sesizări</CardTitle>
+                <CardTitle>Sesizari</CardTitle>
                 <CardDescription className="mt-2">
-                  Ultimele 100 de sesizări salvate în Supabase.
+                  Ultimele 100 de sesizari salvate in Supabase.
                 </CardDescription>
               </div>
-              <Badge>{issues.length} înregistrări</Badge>
+              <Badge>{issues.length} inregistrari</Badge>
             </div>
 
             <div className="mt-6 overflow-x-auto">
@@ -310,7 +314,7 @@ export default async function AdminPage({
                         <div className="space-y-1">
                           <p>{issue.contact_name}</p>
                           <p className="text-slate-500">
-                            {issue.contact_phone || issue.contact_email || "Fără contact"}
+                            {issue.contact_phone || issue.contact_email || "Fara contact"}
                           </p>
                         </div>
                       </TableCell>
@@ -319,7 +323,7 @@ export default async function AdminPage({
                         {issue.attachment_urls?.length ? (
                           <AdminImageGallery urls={issue.attachment_urls} />
                         ) : (
-                          <span className="text-slate-400">Fără poze</span>
+                          <span className="text-slate-400">Fara poze</span>
                         )}
                       </TableCell>
                       <TableCell>{formatDate(issue.created_at)}</TableCell>

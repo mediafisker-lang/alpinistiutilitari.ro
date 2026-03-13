@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { CheckCircle2, Circle, LockKeyhole, MessageSquareText, UserRoundCheck } from "lucide-react";
 import { useEffect, useState } from "react";
 
 import { SectionHeading } from "@/components/section-heading";
@@ -23,6 +24,42 @@ type Proposal = {
 };
 
 type FormState = Record<string, { choice: "yes" | "no"; reason: string }>;
+
+const voteOptions = [
+  {
+    value: "yes" as const,
+    title: "Sunt pentru",
+    description: "Sustin propunerea si sunt de acord sa mearga mai departe.",
+    activeClassName: "border-[#005eb8] bg-blue-50 text-[#005eb8]",
+  },
+  {
+    value: "no" as const,
+    title: "Sunt impotriva",
+    description: "Nu sunt de acord cu propunerea in forma actuala.",
+    activeClassName: "border-[#e31e24] bg-rose-50 text-[#e31e24]",
+  },
+];
+
+function StepBadge({
+  step,
+  title,
+  active,
+}: {
+  step: string;
+  title: string;
+  active?: boolean;
+}) {
+  return (
+    <div
+      className={`rounded-xl border px-4 py-3 ${
+        active ? "border-[#005eb8] bg-blue-50" : "border-slate-200 bg-white"
+      }`}
+    >
+      <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">{step}</p>
+      <p className="mt-1 text-sm font-semibold text-slate-950">{title}</p>
+    </div>
+  );
+}
 
 export function VoteazaSchimbarileSection() {
   const [proposals, setProposals] = useState<Proposal[]>([]);
@@ -106,7 +143,7 @@ export function VoteazaSchimbarileSection() {
   async function submitVote(proposalId: string) {
     const form = forms[proposalId];
     if (!form?.choice) {
-      setError("Alege Da sau Nu inainte sa trimiti votul.");
+      setError("Alege optiunea de vot inainte sa trimiti.");
       return;
     }
 
@@ -166,7 +203,7 @@ export function VoteazaSchimbarileSection() {
         <SectionHeading
           eyebrow="Voteaza"
           title="Voteaza rapid pe subiectele active din comunitate"
-          description="Am restructurat zona de vot intr-un stil mai comercial: vezi instant propunerea, scorul curent si formularul de actiune."
+          description="Formularul de vot este acum organizat pe pasi, cu selectie mai clara si feedback vizual mai bun."
         />
 
         <div className="mt-8 space-y-6">
@@ -211,112 +248,212 @@ export function VoteazaSchimbarileSection() {
                     <div className="rounded-2xl border border-slate-200 bg-white p-6">
                       <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
                         <div>
-                          <h3 className="text-2xl font-extrabold text-slate-950">Autentifica-te pentru a vota</h3>
+                          <h3 className="text-2xl font-extrabold text-slate-950">
+                            Completeaza votul in 3 pasi
+                          </h3>
                           <p className="mt-2 text-sm leading-6 text-slate-600">
-                            Introdu emailul si parola alese la inscriere, apoi selecteaza rapid optiunea dorita.
+                            Verifica autentificarea, alege optiunea de vot si adauga motivul daca vrei.
                           </p>
                         </div>
                         <Link
                           href="#inscriere"
                           className="inline-flex h-11 items-center justify-center rounded-xl bg-[#005eb8] px-5 text-sm font-semibold text-white transition hover:bg-[#004799]"
                         >
-                          Vreau sa ma inscriu
+                          Nu ai cont? Inscrie-te
                         </Link>
                       </div>
 
-                      <div className="mt-6 grid gap-4 sm:grid-cols-2">
-                        <div>
-                          <Label htmlFor={`vote-email-${proposal.id}`}>Email</Label>
-                          <Input
-                            id={`vote-email-${proposal.id}`}
-                            type="email"
-                            value={email}
-                            onChange={(event) => setEmail(event.target.value)}
-                            placeholder="Ex: nume@email.ro"
-                            className="mt-2"
-                          />
+                      <div className="mt-6 grid gap-3 lg:grid-cols-3">
+                        <StepBadge step="Pasul 1" title="Autentificare" active />
+                        <StepBadge step="Pasul 2" title="Alegere vot" active />
+                        <StepBadge step="Pasul 3" title="Mesaj optional" active />
+                      </div>
+
+                      <div className="mt-6 grid gap-5 xl:grid-cols-[minmax(0,1.2fr)_320px]">
+                        <div className="space-y-5">
+                          <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5">
+                            <div className="flex items-center gap-3">
+                              <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-white text-[#005eb8] shadow-sm">
+                                <LockKeyhole className="size-5" />
+                              </div>
+                              <div>
+                                <p className="text-sm font-semibold text-slate-950">Datele tale de autentificare</p>
+                                <p className="text-sm text-slate-500">
+                                  Folosim emailul si parola alese la inscriere.
+                                </p>
+                              </div>
+                            </div>
+
+                            <div className="mt-5 grid gap-4 sm:grid-cols-2">
+                              <div>
+                                <Label htmlFor={`vote-email-${proposal.id}`}>Email</Label>
+                                <Input
+                                  id={`vote-email-${proposal.id}`}
+                                  type="email"
+                                  value={email}
+                                  onChange={(event) => setEmail(event.target.value)}
+                                  placeholder="Ex: nume@email.ro"
+                                  className="mt-2"
+                                />
+                              </div>
+                              <div>
+                                <Label htmlFor={`vote-password-${proposal.id}`}>Parola</Label>
+                                <Input
+                                  id={`vote-password-${proposal.id}`}
+                                  type="password"
+                                  value={password}
+                                  onChange={(event) => setPassword(event.target.value)}
+                                  placeholder="Parola aleasa la inscriere"
+                                  className="mt-2"
+                                />
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5">
+                            <div className="flex items-center gap-3">
+                              <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-white text-[#005eb8] shadow-sm">
+                                <CheckCircle2 className="size-5" />
+                              </div>
+                              <div>
+                                <p className="text-sm font-semibold text-slate-950">Alege cum votezi</p>
+                                <p className="text-sm text-slate-500">
+                                  Apasa pe varianta care te reprezinta cel mai bine.
+                                </p>
+                              </div>
+                            </div>
+
+                            <div className="mt-5 grid gap-3 sm:grid-cols-2">
+                              {voteOptions.map((option) => {
+                                const isActive = currentForm.choice === option.value;
+
+                                return (
+                                  <button
+                                    key={option.value}
+                                    type="button"
+                                    onClick={() =>
+                                      setForms((current) => ({
+                                        ...current,
+                                        [proposal.id]: { ...currentForm, choice: option.value },
+                                      }))
+                                    }
+                                    className={`rounded-2xl border p-4 text-left transition ${
+                                      isActive
+                                        ? option.activeClassName
+                                        : "border-slate-200 bg-white text-slate-900 hover:border-slate-300"
+                                    }`}
+                                  >
+                                    <div className="flex items-start justify-between gap-3">
+                                      <div>
+                                        <p className="text-base font-semibold">{option.title}</p>
+                                        <p className="mt-2 text-sm leading-6 text-slate-500">
+                                          {option.description}
+                                        </p>
+                                      </div>
+                                      {isActive ? (
+                                        <CheckCircle2 className="mt-0.5 size-5 shrink-0" />
+                                      ) : (
+                                        <Circle className="mt-0.5 size-5 shrink-0 text-slate-300" />
+                                      )}
+                                    </div>
+                                  </button>
+                                );
+                              })}
+                            </div>
+                          </div>
+
+                          <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5">
+                            <div className="flex items-center gap-3">
+                              <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-white text-[#005eb8] shadow-sm">
+                                <MessageSquareText className="size-5" />
+                              </div>
+                              <div>
+                                <p className="text-sm font-semibold text-slate-950">Adauga un motiv</p>
+                                <p className="text-sm text-slate-500">
+                                  Optional, dar util daca vrei sa iti explici votul.
+                                </p>
+                              </div>
+                            </div>
+
+                            <div className="mt-5">
+                              <Label htmlFor={`reason-${proposal.id}`}>Motivul tau</Label>
+                              <Textarea
+                                id={`reason-${proposal.id}`}
+                                value={currentForm.reason}
+                                onChange={(event) =>
+                                  setForms((current) => ({
+                                    ...current,
+                                    [proposal.id]: { ...currentForm, reason: event.target.value },
+                                  }))
+                                }
+                                placeholder="Scrie pe scurt motivul tau."
+                                className="mt-2"
+                              />
+                            </div>
+                          </div>
+
+                          <div className="flex flex-col gap-3 sm:flex-row">
+                            <Button onClick={() => submitVote(proposal.id)}>Trimite votul</Button>
+                            <Button variant="secondary" onClick={() => setShowSetupForm((current) => !current)}>
+                              Mi-am facut inscrierea inainte de parola
+                            </Button>
+                          </div>
+
+                          {message ? (
+                            <p className="rounded-xl bg-blue-50 px-4 py-3 text-sm text-[#005eb8]">
+                              {message}
+                            </p>
+                          ) : null}
+                          {error ? (
+                            <p className="rounded-xl bg-rose-50 px-4 py-3 text-sm text-rose-700">
+                              {error}
+                            </p>
+                          ) : null}
                         </div>
-                        <div>
-                          <Label htmlFor={`vote-password-${proposal.id}`}>Parola</Label>
-                          <Input
-                            id={`vote-password-${proposal.id}`}
-                            type="password"
-                            value={password}
-                            onChange={(event) => setPassword(event.target.value)}
-                            placeholder="Parola aleasa la inscriere"
-                            className="mt-2"
-                          />
+
+                        <div className="space-y-4">
+                          <div className="rounded-2xl border border-slate-200 bg-white p-5">
+                            <div className="flex items-center gap-3">
+                              <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-blue-50 text-[#005eb8]">
+                                <UserRoundCheck className="size-5" />
+                              </div>
+                              <div>
+                                <p className="text-sm font-semibold text-slate-950">Cont folosit acum</p>
+                                <p className="text-sm text-slate-500">
+                                  {email ? "Esti pregatit sa votezi." : "Nu esti autentificat inca."}
+                                </p>
+                              </div>
+                            </div>
+
+                            <div className="mt-4 rounded-xl bg-slate-50 p-4">
+                              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
+                                Email activ
+                              </p>
+                              <p className="mt-2 break-all text-sm font-semibold text-slate-950">
+                                {email || "Niciun email introdus"}
+                              </p>
+                            </div>
+
+                            <div className="mt-3 rounded-xl bg-slate-50 p-4">
+                              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
+                                Optiune selectata
+                              </p>
+                              <p className="mt-2 text-sm font-semibold text-slate-950">
+                                {currentForm.choice === "yes" ? "Sunt pentru" : "Sunt impotriva"}
+                              </p>
+                            </div>
+                          </div>
+
+                          <div className="rounded-2xl border border-slate-200 bg-white p-5">
+                            <p className="text-sm font-semibold text-slate-950">Ghid rapid</p>
+                            <ul className="mt-3 space-y-3 text-sm leading-6 text-slate-600">
+                              <li>1. Introdu emailul si parola de la inscriere.</li>
+                              <li>2. Alege clar daca esti pentru sau impotriva.</li>
+                              <li>3. Adauga un mesaj doar daca vrei sa explici votul.</li>
+                            </ul>
+                          </div>
                         </div>
                       </div>
-
-                      <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-                        <button
-                          type="button"
-                          onClick={() =>
-                            setForms((current) => ({
-                              ...current,
-                              [proposal.id]: { ...currentForm, choice: "yes" },
-                            }))
-                          }
-                          className={`h-11 rounded-xl px-5 text-sm font-semibold ${
-                            currentForm.choice === "yes"
-                              ? "bg-[#005eb8] text-white"
-                              : "border border-slate-200 bg-white text-slate-900"
-                          }`}
-                        >
-                          Sunt pentru
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() =>
-                            setForms((current) => ({
-                              ...current,
-                              [proposal.id]: { ...currentForm, choice: "no" },
-                            }))
-                          }
-                          className={`h-11 rounded-xl px-5 text-sm font-semibold ${
-                            currentForm.choice === "no"
-                              ? "bg-[#e31e24] text-white"
-                              : "border border-slate-200 bg-white text-slate-900"
-                          }`}
-                        >
-                          Sunt impotriva
-                        </button>
-                      </div>
-
-                      <div className="mt-6">
-                        <Label htmlFor={`reason-${proposal.id}`}>Motivul tau</Label>
-                        <Textarea
-                          id={`reason-${proposal.id}`}
-                          value={currentForm.reason}
-                          onChange={(event) =>
-                            setForms((current) => ({
-                              ...current,
-                              [proposal.id]: { ...currentForm, reason: event.target.value },
-                            }))
-                          }
-                          placeholder="Scrie pe scurt motivul tau."
-                          className="mt-2"
-                        />
-                      </div>
-
-                      <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-                        <Button onClick={() => submitVote(proposal.id)}>Trimite votul</Button>
-                        <Button variant="secondary" onClick={() => setShowSetupForm((current) => !current)}>
-                          Mi-am facut inscrierea inainte de parola
-                        </Button>
-                      </div>
-
-                      {message ? (
-                        <p className="mt-4 rounded-xl bg-blue-50 px-4 py-3 text-sm text-[#005eb8]">
-                          {message}
-                        </p>
-                      ) : null}
-                      {error ? (
-                        <p className="mt-4 rounded-xl bg-rose-50 px-4 py-3 text-sm text-rose-700">
-                          {error}
-                        </p>
-                      ) : null}
 
                       {showSetupForm ? (
                         <div className="mt-5 rounded-xl border border-slate-200 bg-slate-50 p-5">
@@ -327,7 +464,7 @@ export function VoteazaSchimbarileSection() {
                             Foloseste emailul si telefonul deja salvate pentru a activa parola de vot.
                           </p>
 
-                          <div className="mt-5 space-y-4">
+                          <div className="mt-5 grid gap-4 md:grid-cols-3">
                             <div>
                               <Label htmlFor="setup-email">Email</Label>
                               <Input
@@ -360,6 +497,9 @@ export function VoteazaSchimbarileSection() {
                                 className="mt-2"
                               />
                             </div>
+                          </div>
+
+                          <div className="mt-4">
                             <Button onClick={handleSetupPassword}>Seteaza parola pentru vot</Button>
                           </div>
 
