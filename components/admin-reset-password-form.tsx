@@ -7,10 +7,8 @@ import { Input } from "@/components/ui/input";
 
 export function AdminResetPasswordForm({
   residentId,
-  adminKey,
 }: {
   residentId: string;
-  adminKey: string;
 }) {
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
@@ -29,7 +27,6 @@ export function AdminResetPasswordForm({
       body: JSON.stringify({
         residentId,
         password,
-        key: adminKey,
       }),
     });
 

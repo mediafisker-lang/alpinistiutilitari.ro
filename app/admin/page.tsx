@@ -1,7 +1,9 @@
-import { redirect } from "next/navigation";
+import { cookies } from "next/headers";
 
 import { AdminDeleteVoteMessageButton } from "@/components/admin-delete-vote-message-button";
 import { AdminImageGallery } from "@/components/admin-image-gallery";
+import { AdminLoginForm } from "@/components/admin-login-form";
+import { AdminLogoutButton } from "@/components/admin-logout-button";
 import { AdminProposalForm } from "@/components/admin-proposal-form";
 import { AdminProposalStatusForm } from "@/components/admin-proposal-status-form";
 import { AdminResetPasswordForm } from "@/components/admin-reset-password-form";
@@ -11,6 +13,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
 import { Select } from "@/components/ui/select";
 import { Table, TableCell, TableHead } from "@/components/ui/table";
+import { getAdminSessionCookieName, isAdminSessionTokenValid } from "@/lib/admin-auth";
 import { buildingOptions } from "@/lib/constants";
 import { getAdminIssues, getAdminResidents, getAdminVoteProposals } from "@/lib/data";
 import { formatDate } from "@/lib/utils";
@@ -34,19 +37,15 @@ export const metadata = {
 export default async function AdminPage({
   searchParams,
 }: {
-  searchParams: Promise<{ key?: string; building?: string }>;
+  searchParams: Promise<{ building?: string }>;
 }) {
   const params = await searchParams;
-  const adminKey = params.key ?? "";
   const selectedBuilding = params.building ?? "";
+  const cookieStore = await cookies();
+  const adminSessionToken = cookieStore.get(getAdminSessionCookieName())?.value ?? "";
 
-  if (!adminKey) {
-    redirect("/admin?key=adauga-cheia-ta-de-admin");
-  }
-
-  const isPlaceholderKey = adminKey === "adauga-cheia-ta-de-admin";
-  const isConfigured = Boolean(process.env.ADMIN_ACCESS_KEY);
-  const isAuthorized = isConfigured && adminKey === process.env.ADMIN_ACCESS_KEY;
+  const hasSession = isAdminSessionTokenValid(adminSessionToken);
+  const isAuthorized = hasSession;
 
   const [residents, issues, proposals] = isAuthorized
     ? await Promise.all([
@@ -58,21 +57,16 @@ export default async function AdminPage({
 
   return (
     <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
-      <SectionHeading
-        eyebrow="Admin"
-        title="Vizualizare simpla si gestionare de baza"
-        description="Zona de admin este intentionat minima. Accesul se face cu cheia setata in variabila `ADMIN_ACCESS_KEY`."
-      />
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+        <SectionHeading
+          eyebrow="Admin"
+          title="Vizualizare simpla si gestionare de baza"
+          description="Zona de admin este protejata si poate fi accesata cu parola unica."
+        />
+        {isAuthorized ? <AdminLogoutButton /> : null}
+      </div>
 
-      {!isConfigured || isPlaceholderKey || !isAuthorized ? (
-        <Card className="mt-8 border-amber-200 bg-amber-50">
-          <CardTitle>Acces neconfigurat</CardTitle>
-          <CardDescription className="mt-3 text-amber-900">
-            Seteaza `ADMIN_ACCESS_KEY` in `.env.local`, apoi deschide aceasta pagina cu
-            `?key=valoarea-ta`. Fara cheia corecta, datele nu sunt afisate.
-          </CardDescription>
-        </Card>
-      ) : null}
+      {!isAuthorized ? <AdminLoginForm /> : null}
 
       {isAuthorized ? (
         <div className="mt-8 space-y-8">
@@ -88,7 +82,7 @@ export default async function AdminPage({
             </div>
 
             <div className="mt-6 grid gap-6 lg:grid-cols-[minmax(0,420px)_1fr]">
-              <AdminProposalForm adminKey={adminKey} />
+              <AdminProposalForm />
 
               <div className="space-y-4">
                 {proposals.length ? (
@@ -115,11 +109,7 @@ export default async function AdminPage({
                         </div>
 
                         <div className="min-w-48">
-                          <AdminProposalStatusForm
-                            id={proposal.id}
-                            currentValue={proposal.status}
-                            adminKey={adminKey}
-                          />
+                          <AdminProposalStatusForm id={proposal.id} currentValue={proposal.status} />
                         </div>
                       </div>
 
@@ -161,10 +151,7 @@ export default async function AdminPage({
                                 <p className="mt-2 text-sm leading-6 text-slate-600">
                                   {comment.reason || "Fara mesaj adaugat."}
                                 </p>
-                                <AdminDeleteVoteMessageButton
-                                  voteId={comment.id}
-                                  adminKey={adminKey}
-                                />
+                                <AdminDeleteVoteMessageButton voteId={comment.id} />
                               </div>
                             ))
                           ) : (
@@ -200,7 +187,6 @@ export default async function AdminPage({
             </div>
 
             <form className="mt-6 grid gap-3 sm:max-w-xs" method="get">
-              <input type="hidden" name="key" value={adminKey} />
               <label className="text-sm font-medium text-slate-800" htmlFor="building-filter">
                 Filtreaza dupa cladire
               </label>
@@ -264,9 +250,8 @@ export default async function AdminPage({
                             table="residents"
                             currentValue={resident.status}
                             options={residentOptions}
-                            adminKey={adminKey}
                           />
-                          <AdminResetPasswordForm residentId={resident.id} adminKey={adminKey} />
+                          <AdminResetPasswordForm residentId={resident.id} />
                         </div>
                       </TableCell>
                     </tr>
@@ -331,7 +316,6 @@ export default async function AdminPage({
                           table="issues"
                           currentValue={issue.status}
                           options={issueOptions}
-                          adminKey={adminKey}
                         />
                       </TableCell>
                     </tr>

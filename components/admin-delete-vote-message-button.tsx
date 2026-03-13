@@ -7,10 +7,8 @@ import { Button } from "@/components/ui/button";
 
 export function AdminDeleteVoteMessageButton({
   voteId,
-  adminKey,
 }: {
   voteId: string;
-  adminKey: string;
 }) {
   const router = useRouter();
   const [message, setMessage] = useState("");
@@ -30,7 +28,7 @@ export function AdminDeleteVoteMessageButton({
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ id: voteId, key: adminKey }),
+      body: JSON.stringify({ id: voteId }),
     });
 
     const payload = (await response.json()) as { success?: boolean; message?: string };

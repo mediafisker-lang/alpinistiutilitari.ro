@@ -1,11 +1,11 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 
+import { isAdminAuthorizedRequest } from "@/lib/admin-auth";
 import { createAdminSupabaseClient, hasAdminSupabaseEnv } from "@/lib/supabase";
 
 const schema = z.object({
   id: z.string().uuid(),
-  key: z.string().min(1),
 });
 
 export async function POST(request: Request) {
@@ -16,8 +16,8 @@ export async function POST(request: Request) {
     return NextResponse.json({ success: false, message: "Cerere invalida." }, { status: 400 });
   }
 
-  if (!process.env.ADMIN_ACCESS_KEY || parsed.data.key !== process.env.ADMIN_ACCESS_KEY) {
-    return NextResponse.json({ success: false, message: "Cheie de admin invalida." }, { status: 401 });
+  if (!isAdminAuthorizedRequest(request)) {
+    return NextResponse.json({ success: false, message: "Acces admin invalid." }, { status: 401 });
   }
 
   if (!hasAdminSupabaseEnv()) {

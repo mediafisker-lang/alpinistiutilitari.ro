@@ -41,12 +41,13 @@ export async function GET() {
     const proposalVotes = ((votes ?? []) as VoteRow[]).filter(
       (vote) => vote.proposal_id === proposal.id,
     );
+    const commentVotes = proposalVotes.filter((vote) => Boolean(vote.reason?.trim()));
 
     return {
       ...proposal,
       yes_votes: proposalVotes.filter((vote) => vote.vote_choice === "yes").length,
       no_votes: proposalVotes.filter((vote) => vote.vote_choice === "no").length,
-      comments: proposalVotes.map((vote) => ({
+      comments: commentVotes.map((vote) => ({
         id: vote.id,
         resident_name: Array.isArray(vote.residents)
           ? vote.residents[0]?.full_name ?? "Rezident"

@@ -10,7 +10,6 @@ type Props = {
   table: "residents" | "issues";
   currentValue: string;
   options: { label: string; value: string }[];
-  adminKey: string;
 };
 
 export function AdminStatusForm({
@@ -18,7 +17,6 @@ export function AdminStatusForm({
   table,
   currentValue,
   options,
-  adminKey,
 }: Props) {
   const [value, setValue] = useState(currentValue);
   const [message, setMessage] = useState("");
@@ -38,7 +36,6 @@ export function AdminStatusForm({
         id,
         table,
         status: value,
-        key: adminKey,
       }),
     });
 

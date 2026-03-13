@@ -1,12 +1,12 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 
+import { isAdminAuthorizedRequest } from "@/lib/admin-auth";
 import { createAdminSupabaseClient, hasAdminSupabaseEnv } from "@/lib/supabase";
 
 const schema = z.object({
   id: z.string().uuid(),
   status: z.enum(["open", "closed"]),
-  key: z.string().min(1),
 });
 
 export async function POST(request: Request) {
@@ -14,20 +14,26 @@ export async function POST(request: Request) {
   const parsed = schema.safeParse(body);
 
   if (!parsed.success) {
-    return NextResponse.json({ success: false, message: "Cerere invalidă." }, { status: 400 });
+    return NextResponse.json({ success: false, message: "Cerere invalida." }, { status: 400 });
   }
 
-  if (!process.env.ADMIN_ACCESS_KEY || parsed.data.key !== process.env.ADMIN_ACCESS_KEY) {
-    return NextResponse.json({ success: false, message: "Cheie de admin invalidă." }, { status: 401 });
+  if (!isAdminAuthorizedRequest(request)) {
+    return NextResponse.json({ success: false, message: "Acces admin invalid." }, { status: 401 });
   }
 
   if (!hasAdminSupabaseEnv()) {
-    return NextResponse.json({ success: false, message: "Lipsește configurarea Supabase pentru admin." }, { status: 503 });
+    return NextResponse.json(
+      { success: false, message: "Lipseste configurarea Supabase pentru admin." },
+      { status: 503 },
+    );
   }
 
   const supabase = createAdminSupabaseClient();
   if (!supabase) {
-    return NextResponse.json({ success: false, message: "Conexiunea la baza de date nu este disponibilă." }, { status: 503 });
+    return NextResponse.json(
+      { success: false, message: "Conexiunea la baza de date nu este disponibila." },
+      { status: 503 },
+    );
   }
 
   const { error } = await supabase
@@ -36,7 +42,10 @@ export async function POST(request: Request) {
     .eq("id", parsed.data.id);
 
   if (error) {
-    return NextResponse.json({ success: false, message: "Statusul propunerii nu a putut fi actualizat." }, { status: 500 });
+    return NextResponse.json(
+      { success: false, message: "Statusul propunerii nu a putut fi actualizat." },
+      { status: 500 },
+    );
   }
 
   return NextResponse.json({ success: true, message: "Status actualizat." });

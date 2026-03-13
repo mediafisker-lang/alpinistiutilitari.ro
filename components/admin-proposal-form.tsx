@@ -14,7 +14,7 @@ type FormState = {
   message?: string;
 };
 
-export function AdminProposalForm({ adminKey }: { adminKey: string }) {
+export function AdminProposalForm() {
   const router = useRouter();
   const [state, setState] = useState<FormState>({});
 
@@ -39,7 +39,6 @@ export function AdminProposalForm({ adminKey }: { adminKey: string }) {
         Exemplu: schimbarea firmei de pază, reguli noi sau alte decizii care au nevoie de consultare.
       </CardDescription>
       <form action={handleSubmit} className="mt-6 space-y-4">
-        <input type="hidden" name="key" value={adminKey} />
         <div>
           <Label htmlFor="proposal_title">Titlu</Label>
           <Input id="proposal_title" name="title" placeholder="Ex: Schimbarea firmei de pază" required />

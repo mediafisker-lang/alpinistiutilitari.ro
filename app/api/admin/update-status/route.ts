@@ -1,13 +1,13 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 
+import { isAdminAuthorizedRequest } from "@/lib/admin-auth";
 import { createAdminSupabaseClient, hasAdminSupabaseEnv } from "@/lib/supabase";
 
 const payloadSchema = z.object({
   id: z.string().uuid(),
   table: z.enum(["residents", "issues"]),
   status: z.string().min(2),
-  key: z.string().min(1),
 });
 
 export async function POST(request: Request) {
@@ -18,17 +18,17 @@ export async function POST(request: Request) {
     return NextResponse.json(
       {
         success: false,
-        message: "Cerere invalidă.",
+        message: "Cerere invalida.",
       },
       { status: 400 },
     );
   }
 
-  if (!process.env.ADMIN_ACCESS_KEY || parsed.data.key !== process.env.ADMIN_ACCESS_KEY) {
+  if (!isAdminAuthorizedRequest(request)) {
     return NextResponse.json(
       {
         success: false,
-        message: "Cheie de admin invalidă.",
+        message: "Acces admin invalid.",
       },
       { status: 401 },
     );
@@ -38,7 +38,7 @@ export async function POST(request: Request) {
     return NextResponse.json(
       {
         success: false,
-        message: "Lipsește configurarea Supabase pentru admin.",
+        message: "Lipseste configurarea Supabase pentru admin.",
       },
       { status: 503 },
     );
@@ -49,7 +49,7 @@ export async function POST(request: Request) {
     return NextResponse.json(
       {
         success: false,
-        message: "Conexiunea la baza de date nu este disponibilă.",
+        message: "Conexiunea la baza de date nu este disponibila.",
       },
       { status: 503 },
     );

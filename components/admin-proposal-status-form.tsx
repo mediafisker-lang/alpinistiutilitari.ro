@@ -9,11 +9,9 @@ import { Select } from "@/components/ui/select";
 export function AdminProposalStatusForm({
   id,
   currentValue,
-  adminKey,
 }: {
   id: string;
   currentValue: "open" | "closed";
-  adminKey: string;
 }) {
   const router = useRouter();
   const [status, setStatus] = useState(currentValue);
@@ -27,7 +25,7 @@ export function AdminProposalStatusForm({
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ id, status, key: adminKey }),
+      body: JSON.stringify({ id, status }),
     });
 
     const payload = (await response.json()) as { success?: boolean; message?: string };
