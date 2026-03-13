@@ -161,12 +161,10 @@ export default async function AdminPage({
                                 <p className="mt-2 text-sm leading-6 text-slate-600">
                                   {comment.reason || "Fara mesaj adaugat."}
                                 </p>
-                                {comment.reason ? (
-                                  <AdminDeleteVoteMessageButton
-                                    voteId={comment.id}
-                                    adminKey={adminKey}
-                                  />
-                                ) : null}
+                                <AdminDeleteVoteMessageButton
+                                  voteId={comment.id}
+                                  adminKey={adminKey}
+                                />
                               </div>
                             ))
                           ) : (
