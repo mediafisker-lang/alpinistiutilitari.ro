@@ -1,11 +1,17 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { ChevronDown, Menu, Search } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { Input } from "@/components/ui/input";
-import { readVoteAuth, subscribeVoteAuth, writeVoteAuth } from "@/lib/vote-auth";
+import {
+  clearVoteAuth,
+  readVoteAuth,
+  subscribeVoteAuth,
+  writeVoteAuth,
+} from "@/lib/vote-auth";
 
 type LoginState = {
   email: string;
@@ -30,6 +36,7 @@ function AccountMenu({
 }) {
   const [showLoginForm, setShowLoginForm] = useState(false);
   const [state, setState] = useState<LoginState>(initialLoginState);
+  const detailsRef = useRef<HTMLDetailsElement>(null);
 
   async function handleLogin() {
     setState((current) => ({ ...current, error: "", message: "" }));
@@ -56,12 +63,11 @@ function AccountMenu({
         email: payload.email,
         password: state.password,
       });
-      setState((current) => ({
-        ...current,
-        message: payload.message ?? "Autentificare reusita.",
-        error: "",
-      }));
+      setState(initialLoginState);
       setShowLoginForm(false);
+      if (detailsRef.current) {
+        detailsRef.current.open = false;
+      }
       return;
     }
 
@@ -74,7 +80,7 @@ function AccountMenu({
   }
 
   return (
-    <details className={mobile ? "col-span-2" : "relative"}>
+    <details ref={detailsRef} className={mobile ? "col-span-2" : "relative"}>
       <summary
         className={
           mobile
@@ -99,13 +105,30 @@ function AccountMenu({
             </div>
           ) : null}
 
-          <button
-            type="button"
-            onClick={() => setShowLoginForm((current) => !current)}
-            className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-medium text-slate-800 transition hover:bg-slate-100"
-          >
-            Login
-          </button>
+          {!loggedInEmail ? (
+            <button
+              type="button"
+              onClick={() => setShowLoginForm((current) => !current)}
+              className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-medium text-slate-800 transition hover:bg-slate-100"
+            >
+              Login
+            </button>
+          ) : (
+            <button
+              type="button"
+              onClick={() => {
+                clearVoteAuth();
+                setState(initialLoginState);
+                setShowLoginForm(false);
+                if (detailsRef.current) {
+                  detailsRef.current.open = false;
+                }
+              }}
+              className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-medium text-slate-800 transition hover:bg-slate-100"
+            >
+              Logout
+            </button>
+          )}
 
           {showLoginForm ? (
             <div className="rounded-xl border border-slate-200 bg-slate-50 p-4">
@@ -151,7 +174,7 @@ function AccountMenu({
           ) : null}
 
           <Link
-            href="#inscriere"
+            href="/#inscriere"
             className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-center text-sm font-medium text-slate-800 transition hover:bg-slate-100"
           >
             Inscriere
@@ -175,6 +198,10 @@ export function SiteHeader() {
     return subscribeVoteAuth(syncSession);
   }, []);
 
+  function handleLogout() {
+    clearVoteAuth();
+  }
+
   return (
     <header className="sticky top-0 z-20 border-b border-slate-200 bg-white shadow-sm">
       <div className="bg-[linear-gradient(90deg,#e31e24_0%,#005eb8_55%,#005eb8_100%)]">
@@ -188,14 +215,21 @@ export function SiteHeader() {
         <div className="flex items-center justify-between gap-4">
           <Link href="/" className="min-w-0 shrink-0">
             <div className="flex items-center gap-3">
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[linear-gradient(135deg,#e31e24_0%,#005eb8_100%)] text-lg font-black text-white">
-                CN
+              <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
+                <Image
+                  src="/logo.png"
+                  alt="Cortina North"
+                  width={56}
+                  height={56}
+                  className="h-12 w-12 object-cover"
+                  priority
+                />
               </div>
               <div className="min-w-0">
                 <p className="truncate text-lg font-extrabold tracking-tight text-slate-950">
                   Cortina North
                 </p>
-                <p className="text-xs text-slate-500">Experienta tip marketplace pentru comunitate</p>
+                <p className="text-xs text-slate-500">Informatii si schimbari in comunitate</p>
               </div>
             </div>
           </Link>
@@ -218,19 +252,25 @@ export function SiteHeader() {
             <div className="absolute inset-x-4 top-[calc(100%-0.25rem)] rounded-2xl border border-slate-200 bg-white p-4 shadow-xl shadow-slate-950/10">
               <nav className="grid grid-cols-2 gap-3">
                 <Link
-                  href="#stadiu"
+                  href="/#stadiu"
                   className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-center text-sm font-medium text-slate-800 transition hover:bg-slate-100"
                 >
                   Stadiu Asoc.
                 </Link>
                 <Link
-                  href="#beneficii"
+                  href="/#beneficii"
                   className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-center text-sm font-medium text-slate-800 transition hover:bg-slate-100"
                 >
                   Beneficii
                 </Link>
                 <Link
-                  href="#voteaza"
+                  href="/#sesizari"
+                  className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-center text-sm font-medium text-slate-800 transition hover:bg-slate-100"
+                >
+                  Sesizari
+                </Link>
+                <Link
+                  href="/#voteaza"
                   className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-center text-sm font-medium text-slate-800 transition hover:bg-slate-100"
                 >
                   Voteaza
@@ -242,28 +282,39 @@ export function SiteHeader() {
 
           <div className="hidden items-center gap-3 lg:flex">
             <Link
-              href="#stadiu"
+              href="/#stadiu"
               className="rounded-xl px-3 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-100"
             >
               Stadiu Asoc.
             </Link>
             <Link
-              href="#beneficii"
+              href="/#beneficii"
               className="rounded-xl px-3 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-100"
             >
               Beneficii
             </Link>
             <Link
-              href="#voteaza"
+              href="/#sesizari"
+              className="rounded-xl px-3 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-100"
+            >
+              Sesizari
+            </Link>
+            <Link
+              href="/#voteaza"
               className="rounded-xl px-3 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-100"
             >
               Voteaza
             </Link>
             <AccountMenu loggedInEmail={loggedInEmail} />
             {loggedInEmail ? (
-              <div className="rounded-xl border border-blue-200 bg-blue-50 px-4 py-2 text-sm font-semibold text-[#005eb8]">
+              <button
+                type="button"
+                onClick={handleLogout}
+                className="rounded-xl border border-blue-200 bg-blue-50 px-4 py-2 text-sm font-semibold text-[#005eb8] transition hover:bg-blue-100"
+                title="Logout"
+              >
                 {loggedInEmail}
-              </div>
+              </button>
             ) : null}
           </div>
         </div>

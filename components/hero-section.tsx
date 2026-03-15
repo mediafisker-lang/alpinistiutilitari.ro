@@ -18,7 +18,7 @@ export function HeroSection() {
                 Tot ce conteaza in comunitate, intr-un singur loc
               </h1>
               <p className="max-w-2xl text-base leading-7 text-slate-600 sm:text-lg">
-                Inregistreaza-te ca sa primesti actualizari, sa trimiti sesizari, sa votezi rapid si sa urmaresti stadiul solicitarilor fara sa cauti informatia in mai multe locuri.
+                Inregistreaza-te ca sa primesti actualizari, sa trimiti sesizari, sa votezi rapid si sa urmaresti stadiul solicitarilor fara sa cauti informatia in mai multe locuri, sa ai acces in grupurile de Whatsapp si Facebook interne.
               </p>
             </div>
             <div className="flex flex-col gap-3 sm:flex-row">

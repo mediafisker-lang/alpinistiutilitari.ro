@@ -40,6 +40,15 @@ export function writeVoteAuth(session: VoteAuthSession) {
   window.dispatchEvent(new Event(changeEvent));
 }
 
+export function clearVoteAuth() {
+  if (typeof window === "undefined") {
+    return;
+  }
+
+  window.localStorage.removeItem(storageKey);
+  window.dispatchEvent(new Event(changeEvent));
+}
+
 export function subscribeVoteAuth(listener: () => void) {
   if (typeof window === "undefined") {
     return () => undefined;

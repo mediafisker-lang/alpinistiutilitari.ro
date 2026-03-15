@@ -2,166 +2,305 @@ import { SectionHeading } from "@/components/section-heading";
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
 
 export const metadata = {
-  title: "Stadiu Asociație | Cortina North",
+  title: "Stadiu Asociatie | Cortina North",
 };
-
-const roleItems = [
-  "organizarea inițială a comunității",
-  "convocarea proprietarilor pe 14 februarie 2025 și pe 4 martie 2025",
-  "solicitarea de oferte pentru consultanță juridică și selectarea unei echipe, după supunerea la vot către comunitate a ofertelor",
-  "structurarea procesului de constituire și adaptarea documentației primite la problemele, nevoile și feedback-ul primit din partea comunității pe acte",
-  "identificarea soluțiilor pentru blocajele instituționale",
-  "reluarea inițiativei în momentele de stagnare",
-  "menținerea transparenței procesului prin comunicări periodice cu comunitatea și membrii individuali",
-];
 
 const timeline = [
   {
-    title: "Aug – Dec 2024",
-    content:
-      "Implicare activă în grupul comunității Cortina North, oferind soluții și coordonând discuții privind problemele ansamblului.",
+    title: "Aug - Dec 2024",
+    paragraphs: [
+      "Implicare activa in grupul comunitatii Cortina North, oferind solutii si coordonand discutii privind problemele ansamblului.",
+    ],
   },
   {
     title: "Ianuarie 2025",
-    content:
-      "În urma votului într-o comunitate de peste 1000 membri, am fost desemnată să coordonez inițiativa de înființare a Asociației de Proprietari. A fost format un comitet de inițiativă din proprietari voluntari.",
+    paragraphs: [
+      "In urma votului intr-o comunitate de peste 1000 membri, am fost desemnata sa coordonez initiativa de infiintare a Asociatiei de Proprietari.",
+      "Am format un comitet de initiativa format din proprietari voluntari.",
+    ],
   },
   {
     title: "Februarie 2025",
-    content:
-      "Inițiativa a trecut din zona de intenție în zona de acțiune. Au fost creați și distribuiți flyere și afișe, au fost organizați voluntari pentru distribuție la nivel de condominium, iar comunitatea a fost extinsă la peste 1200 membri prin codul QR de acces.",
+    paragraphs: [
+      "Initiativa a trecut din zona de intentie in zona de actiune.",
+      "Organizarea voluntarilor pentru anuntarea initiativei in scarile de bloc prin distribuirea de flyere la casutele postale si lipirea afiselor la intrarea in scara si in lifturi.",
+    ],
+    bullets: [
+      "creare postere si flyere",
+      "distribuire flyere in scari si lifturi",
+      "organizare voluntari pentru distributie la nivel de condominium (16 scari de bloc pentru apartamentele predate din Fazele 1+2)",
+      "extinderea comunitatii la peste 1200 membri prin codul QR invitatie pentru acces in comunitate",
+    ],
   },
   {
     title: "14 Februarie 2025",
-    content:
-      "A avut loc întâlnirea cu proprietarii și colectarea semnăturilor pentru demararea procedurii de constituire. Comunitatea a depășit 1100 membri, aproximativ 110 locatari noi s-au alăturat în această etapă, iar rezultatul a fost de aproximativ 370 semnături colectate pentru inițierea procesului.",
+    paragraphs: [
+      "Intalnire cu proprietarii si colectarea semnaturilor pentru demararea procedurii de constituire. Organizarea primei convocari pentru initierea procedurii de constituire.",
+    ],
+    highlights: [
+      "extinderea comunitatii la peste 1100 membri",
+      "aproximativ 110 locatari noi alaturati in aceasta etapa",
+      "~370 semnaturi colectate pentru initierea procesului",
+      "(Atasat prima parte a PV, fara semnaturi)",
+    ],
   },
   {
-    title: "Februarie 2025 | Etapă juridică și transparență",
-    content:
-      "Au fost solicitate oferte de la multiple firme de avocatură, procesul a fost deschis recomandărilor din comunitate, iar selecția a fost supusă votului proprietarilor. Conform votului, Cristina Timaru Law Office a fost selectată, cu onorariu de 2500 lei + TVA.",
+    title: "Februarie 2025 | Etapa juridica si transparenta",
+    paragraphs: [
+      "Solicitarea de oferte din partea multiplelor firme de avocatura. Deschiderea listelor pentru ofertare din partea comunitatii.",
+      "Filothea a coordonat:",
+    ],
+    bullets: [
+      "solicitarea de oferte de la multiple firme de avocatura",
+      "deschiderea procesului catre recomandari din comunitate",
+      "supunerea selectiei votului proprietarilor",
+    ],
+    highlights: [
+      "Cristina Timaru Law Office a fost selectata",
+      "Onorariu: 2500 lei + TVA",
+      "(reducere acordata in contextul apartenentei la comunitate)",
+    ],
   },
   {
     title: "Martie 2025",
-    content:
-      "A fost organizată finanțarea comunitară, prin contribuție voluntară de 7 lei per apartament. Suma necesară, 2970 lei cu TVA, a fost colectată cu succes de la 423 apartamente.",
+    paragraphs: [
+      "Organizarea finantarii comunitare.",
+      "A fost organizata contributia voluntara, printr-un sistem de colectare: 7 lei / apartament.",
+    ],
+    highlights: ["suma necesara (2970 lei cu TVA) a fost colectata cu succes de la 423 apartamente"],
   },
   {
     title: "18 Aprilie 2025",
-    content:
-      "A început colaborarea juridică, iar onorariul a fost achitat integral.",
+    paragraphs: [
+      "Inceperea colaborarii juridice.",
+    ],
+    bullets: ["colaborarea oficiala a fost initiata", "onorariul a fost achitat integral", "(Atasat factura)"],
   },
   {
     title: "30 Aprilie 2025",
-    content:
-      "A fost recepționată documentația juridică pentru înființarea asociației: Statut, Acord de asociere, Regulament de ordine interioară, Proces verbal AGA și Convocator.",
+    paragraphs: ["Receptia documentatiei juridice pentru infiintarea asociatiei:"],
+    bullets: [
+      "Statut",
+      "Acord de asociere",
+      "Regulament de ordine interioara",
+      "Proces verbal AGA",
+      "Convocator",
+    ],
   },
   {
     title: "Iunie 2025",
-    content:
-      "A fost identificat blocajul major legat de completarea cotelor-părți indivize ale proprietarilor. Au fost analizate opțiuni juridice și administrative, dar a devenit clar că era necesară o mobilizare comunitară în teren pentru identificarea proprietarilor, obținerea datelor minime de contact și stabilirea unui canal direct de comunicare.",
+    paragraphs: [
+      "Identificarea blocajului major.",
+      "Pentru a putea merge mai departe cu procesul de constituire, a devenit clar ca lipsea un element esential: completarea cotelor-parti indivize ale proprietarilor.",
+      "Au fost analizate mai multe optiuni juridice pentru obtinerea acestor date, inclusiv:",
+    ],
+    bullets: [
+      "accesarea extraselor CF publice",
+      "colectarea informatiilor direct de la proprietari",
+    ],
+    extraParagraphs: [
+      "Toate acestea au trebuit evaluate prin prisma limitarilor reale impuse de cadrul GDPR, mai ales in contextul in care demersul era realizat de o structura comunitara in formare, nu de o entitate juridica deja constituita.",
+      "Realitatea operationala era insa mult mai complexa.",
+      "Nu exista o baza de date centralizata cu proprietarii accesibila.",
+      "Nu exista acces la datele lor de contact.",
+      "Iar pentru a putea continua, era nevoie exact de aceste date.",
+      "In mod practic, procesul de strangere a semnaturilor la nivel de condominiu nu mai putea fi rezolvat administrativ, ci doar printr-un efort comunitar coordonat.",
+      "A devenit evident ca era necesara o mobilizare in teren:",
+    ],
+    highlights: [
+      "identificarea proprietarilor apartament cu apartament",
+      "obtinerea datelor minime de contact (email, telefon)",
+      "stabilirea unui canal direct de comunicare",
+      "(Screenshot cu adresele de email ale Cristinei si celelalte sterse cu negru)",
+    ],
   },
   {
-    title: "Iunie – Septembrie 2025",
-    content:
-      "Au avut loc consultări juridice suplimentare, validarea documentației și adaptarea acesteia la specificul unui complex de aproximativ 1500 unități, în funcție de problemele semnalate în comunitate. În paralel a fost identificată nevoia unui sediu.",
+    title: "Iunie - Septembrie 2025",
+    paragraphs: [
+      "Adaptare si validare.",
+      "Au avut loc:",
+    ],
+    bullets: [
+      "consultari juridice suplimentare cu avocati din comunitate",
+      "validarea documentatiei",
+      "adaptarea acesteia la specificul unui complex de ~1500 unitati, in functie de problemele semnalate pe comunitatea de WhatsApp, acum ajunsa la peste 1350 membri",
+    ],
+    extraParagraphs: ["In paralel, a fost identificata nevoia unui sediu."],
   },
   {
     title: "16 Septembrie 2025",
-    content:
-      "A fost identificat sediul și inclus în documentație ca sediu oficial și de corespondență. În urma dialogului cu dezvoltatorul, a fost oferit un spațiu în scara B4, destinat sediului viitoarei asociații.",
+    paragraphs: [
+      "Identificarea sediului si includerea sa in documentatie ca sediu oficial si de corespondenta.",
+      "Filothea a coordonat dialogul cu dezvoltatorul.",
+    ],
+    highlights: [
+      "spatiu oferit in scara B4",
+      "destinat sediului viitoarei asociatii",
+      "B4 - Birou administratie",
+    ],
   },
   {
     title: "Septembrie 2025",
-    content:
-      "Documentația pentru dosarul de constituire era aproape completă. Etapa următoare era contactarea și colectarea semnăturilor proprietarilor pentru constituire.",
+    paragraphs: [
+      "Documentatia pentru dosarul de constituire era aproape completa.",
+      "Etapa urmatoare: contactarea si colectarea semnaturilor proprietarilor pentru constituire.",
+    ],
   },
   {
     title: "Octombrie 2025",
-    content:
-      "Din motive personale, Filothea a predat coordonarea inițiativei, în contextul existenței unui comitet format, a documentelor și a sediului, cu obiectivul continuării procesului prin efort colectiv.",
+    paragraphs: [
+      "Transfer de coordonare.",
+      "Din motive personale, Filothea a decis sa predea coordonarea initiativei, in contextul in care:",
+    ],
+    bullets: ["exista deja un comitet format", "existau documentele", "exista sediul"],
+    extraParagraphs: ["Obiectivul: continuarea procesului prin efort colectiv."],
   },
   {
-    title: "Octombrie 2025 – Februarie 2026",
-    content:
-      "Nu s-au înregistrat pași concreți pentru depunerea dosarului. În tot acest timp, comunitatea a continuat să asocieze inițiativa cu Filothea și să solicite actualizări, iar lipsa de răspuns din partea celor desemnați să continue procesul a generat o presiune legitimă de clarificare și direcție.",
+    title: "Octombrie 2025, Noiembrie 2025, Decembrie 2025, Ianuarie 2026, Februarie 2026",
+    paragraphs: [
+      "Nu s-au inregistrat pasi concreti in directia depunerii dosarului.",
+      "In tot acest timp, comunitatea a continuat sa asocieze initiativa cu Filothea si sa ii adreseze, in mod constant, solicitari de actualizare privind stadiul demersului.",
+      "Intrebarile adresate, atat public, cat si in privat, catre membrii desemnati sa duca mai departe procesul au ramas, in mod repetat, fara raspuns, ceea ce a generat o presiune legitima de clarificare si directie din partea proprietarilor.",
+    ],
   },
   {
     title: "Februarie 2026",
-    content:
-      "După aproximativ 5 luni fără progrese concrete, Filothea a decis să revină în coordonarea inițiativei. Reimplicarea a vizat reluarea comunicării, recentralizarea problemelor rezidenților, reluarea colaborării cu firma de administrare și reactivarea nucleului de voluntari pentru a readuce procesul într-o etapă funcțională și orientată spre finalizare.",
+    paragraphs: [
+      "Reluarea implicarii.",
+      "Dupa aproximativ 5 luni fara progrese concrete in procesul de constituire, Filothea a decis sa revina in coordonarea initiativei, din responsabilitate fata de comunitate si fata de demersul deja construit.",
+      "Reimplicarea a vizat nu doar reluarea comunicarii, ci repornirea mecanismelor necesare avansarii:",
+    ],
+    bullets: [
+      "recentralizarea problemelor rezidentilor",
+      "reinstaurarea unei comunicari transparente",
+      "reluarea colaborarii cu firma de administrare",
+    ],
+    extraParagraphs: [
+      "In paralel, au fost evaluate blocajele existente, reactivat nucleul de voluntari si reluata coordonarea cu actorii implicati, pentru a readuce procesul intr-o etapa functionala si orientata spre finalizare.",
+    ],
   },
   {
-    title: "Februarie 2025 – Prezent",
-    content:
-      "A fost menținut un efort constant pentru a ține comunitatea conectată și implicată: o comunitate activă de peste 900 membri, peste 25 grupuri de comunicare gestionate, mobilizarea voluntarilor, menținerea unei echipe implicate, dialog constant cu dezvoltatorul și colaborare continuă cu firmele de administrare.",
+    title: "Februarie 2025 - Prezent",
+    paragraphs: [
+      "Dincolo de pasii formali ai procesului, a fost mentinut un efort constant de a tine comunitatea conectata si implicata.",
+    ],
+    highlights: [
+      "o comunitate activa de peste 900 membri",
+      "peste 25 grupuri de comunicare gestionate",
+    ],
+    bullets: [
+      "mobilizarea voluntarilor atunci cand a fost nevoie",
+      "mentinerea unei echipe implicate in jurul initiativei",
+      "dialog constant cu dezvoltatorul",
+      "colaborare continua cu firmele de administrare",
+    ],
+    extraParagraphs: [
+      "Acest cadru a ajutat la pastrarea coeziunii comunitatii si la mentinerea capacitatii de actiune, chiar si in perioadele in care procesul formal a intampinat blocaje.",
+    ],
   },
+];
+
+const currentStageBullets = [
+  "contact direct",
+  "coordonare logistica",
+  "actiuni door-to-door acolo unde este necesar",
+];
+
+const legalSteps = [
+  "convocarea Adunarii Generale de constituire",
+  "obtinerea acordului scris a 50% + 1 dintre proprietari",
+  "adoptarea oficiala a statutului si acordului de asociere",
+  "depunerea dosarului de infiintare in instanta",
 ];
 
 export default function StadiuAsociatiePage() {
   return (
     <section className="mx-auto max-w-5xl px-4 py-16 sm:px-6">
       <SectionHeading
-        eyebrow="Stadiu Asociație"
-        title="Pașii făcuți, pe larg"
-        description="Mai jos este prezentată cronologia detaliată a demersului, rolul de coordonare și stadiul actual al procesului de constituire."
+        eyebrow="Stadiu Asociatie"
+        title="Pasii facuti, pe larg"
+        description="Mai jos este prezentata cronologia detaliata a demersului si stadiul actual al procesului de constituire."
       />
 
       <div className="mt-8 space-y-6">
-        <Card>
-          <CardTitle>Rolul de organizare și structurare a procesului</CardTitle>
-          <CardDescription className="mt-4">
-            Rolul său a fost unul de organizare și structurare a procesului:
-          </CardDescription>
-          <ul className="mt-4 space-y-3 text-sm leading-6 text-slate-700">
-            {roleItems.map((item) => (
-              <li key={item}>✔️ {item}</li>
-            ))}
-          </ul>
-          <p className="mt-5 text-sm leading-6 text-slate-700">
-            În paralel, Filothea a coordonat administrarea și dezvoltarea comunității rezidenților Cortina North, care astăzi numără peste 900 membri activi într-un grup de WhatsApp și peste 25 grupuri tematice de comunicare. Această infrastructură comunitară a devenit principalul spațiu de informare și mobilizare al proprietarilor.
-          </p>
-        </Card>
-
         <Card>
           <CardTitle>Cronologia demersului</CardTitle>
           <div className="mt-6 space-y-5">
             {timeline.map((entry) => (
               <div key={entry.title} className="rounded-2xl bg-slate-50 p-4">
                 <h3 className="text-base font-semibold text-slate-950">{entry.title}</h3>
-                <p className="mt-2 text-sm leading-6 text-slate-700">{entry.content}</p>
+
+                <div className="mt-2 space-y-3 text-sm leading-6 text-slate-700">
+                  {entry.paragraphs.map((paragraph) => (
+                    <p key={paragraph}>{paragraph}</p>
+                  ))}
+
+                  {"bullets" in entry && entry.bullets ? (
+                    <ul className="space-y-2">
+                      {entry.bullets.map((bullet) => (
+                        <li key={bullet}>- {bullet}</li>
+                      ))}
+                    </ul>
+                  ) : null}
+
+                  {"highlights" in entry && entry.highlights ? (
+                    <div className="rounded-2xl bg-white p-4 text-slate-800">
+                      <div className="space-y-2">
+                        {entry.highlights.map((highlight) => (
+                          <p key={highlight}>- {highlight}</p>
+                        ))}
+                      </div>
+                    </div>
+                  ) : null}
+
+                  {"extraParagraphs" in entry && entry.extraParagraphs
+                    ? entry.extraParagraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)
+                    : null}
+                </div>
               </div>
             ))}
           </div>
         </Card>
 
         <Card>
-          <CardTitle>Unde ne aflăm în prezent</CardTitle>
+          <CardTitle>Unde ne aflam in prezent</CardTitle>
           <CardDescription className="mt-4">
-            Documentația juridică necesară constituirii asociației este deja redactată de firma de avocatură selectată de comunitate și achitată integral prin contribuția proprietarilor.
+            Documentatia juridica necesara constituirii asociatiei este deja redactata de firma de
+            avocatura selectata de comunitate si achitata integral prin contributia proprietarilor.
           </CardDescription>
           <div className="mt-4 space-y-4 text-sm leading-6 text-slate-700">
             <p>
-              Ne aflăm acum în etapa operațională, cea care face diferența între intenție și finalizare.
+              Ne aflam acum in etapa operationala, cea care face diferenta intre intentie si
+              finalizare.
             </p>
             <p>
-              Lucrăm activ la mobilizarea voluntarilor pentru strângerea semnăturilor necesare înființării asociației, consolidând o bază de date deja construită de peste 620 proprietari care pot fi contactați.
+              Lucram activ la mobilizarea voluntarilor pentru strangerea semnaturilor necesare
+              infiintarii asociatiei, consolidand o baza de date deja construita de peste 620
+              proprietari care pot fi contactati.
             </p>
+            <p>Acest proces presupune:</p>
+            <ul className="space-y-2">
+              {currentStageBullets.map((bullet) => (
+                <li key={bullet}>- {bullet}</li>
+              ))}
+            </ul>
             <p>
-              Acest proces presupune contact direct, coordonare logistică și acțiuni door-to-door acolo unde este necesar. Este un efort anevoios, dar esențial, unul care necesită organizare atentă și coerență pentru a transforma munca depusă până acum într-un rezultat concret.
+              Este un efort anevoios, dar esential, unul care necesita organizare atenta si
+              coerenta, pentru a transforma munca depusa pana acum intr-un rezultat concret.
             </p>
             <div className="rounded-2xl bg-emerald-50 p-4">
-              <p className="font-medium text-emerald-900">În paralel, continuăm parcurgerea pașilor prevăzuți de Legea 196/2018:</p>
-              <ol className="mt-3 space-y-2">
-                <li>1. convocarea Adunării Generale de constituire</li>
-                <li>2. obținerea acordului scris a 50% + 1 dintre proprietari</li>
-                <li>3. adoptarea oficială a statutului și acordului de asociere</li>
-                <li>4. depunerea dosarului de înființare în instanță</li>
+              <p className="font-medium text-emerald-900">
+                In paralel, continuam parcurgerea pasilor prevazuti de Legea 196/2018:
+              </p>
+              <ol className="mt-3 space-y-2 text-sm leading-6 text-emerald-950">
+                {legalSteps.map((step, index) => (
+                  <li key={step}>
+                    {index + 1}. {step}
+                  </li>
+                ))}
               </ol>
             </div>
-            <p>
-              Suntem, în mod real, în faza în care ceea ce a fost construit poate fi dus la capăt.
-            </p>
+            <p>Suntem, in mod real, in faza in care ceea ce a fost construit poate fi dus la capat.</p>
           </div>
         </Card>
       </div>
