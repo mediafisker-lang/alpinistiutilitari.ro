@@ -124,7 +124,7 @@ export function CommunitySection({ links }: { links: CommunityLink[] }) {
 
   return (
     <section className="bg-slate-50">
-      <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
+      <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-16">
         <SectionHeading
           eyebrow="Comunitate"
           title="Canale simple pentru discutii si anunturi"
@@ -137,15 +137,15 @@ export function CommunitySection({ links }: { links: CommunityLink[] }) {
                 const Icon = iconForType(link.type);
 
                 return (
-                  <Card key={link.id} className="flex h-full flex-col justify-between">
+                  <Card key={link.id} className="flex h-full flex-col justify-between p-5 sm:p-6">
                     <div>
-                      <Icon className="size-8 text-emerald-600" />
-                      <CardTitle className="mt-5">{link.label}</CardTitle>
+                      <Icon className="size-7 text-emerald-600 sm:size-8" />
+                      <CardTitle className="mt-4 sm:mt-5">{link.label}</CardTitle>
                     </div>
                     <button
                       type="button"
                       onClick={() => handleProtectedLinkClick(link.url)}
-                      className="mt-6"
+                      className="mt-5 sm:mt-6"
                     >
                       <Button variant="secondary" className="w-full">
                         Deschide linkul

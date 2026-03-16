@@ -34,7 +34,7 @@ const benefits = [
 export function BenefitsSection() {
   return (
     <section id="beneficii" className="bg-slate-50">
-      <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
+      <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-16">
         <SectionHeading
           eyebrow="Beneficii"
           title="Ce primesti daca te inscrii in interfata complexului"
@@ -43,7 +43,7 @@ export function BenefitsSection() {
         <div className="mt-8 grid gap-4 sm:grid-cols-2">
           {benefits.map((benefit) => (
             <Card key={benefit.title} className="rounded-[2rem] p-5 sm:p-6">
-              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-emerald-50">
+              <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-emerald-50 sm:h-12 sm:w-12">
                 <benefit.icon className="size-6 text-emerald-600" />
               </div>
               <CardTitle className="mt-5">{benefit.title}</CardTitle>

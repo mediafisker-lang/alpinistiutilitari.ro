@@ -3,6 +3,7 @@ import { Fraunces, Manrope } from "next/font/google";
 
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
+import { buildMetadata } from "@/lib/seo";
 
 import "./globals.css";
 
@@ -16,10 +17,10 @@ const headingFont = Fraunces({
   variable: "--font-heading",
 });
 
-export const metadata: Metadata = {
-  title: "Asociația Blocului",
-  description:
-    "Portal MVP pentru o asociație de bloc aflată în curs de formare.",
+export const metadata: Metadata = buildMetadata({});
+
+metadata.verification = {
+  google: "BXZsJ0am0pYJK01YZWcnMT29K3XEbPfHs_JimmM_eUw",
 };
 
 export default function RootLayout({

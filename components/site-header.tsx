@@ -85,11 +85,11 @@ function AccountMenu({
   }
 
   return (
-    <details ref={detailsRef} className={mobile ? "col-span-2" : "relative"}>
+    <details ref={detailsRef} className={mobile ? "w-full" : "relative"}>
       <summary
         className={
           mobile
-            ? "flex cursor-pointer list-none items-center justify-center gap-2 rounded-xl bg-white px-4 py-3 text-center text-sm font-semibold text-slate-900 transition hover:bg-slate-50 [&::-webkit-details-marker]:hidden"
+            ? "flex cursor-pointer list-none items-center justify-between gap-2 rounded-xl bg-white px-4 py-3 text-left text-sm font-semibold text-slate-900 transition hover:bg-slate-50 [&::-webkit-details-marker]:hidden"
             : "flex cursor-pointer list-none items-center gap-2 rounded-xl bg-white px-4 py-2.5 font-semibold text-slate-900 transition hover:bg-slate-50 [&::-webkit-details-marker]:hidden"
         }
       >
@@ -277,29 +277,29 @@ export function SiteHeader() {
   return (
     <header className="sticky top-0 z-20 border-b border-slate-200 bg-white shadow-sm">
       <div className="bg-[linear-gradient(90deg,#e31e24_0%,#005eb8_55%,#005eb8_100%)]">
-        <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-2 text-xs font-medium text-white sm:px-6">
+        <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-2 text-[11px] font-medium text-white sm:px-6 sm:text-xs">
           <p>Portal comunitate</p>
-          <p>Acces rapid la vot, sesizari si actualizari</p>
+          <p className="hidden sm:block">Acces rapid la vot, sesizari si actualizari</p>
         </div>
       </div>
 
-      <div className="mx-auto max-w-6xl px-4 py-4 sm:px-6">
-        <div className="flex items-center justify-between gap-4">
+      <div className="mx-auto max-w-6xl px-4 py-3 sm:px-6 sm:py-4">
+        <div className="flex items-center justify-between gap-3 sm:gap-4">
           <Link href="/" className="min-w-0 shrink-0">
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2.5 sm:gap-3">
               <Image
                 src="/logo.png"
                 alt="Cortina North"
                 width={196}
                 height={64}
-                className="h-14 w-auto object-contain"
+                className="h-10 w-auto object-contain sm:h-14"
                 priority
               />
               <div className="min-w-0">
-                <p className="truncate text-lg font-extrabold tracking-tight text-slate-950">
+                <p className="truncate text-base font-extrabold tracking-tight text-slate-950 sm:text-lg">
                   Cortina North
                 </p>
-                <p className="text-xs text-slate-500">Informatii si schimbari in comunitate</p>
+                <p className="hidden text-xs text-slate-500 sm:block">Informatii si schimbari in comunitate</p>
               </div>
             </div>
           </Link>
@@ -308,29 +308,29 @@ export function SiteHeader() {
             <summary className="flex h-11 w-11 cursor-pointer list-none items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-700 transition hover:bg-slate-50 [&::-webkit-details-marker]:hidden">
               <Menu className="size-5" />
             </summary>
-            <div className="absolute inset-x-4 top-[calc(100%-0.25rem)] rounded-2xl border border-slate-200 bg-white p-4 shadow-xl shadow-slate-950/10">
-              <nav className="grid grid-cols-2 gap-3">
+            <div className="absolute inset-x-3 top-[calc(100%-0.2rem)] rounded-[1.75rem] border border-slate-200 bg-white/95 p-3 shadow-2xl shadow-slate-950/12 backdrop-blur sm:inset-x-4">
+              <nav className="grid gap-2">
                 <Link
                   href="/#stadiu"
-                  className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-center text-sm font-medium text-slate-800 transition hover:bg-slate-100"
+                  className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3.5 text-left text-sm font-medium text-slate-800 transition hover:bg-slate-100"
                 >
                   Stadiu Asoc.
                 </Link>
                 <Link
                   href="/#beneficii"
-                  className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-center text-sm font-medium text-slate-800 transition hover:bg-slate-100"
+                  className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3.5 text-left text-sm font-medium text-slate-800 transition hover:bg-slate-100"
                 >
                   Beneficii
                 </Link>
                 <Link
                   href="/#sesizari"
-                  className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-center text-sm font-medium text-slate-800 transition hover:bg-slate-100"
+                  className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3.5 text-left text-sm font-medium text-slate-800 transition hover:bg-slate-100"
                 >
                   Sesizari
                 </Link>
                 <Link
                   href="/#voteaza"
-                  className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-center text-sm font-medium text-slate-800 transition hover:bg-slate-100"
+                  className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3.5 text-left text-sm font-medium text-slate-800 transition hover:bg-slate-100"
                 >
                   Voteaza
                 </Link>

@@ -16,14 +16,14 @@ export function HeroSection({ stats }: { stats: HomepageStats }) {
         <div className="grid gap-5 lg:grid-cols-[1.05fr_0.95fr] lg:items-start">
           <div className="space-y-5">
             <span className="inline-flex rounded-lg border border-blue-200 bg-blue-50 px-4 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-[#005eb8]">
-              Oferta completa pentru proprietarii Cortina North
+              Cortina North | Bucuresti si Ilfov
             </span>
             <div className="space-y-4">
               <h1 className="max-w-3xl text-4xl font-extrabold tracking-tight text-slate-950 sm:text-5xl">
                 Primesti acces la grupuri, vot, sesizari si actualizari intr-un minut
               </h1>
               <p className="max-w-2xl text-base leading-7 text-slate-600 sm:text-lg">
-                Totul este gandit ca sa intri rapid in comunitate, sa vezi ce se intampla si sa actionezi imediat atunci cand apare ceva important.
+                Portalul comunitatii Cortina North din Bucuresti si Ilfov este gandit ca sa intri rapid in comunitate, sa vezi ce se intampla si sa actionezi imediat atunci cand apare ceva important.
               </p>
             </div>
             <div className="flex flex-col gap-3 sm:flex-row">

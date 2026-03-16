@@ -257,11 +257,11 @@ export function VoteazaSchimbarileSection() {
 
   return (
     <section id="voteaza" className="bg-[#f5f7fb]">
-      <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
+      <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-16">
         <div className="space-y-4">
           <Badge>Voteaza</Badge>
           <div className="space-y-3">
-            <h2 className="max-w-5xl text-3xl font-semibold tracking-tight text-slate-950 sm:text-4xl">
+            <h2 className="max-w-5xl text-[1.95rem] font-semibold leading-tight tracking-tight text-slate-950 sm:text-4xl">
               Voteaza rapid pe subiectele propuse pentru a sti dorinta majoritatii
               <br />
               si a actiona in consecinta.
@@ -279,12 +279,12 @@ export function VoteazaSchimbarileSection() {
 
             return (
               <Card key={proposal.id} className="overflow-hidden rounded-2xl border border-slate-200 bg-white p-0">
-                <div className="border-b border-slate-200 bg-white p-6">
+                <div className="border-b border-slate-200 bg-white p-4 sm:p-6">
                   <div className="max-w-3xl">
                     <div className="mb-3 inline-flex rounded-lg bg-blue-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.16em] text-[#005eb8]">
                       Propunere activa
                     </div>
-                    <CardTitle className="text-3xl font-extrabold tracking-tight">{proposal.title}</CardTitle>
+                    <CardTitle className="text-2xl font-extrabold tracking-tight sm:text-3xl">{proposal.title}</CardTitle>
                     <CardDescription className="mt-3 text-base">{proposal.description}</CardDescription>
                   </div>
 
@@ -301,7 +301,7 @@ export function VoteazaSchimbarileSection() {
 
                   {proposal.status === "open" ? (
                     <div className="mt-5">
-                      <Button className="min-w-36" onClick={() => openVotingPanel(proposal.id)}>
+                      <Button className="w-full sm:min-w-36 sm:w-auto" onClick={() => openVotingPanel(proposal.id)}>
                         Votez
                       </Button>
                     </div>
@@ -309,8 +309,8 @@ export function VoteazaSchimbarileSection() {
                 </div>
 
                 {proposal.status === "open" && isVotingOpen ? (
-                  <div className="bg-slate-50 p-6">
-                    <div className="rounded-2xl border border-slate-200 bg-white p-6">
+                  <div className="bg-slate-50 p-4 sm:p-6">
+                    <div className="rounded-2xl border border-slate-200 bg-white p-4 sm:p-6">
                       {showAuthPrompt ? (
                         <div className="rounded-3xl border border-amber-200 bg-amber-50 px-5 py-5">
                           <p className="text-base font-semibold text-amber-950">{authTitle}</p>
@@ -357,7 +357,7 @@ export function VoteazaSchimbarileSection() {
                             <StepBadge step="Pasul 3" title="Mesaj optional" active />
                           </div>
 
-                          <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5">
+                          <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4 sm:p-5">
                             <div className="grid gap-4 sm:grid-cols-2">
                               <div>
                                 <Label htmlFor={`vote-email-${proposal.id}`}>Email</Label>
@@ -420,7 +420,7 @@ export function VoteazaSchimbarileSection() {
                             })}
                           </div>
 
-                          <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5">
+                          <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4 sm:p-5">
                             <Label htmlFor={`reason-${proposal.id}`}>Motivul tau</Label>
                             <Textarea
                               id={`reason-${proposal.id}`}
@@ -485,7 +485,7 @@ export function VoteazaSchimbarileSection() {
                   </p>
                 ) : null}
 
-                <div className="border-t border-slate-200 bg-white p-6">
+                <div className="border-t border-slate-200 bg-white p-4 sm:p-6">
                   <h3 className="text-lg font-extrabold text-slate-950">Mesaje din comunitate</h3>
                   <div className="mt-4 space-y-3">
                     {proposal.comments.length ? (

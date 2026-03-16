@@ -42,7 +42,7 @@ const steps = [
 
 export function HowItWorksSection() {
   return (
-    <section id="cum-functioneaza" className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
+    <section id="cum-functioneaza" className="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-16">
       <SectionHeading
         eyebrow="Cum functioneaza"
         title="Patru pasi simpli, fara cont si fara complicatii."
@@ -52,15 +52,15 @@ export function HowItWorksSection() {
         {steps.map((step) => (
           <Card
             key={step.title}
-            className={`rounded-[1.75rem] p-5 transition duration-300 hover:-translate-y-1 hover:shadow-[0_22px_50px_rgba(15,23,42,0.12)] ${step.className}`}
+            className={`rounded-[1.75rem] p-5 transition duration-300 hover:-translate-y-1 hover:shadow-[0_22px_50px_rgba(15,23,42,0.12)] sm:p-6 ${step.className}`}
           >
             <div
               className={`inline-flex h-9 min-w-9 items-center justify-center rounded-full px-3 text-sm font-extrabold shadow-sm ${step.badgeClassName}`}
             >
               {step.step}
             </div>
-            <CardTitle className="mt-4 text-[1.05rem] leading-9">{step.title.replace(`${step.step}. `, "")}</CardTitle>
-            <CardDescription className="mt-2 text-[0.95rem] leading-8">
+            <CardTitle className="mt-4 text-[1.02rem] leading-8 sm:text-[1.05rem] sm:leading-9">{step.title.replace(`${step.step}. `, "")}</CardTitle>
+            <CardDescription className="mt-2 text-[0.92rem] leading-7 sm:text-[0.95rem] sm:leading-8">
               {step.description}
             </CardDescription>
           </Card>

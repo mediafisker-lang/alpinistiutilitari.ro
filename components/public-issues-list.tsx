@@ -32,20 +32,22 @@ function isReached(currentStatus: IssueStatus, stepStatus: IssueStatus) {
 export function PublicIssuesList({ issues }: { issues: PublicIssue[] }) {
   return (
     <Card className="rounded-[2rem] p-5 sm:p-6">
-      <div className="flex items-start justify-between gap-4">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
         <div>
           <CardTitle>Sesizari trimise</CardTitle>
           <CardDescription className="mt-3">
             Aici apar cele mai recente sesizari si stadiul lor actual.
           </CardDescription>
         </div>
-        <Badge>{issues.length} afisate</Badge>
+        <div className="self-start">
+          <Badge>{issues.length} afisate</Badge>
+        </div>
       </div>
 
       {issues.length ? (
         <div className="mt-6 space-y-4">
           {issues.map((issue) => (
-            <div key={issue.id} className="surface-3d rounded-3xl bg-slate-50 p-5">
+            <div key={issue.id} className="surface-3d rounded-3xl bg-slate-50 p-4 sm:p-5">
               <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                 <div className="space-y-2">
                   <div className="flex flex-wrap items-center gap-2">
@@ -60,7 +62,7 @@ export function PublicIssuesList({ issues }: { issues: PublicIssue[] }) {
                   <CardDescription>{issue.description}</CardDescription>
                 </div>
 
-                <div className="text-sm text-slate-500">
+                <div className="text-sm text-slate-500 sm:text-right">
                   <p>{formatDate(issue.created_at)}</p>
                   <p className="mt-1">
                     {issue.attachment_urls.length

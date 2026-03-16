@@ -33,7 +33,11 @@ const issueOptions = [
 ];
 
 export const metadata = {
-  title: "Admin | Asociatia Blocului",
+  title: "Admin | Cortina North",
+  robots: {
+    index: false,
+    follow: false,
+  },
 };
 
 export default async function AdminPage({

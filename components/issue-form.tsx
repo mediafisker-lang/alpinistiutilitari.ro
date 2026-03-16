@@ -341,7 +341,7 @@ export function IssueForm() {
             Opțional. Poți atașa până la 3 poze, maximum 5 MB fiecare.
           </p>
           {previews.length ? (
-            <div className="mt-3 grid grid-cols-3 gap-3">
+            <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3">
               {previews.map((item, index) => (
                 <div
                   key={item.url}

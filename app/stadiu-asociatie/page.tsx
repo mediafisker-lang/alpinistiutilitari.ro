@@ -1,9 +1,18 @@
 import { SectionHeading } from "@/components/section-heading";
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
+import { buildMetadata } from "@/lib/seo";
 
-export const metadata = {
-  title: "Stadiu Asociatie | Cortina North",
-};
+export const metadata = buildMetadata({
+  title: "Stadiu asociatie Cortina North Bucuresti Ilfov",
+  description:
+    "Vezi cronologia si stadiul actual al initiativei pentru asociatia de proprietari Cortina North din Bucuresti si Ilfov.",
+  path: "/stadiu-asociatie",
+  keywords: [
+    "stadiu asociatie Cortina North Bucuresti",
+    "cronologie Cortina North",
+    "asociatie proprietari Cortina North Ilfov",
+  ],
+});
 
 const timeline = [
   {
@@ -71,21 +80,13 @@ const timeline = [
   },
   {
     title: "18 Aprilie 2025",
-    paragraphs: [
-      "Inceperea colaborarii juridice.",
-    ],
+    paragraphs: ["Inceperea colaborarii juridice."],
     bullets: ["colaborarea oficiala a fost initiata", "onorariul a fost achitat integral", "(Atasat factura)"],
   },
   {
     title: "30 Aprilie 2025",
     paragraphs: ["Receptia documentatiei juridice pentru infiintarea asociatiei:"],
-    bullets: [
-      "Statut",
-      "Acord de asociere",
-      "Regulament de ordine interioara",
-      "Proces verbal AGA",
-      "Convocator",
-    ],
+    bullets: ["Statut", "Acord de asociere", "Regulament de ordine interioara", "Proces verbal AGA", "Convocator"],
   },
   {
     title: "Iunie 2025",
@@ -94,10 +95,7 @@ const timeline = [
       "Pentru a putea merge mai departe cu procesul de constituire, a devenit clar ca lipsea un element esential: completarea cotelor-parti indivize ale proprietarilor.",
       "Au fost analizate mai multe optiuni juridice pentru obtinerea acestor date, inclusiv:",
     ],
-    bullets: [
-      "accesarea extraselor CF publice",
-      "colectarea informatiilor direct de la proprietari",
-    ],
+    bullets: ["accesarea extraselor CF publice", "colectarea informatiilor direct de la proprietari"],
     extraParagraphs: [
       "Toate acestea au trebuit evaluate prin prisma limitarilor reale impuse de cadrul GDPR, mai ales in contextul in care demersul era realizat de o structura comunitara in formare, nu de o entitate juridica deja constituita.",
       "Realitatea operationala era insa mult mai complexa.",
@@ -116,10 +114,7 @@ const timeline = [
   },
   {
     title: "Iunie - Septembrie 2025",
-    paragraphs: [
-      "Adaptare si validare.",
-      "Au avut loc:",
-    ],
+    paragraphs: ["Adaptare si validare.", "Au avut loc:"],
     bullets: [
       "consultari juridice suplimentare cu avocati din comunitate",
       "validarea documentatiei",
@@ -133,11 +128,7 @@ const timeline = [
       "Identificarea sediului si includerea sa in documentatie ca sediu oficial si de corespondenta.",
       "Filothea a coordonat dialogul cu dezvoltatorul.",
     ],
-    highlights: [
-      "spatiu oferit in scara B4",
-      "destinat sediului viitoarei asociatii",
-      "B4 - Birou administratie",
-    ],
+    highlights: ["spatiu oferit in scara B4", "destinat sediului viitoarei asociatii", "B4 - Birou administratie"],
   },
   {
     title: "Septembrie 2025",
@@ -184,10 +175,7 @@ const timeline = [
     paragraphs: [
       "Dincolo de pasii formali ai procesului, a fost mentinut un efort constant de a tine comunitatea conectata si implicata.",
     ],
-    highlights: [
-      "o comunitate activa de peste 900 membri",
-      "peste 25 grupuri de comunicare gestionate",
-    ],
+    highlights: ["o comunitate activa de peste 900 membri", "peste 25 grupuri de comunicare gestionate"],
     bullets: [
       "mobilizarea voluntarilor atunci cand a fost nevoie",
       "mentinerea unei echipe implicate in jurul initiativei",
@@ -200,11 +188,7 @@ const timeline = [
   },
 ];
 
-const currentStageBullets = [
-  "contact direct",
-  "coordonare logistica",
-  "actiuni door-to-door acolo unde este necesar",
-];
+const currentStageBullets = ["contact direct", "coordonare logistica", "actiuni door-to-door acolo unde este necesar"];
 
 const legalSteps = [
   "convocarea Adunarii Generale de constituire",

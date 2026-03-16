@@ -1,78 +1,84 @@
 import { SectionHeading } from "@/components/section-heading";
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
+import { buildMetadata } from "@/lib/seo";
 
-export const metadata = {
-  title: "Confidențialitate | Asociația Blocului",
-};
+export const metadata = buildMetadata({
+  title: "Politica de confidentialitate Cortina North",
+  description:
+    "Politica de confidentialitate pentru portalul comunitatii Cortina North din Bucuresti si Ilfov.",
+  path: "/privacy",
+  keywords: ["confidentialitate Cortina North", "politica GDPR Cortina North"],
+  noIndex: true,
+});
 
 export default function PrivacyPage() {
   return (
     <section className="mx-auto max-w-4xl px-4 py-16 sm:px-6">
       <SectionHeading
-        eyebrow="Confidențialitate"
-        title="Explicăm simplu ce date colectăm și de ce."
-        description="Aici explicăm pe scurt cum sunt colectate, folosite și protejate datele transmise prin acest portal."
+        eyebrow="Confidentialitate"
+        title="Explicam simplu ce date colectam si de ce."
+        description="Aici explicam pe scurt cum sunt colectate, folosite si protejate datele transmise prin acest portal."
       />
 
       <div className="mt-8 space-y-4">
         <Card>
-          <CardTitle>1. Ce date colectăm</CardTitle>
+          <CardTitle>1. Ce date colectam</CardTitle>
           <CardDescription className="mt-3">
-            Pentru înscriere colectăm nume, telefon, email, statut și acordul pentru
-            prelucrarea datelor. Pentru sesizări colectăm nume, date de contact,
-            categoria, titlul și descrierea problemei.
+            Pentru inscriere colectam nume, telefon, email, statut si acordul pentru
+            prelucrarea datelor. Pentru sesizari colectam nume, date de contact,
+            categoria, titlul si descrierea problemei.
           </CardDescription>
         </Card>
 
         <Card>
-          <CardTitle>2. În ce scop folosim datele</CardTitle>
+          <CardTitle>2. In ce scop folosim datele</CardTitle>
           <CardDescription className="mt-3">
-            Datele sunt folosite strict pentru organizarea asociației, comunicarea cu
-            locatarii, centralizarea interesului pentru înființare și gestionarea
-            sesizărilor trimise prin portal.
+            Datele sunt folosite strict pentru organizarea asociatiei, comunicarea cu
+            locatarii, centralizarea interesului pentru infiintare si gestionarea
+            sesizarilor trimise prin portal.
           </CardDescription>
         </Card>
 
         <Card>
-          <CardTitle>3. Temeiul și acordul</CardTitle>
+          <CardTitle>3. Temeiul si acordul</CardTitle>
           <CardDescription className="mt-3">
-            Datele din formularul de înscriere sunt transmise doar după exprimarea
-            acordului explicit. Pentru sesizări, datele de contact sunt folosite doar
-            pentru analizarea și, dacă este cazul, soluționarea problemei semnalate.
+            Datele din formularul de inscriere sunt transmise doar dupa exprimarea
+            acordului explicit. Pentru sesizari, datele de contact sunt folosite doar
+            pentru analizarea si, daca este cazul, solutionarea problemei semnalate.
           </CardDescription>
         </Card>
 
         <Card>
-          <CardTitle>4. Cât timp păstrăm datele</CardTitle>
+          <CardTitle>4. Cat timp pastram datele</CardTitle>
           <CardDescription className="mt-3">
-            Datele se păstrează doar cât timp sunt necesare pentru scopul declarat sau
-            până când ceri ștergerea lor, dacă legea permite acest lucru.
+            Datele se pastreaza doar cat timp sunt necesare pentru scopul declarat sau
+            pana cand ceri stergerea lor, daca legea permite acest lucru.
           </CardDescription>
         </Card>
 
         <Card>
           <CardTitle>5. Cui pot fi comunicate</CardTitle>
           <CardDescription className="mt-3">
-            Datele nu sunt publicate pe site și nu sunt folosite în scop de marketing.
-            Ele pot fi accesate doar de persoanele care administrează acest portal și,
-            dacă este necesar, de furnizorii tehnici folosiți pentru găzduire și stocare.
+            Datele nu sunt publicate pe site si nu sunt folosite in scop de marketing.
+            Ele pot fi accesate doar de persoanele care administreaza acest portal si,
+            daca este necesar, de furnizorii tehnici folositi pentru gazduire si stocare.
           </CardDescription>
         </Card>
 
         <Card>
           <CardTitle>6. Drepturile tale</CardTitle>
           <CardDescription className="mt-3">
-            Poți cere informare, rectificare, ștergere, restricționarea prelucrării sau
-            poți retrage acordul oferit, în măsura în care legea permite acest lucru.
+            Poti cere informare, rectificare, stergere, restrictionarea prelucrarii sau
+            poti retrage acordul oferit, in masura in care legea permite acest lucru.
           </CardDescription>
         </Card>
 
         <Card>
           <CardTitle>7. Date de contact</CardTitle>
           <CardDescription className="mt-3">
-            Pentru solicitări privind confidențialitatea, completează înainte de lansare
-            această secțiune cu numele persoanei sau al grupului care administrează
-            datele și cu o adresă reală de email de contact.
+            Pentru solicitari privind confidentialitatea, completeaza inainte de lansare
+            aceasta sectiune cu numele persoanei sau al grupului care administreaza
+            datele si cu o adresa reala de email de contact.
           </CardDescription>
         </Card>
       </div>

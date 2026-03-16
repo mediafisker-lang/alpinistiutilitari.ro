@@ -7,7 +7,7 @@ import type { AssociationProgress } from "@/types/database";
 
 export function ProgressSection({ items }: { items: AssociationProgress[] }) {
   return (
-    <section id="stadiu" className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
+    <section id="stadiu" className="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-16">
       <SectionHeading
         eyebrow="Stadiul legal al asociatiei"
         title="Documentatia este pregatita. Acum suntem in etapa operationala."
@@ -18,7 +18,7 @@ export function ProgressSection({ items }: { items: AssociationProgress[] }) {
       {items.length ? (
         <div className="mt-8 grid gap-4 md:grid-cols-3">
           {items.map((item) => (
-            <Card key={item.id} className="h-full">
+            <Card key={item.id} className="h-full p-5 sm:p-6">
               <div className="mb-4 flex items-center gap-3">
                 {item.completed ? (
                   <CheckCircle2 className="size-6 text-emerald-600" />
