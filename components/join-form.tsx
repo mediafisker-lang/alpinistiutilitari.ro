@@ -10,6 +10,7 @@ import { Card, CardDescription, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select } from "@/components/ui/select";
+import { useVoteSession } from "@/components/use-vote-session";
 import { buildingOptions } from "@/lib/constants";
 
 type FormState = {
@@ -21,6 +22,7 @@ type FormState = {
 const initialState: FormState = {};
 
 export function JoinForm() {
+  const { isLoggedIn, session } = useVoteSession();
   const formRef = useRef<HTMLFormElement>(null);
   const [state, setState] = useState<FormState>(initialState);
   const [submittedAt, setSubmittedAt] = useState(() => Date.now());
@@ -40,6 +42,29 @@ export function JoinForm() {
       setSubmittedAt(Date.now());
       setMobileStep(1);
     }
+  }
+
+  if (isLoggedIn) {
+    return (
+      <Card id="inscriere" className="scroll-mt-24 rounded-[2rem] p-5 sm:p-6">
+        <CardTitle>Esti deja inscris in portal</CardTitle>
+        <CardDescription className="mt-3">
+          Esti logat cu {session?.email}. Formularul de inscriere nu mai este necesar dupa autentificare.
+        </CardDescription>
+        <div className="mt-6 grid gap-3 sm:grid-cols-2">
+          <a href="#sesizari" className="block">
+            <Button size="lg" className="w-full">
+              Trimite o sesizare
+            </Button>
+          </a>
+          <a href="#voteaza" className="block">
+            <Button variant="outline" size="lg" className="w-full">
+              Mergi la vot
+            </Button>
+          </a>
+        </div>
+      </Card>
+    );
   }
 
   return (

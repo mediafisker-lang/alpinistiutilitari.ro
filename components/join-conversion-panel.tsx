@@ -1,7 +1,10 @@
+"use client";
+
 import { ArrowRight, BadgeCheck, BellRing, MessagesSquare, Vote } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
+import { useVoteSession } from "@/components/use-vote-session";
 import type { HomepageStats } from "@/types/database";
 
 function formatCount(value: number) {
@@ -27,6 +30,34 @@ const reasons = [
 ];
 
 export function JoinConversionPanel({ stats }: { stats: HomepageStats }) {
+  const { isLoggedIn, session } = useVoteSession();
+
+  if (isLoggedIn) {
+    return (
+      <Card className="rounded-[2rem] border border-emerald-200 bg-[linear-gradient(180deg,#f5fff9_0%,#ffffff_100%)] p-5 sm:p-6">
+        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-emerald-700">
+          Cont activ
+        </p>
+        <CardTitle className="mt-3 text-2xl">Esti deja logat in comunitate</CardTitle>
+        <CardDescription className="mt-3 text-sm leading-7 sm:text-base">
+          Esti conectat cu {session?.email}. Poti merge direct catre sesizari, vot sau actualizarile publice, fara sa mai vezi formularul de inscriere.
+        </CardDescription>
+        <div className="mt-5 grid gap-3 sm:grid-cols-2">
+          <a href="#sesizari" className="block">
+            <Button size="lg" className="w-full">
+              Trimite o sesizare
+            </Button>
+          </a>
+          <a href="#voteaza" className="block">
+            <Button variant="outline" size="lg" className="w-full">
+              Mergi la vot
+            </Button>
+          </a>
+        </div>
+      </Card>
+    );
+  }
+
   return (
     <div className="space-y-5">
       <Card className="rounded-[2rem] border border-blue-100 bg-[linear-gradient(180deg,#f8fbff_0%,#ffffff_100%)] p-5 sm:p-6">

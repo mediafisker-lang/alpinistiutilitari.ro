@@ -33,10 +33,12 @@ function AccountMenu({
   mobile = false,
   loggedInEmail,
   currentIp,
+  onComplete,
 }: {
   mobile?: boolean;
   loggedInEmail: string;
   currentIp: string;
+  onComplete?: () => void;
 }) {
   const [showLoginForm, setShowLoginForm] = useState(false);
   const [state, setState] = useState<LoginState>(initialLoginState);
@@ -73,6 +75,7 @@ function AccountMenu({
       if (detailsRef.current) {
         detailsRef.current.open = false;
       }
+      onComplete?.();
       return;
     }
 
@@ -128,6 +131,7 @@ function AccountMenu({
                 if (detailsRef.current) {
                   detailsRef.current.open = false;
                 }
+                onComplete?.();
               }}
               className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-medium text-slate-800 transition hover:bg-slate-100"
             >
@@ -180,6 +184,12 @@ function AccountMenu({
 
           <Link
             href="/#inscriere"
+            onClick={() => {
+              if (detailsRef.current) {
+                detailsRef.current.open = false;
+              }
+              onComplete?.();
+            }}
             className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-center text-sm font-medium text-slate-800 transition hover:bg-slate-100"
           >
             Inscriere
@@ -191,6 +201,7 @@ function AccountMenu({
 }
 
 export function SiteHeader() {
+  const mobileMenuRef = useRef<HTMLDetailsElement>(null);
   const [loggedInEmail, setLoggedInEmail] = useState("");
   const [currentIp, setCurrentIp] = useState("");
   const [loginState, setLoginState] = useState<LoginState>(initialLoginState);
@@ -224,6 +235,12 @@ export function SiteHeader() {
 
   function handleLogout() {
     clearVoteAuth();
+  }
+
+  function closeMobileMenu() {
+    if (mobileMenuRef.current) {
+      mobileMenuRef.current.open = false;
+    }
   }
 
   async function handleDesktopLogin(event: React.FormEvent<HTMLFormElement>) {
@@ -304,7 +321,7 @@ export function SiteHeader() {
             </div>
           </Link>
 
-          <details className="group lg:hidden">
+          <details ref={mobileMenuRef} className="group lg:hidden">
             <summary className="flex h-11 w-11 cursor-pointer list-none items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-700 transition hover:bg-slate-50 [&::-webkit-details-marker]:hidden">
               <Menu className="size-5" />
             </summary>
@@ -312,29 +329,38 @@ export function SiteHeader() {
               <nav className="grid gap-2">
                 <Link
                   href="/#stadiu"
+                  onClick={closeMobileMenu}
                   className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3.5 text-left text-sm font-medium text-slate-800 transition hover:bg-slate-100"
                 >
                   Stadiu Asoc.
                 </Link>
                 <Link
                   href="/#beneficii"
+                  onClick={closeMobileMenu}
                   className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3.5 text-left text-sm font-medium text-slate-800 transition hover:bg-slate-100"
                 >
                   Beneficii
                 </Link>
                 <Link
                   href="/#sesizari"
+                  onClick={closeMobileMenu}
                   className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3.5 text-left text-sm font-medium text-slate-800 transition hover:bg-slate-100"
                 >
                   Sesizari
                 </Link>
                 <Link
                   href="/#voteaza"
+                  onClick={closeMobileMenu}
                   className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3.5 text-left text-sm font-medium text-slate-800 transition hover:bg-slate-100"
                 >
                   Voteaza
                 </Link>
-                <AccountMenu mobile loggedInEmail={loggedInEmail} currentIp={currentIp} />
+                <AccountMenu
+                  mobile
+                  loggedInEmail={loggedInEmail}
+                  currentIp={currentIp}
+                  onComplete={closeMobileMenu}
+                />
               </nav>
             </div>
           </details>

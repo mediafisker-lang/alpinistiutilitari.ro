@@ -1,8 +1,17 @@
+"use client";
+
 import { ArrowRight, Sparkles } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import { useVoteSession } from "@/components/use-vote-session";
 
 export function QuickJoinBanner() {
+  const { isLoggedIn } = useVoteSession();
+
+  if (isLoggedIn) {
+    return null;
+  }
+
   return (
     <section className="mx-auto max-w-6xl px-4 pt-6 sm:px-6">
       <div className="surface-3d overflow-hidden rounded-[2rem] border border-white/40 bg-[linear-gradient(120deg,#081326_0%,#0b2a56_45%,#7b1631_100%)] px-6 py-6 text-white shadow-[0_24px_60px_rgba(8,19,38,0.28)] sm:px-8">

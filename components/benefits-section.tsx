@@ -1,8 +1,11 @@
+"use client";
+
 import { ClipboardList, MessagesSquare, MessageCircleMore, Vote } from "lucide-react";
 
 import { SectionHeading } from "@/components/section-heading";
 import { Button } from "@/components/ui/button";
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
+import { useVoteSession } from "@/components/use-vote-session";
 
 const benefits = [
   {
@@ -32,6 +35,8 @@ const benefits = [
 ];
 
 export function BenefitsSection() {
+  const { isLoggedIn } = useVoteSession();
+
   return (
     <section id="beneficii" className="bg-slate-50">
       <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-16">
@@ -51,14 +56,16 @@ export function BenefitsSection() {
             </Card>
           ))}
         </div>
-        <div className="mt-8 flex flex-col items-start gap-3">
-          <a href="#inscriere">
-            <Button size="lg">Ma inscriu acum</Button>
-          </a>
-          <p className="text-sm leading-6 text-slate-600">
-            Inscrierea dureaza putin si te ajuta sa ramai conectat la informatiile importante pentru cladirea ta.
-          </p>
-        </div>
+        {!isLoggedIn ? (
+          <div className="mt-8 flex flex-col items-start gap-3">
+            <a href="#inscriere">
+              <Button size="lg">Ma inscriu acum</Button>
+            </a>
+            <p className="text-sm leading-6 text-slate-600">
+              Inscrierea dureaza putin si te ajuta sa ramai conectat la informatiile importante pentru cladirea ta.
+            </p>
+          </div>
+        ) : null}
       </div>
     </section>
   );

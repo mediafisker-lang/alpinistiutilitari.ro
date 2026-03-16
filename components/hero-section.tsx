@@ -1,7 +1,10 @@
+"use client";
+
 import { ArrowRight, CheckCircle2, ShieldCheck } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
+import { useVoteSession } from "@/components/use-vote-session";
 import type { HomepageStats } from "@/types/database";
 
 function formatCount(value: number) {
@@ -9,6 +12,8 @@ function formatCount(value: number) {
 }
 
 export function HeroSection({ stats }: { stats: HomepageStats }) {
+  const { isLoggedIn } = useVoteSession();
+
   return (
     <section className="relative overflow-hidden bg-[linear-gradient(180deg,#edf4ff_0%,#ffffff_40%,#f5f7fb_100%)]">
       <div className="absolute inset-x-0 top-0 h-64 bg-[radial-gradient(circle_at_top,_rgba(0,94,184,0.14),_transparent_58%)]" />
@@ -27,15 +32,17 @@ export function HeroSection({ stats }: { stats: HomepageStats }) {
               </p>
             </div>
             <div className="flex flex-col gap-3 sm:flex-row">
-              <a href="#inscriere">
-                <Button size="lg" className="w-full sm:w-auto">
-                  Vreau sa ma inscriu
-                  <ArrowRight className="size-4" />
-                </Button>
-              </a>
+              {!isLoggedIn ? (
+                <a href="#inscriere">
+                  <Button size="lg" className="w-full sm:w-auto">
+                    Vreau sa ma inscriu
+                    <ArrowRight className="size-4" />
+                  </Button>
+                </a>
+              ) : null}
               <a href="#stadiu">
                 <Button variant="outline" size="lg" className="w-full sm:w-auto">
-                  Vezi stadiul actual
+                  {isLoggedIn ? "Vezi noutatile si stadiul" : "Vezi stadiul actual"}
                 </Button>
               </a>
             </div>
