@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { startTransition, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 
@@ -9,6 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { readVoteAuth, subscribeVoteAuth, writeVoteAuth } from "@/lib/vote-auth";
 
 type FormState = {
   success?: boolean;
@@ -44,6 +46,14 @@ export function IssueForm() {
   const [submittedAt, setSubmittedAt] = useState(() => Date.now());
   const [previews, setPreviews] = useState<PreviewItem[]>([]);
   const [localPhotoError, setLocalPhotoError] = useState("");
+  const [loggedInEmail, setLoggedInEmail] = useState("");
+  const [loggedInPassword, setLoggedInPassword] = useState("");
+  const [showAuthPrompt, setShowAuthPrompt] = useState(false);
+  const [showLoginForm, setShowLoginForm] = useState(false);
+  const [loginEmail, setLoginEmail] = useState("");
+  const [loginPassword, setLoginPassword] = useState("");
+  const [loginError, setLoginError] = useState("");
+  const [loginLoading, setLoginLoading] = useState(false);
 
   useEffect(() => {
     return () => {
@@ -51,7 +61,36 @@ export function IssueForm() {
     };
   }, [previews]);
 
+  useEffect(() => {
+    const syncSession = () => {
+      const session = readVoteAuth();
+      setLoggedInEmail(session?.email ?? "");
+      setLoggedInPassword(session?.password ?? "");
+      if (session?.email && session?.password) {
+        setShowAuthPrompt(false);
+        setShowLoginForm(false);
+        setLoginError("");
+      }
+    };
+
+    syncSession();
+    return subscribeVoteAuth(syncSession);
+  }, []);
+
   async function action(formData: FormData) {
+    if (!loggedInEmail || !loggedInPassword) {
+      setShowAuthPrompt(true);
+      setShowLoginForm(false);
+      setState({
+        success: false,
+        message: "Trebuie sa fii logat ca sa poti trimite o sesizare.",
+      });
+      return;
+    }
+
+    formData.set("auth_email", loggedInEmail);
+    formData.set("auth_password", loggedInPassword);
+
     const response = await fetch("/api/issues", {
       method: "POST",
       body: formData,
@@ -59,6 +98,12 @@ export function IssueForm() {
 
     const payload = (await response.json()) as FormState;
     setState(payload);
+
+    if (response.status === 401) {
+      setShowAuthPrompt(true);
+      setShowLoginForm(false);
+      return;
+    }
 
     if (payload.success) {
       formRef.current?.reset();
@@ -70,6 +115,46 @@ export function IssueForm() {
         router.refresh();
       });
     }
+  }
+
+  async function handleInlineLogin() {
+    setLoginLoading(true);
+    setLoginError("");
+
+    const response = await fetch("/api/votes/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: loginEmail,
+        password: loginPassword,
+      }),
+    });
+
+    const payload = (await response.json()) as {
+      success?: boolean;
+      email?: string;
+      message?: string;
+    };
+
+    if (payload.success && payload.email) {
+      writeVoteAuth({
+        email: payload.email,
+        password: loginPassword,
+      });
+      setLoginLoading(false);
+      setShowLoginForm(false);
+      setShowAuthPrompt(false);
+      setLoginEmail("");
+      setLoginPassword("");
+      setState(initialState);
+      return;
+    }
+
+    setLoginError(payload.message ?? "Nu am putut face autentificarea.");
+    setLoginLoading(false);
+    setShowLoginForm(true);
   }
 
   function handlePhotoChange(event: React.ChangeEvent<HTMLInputElement>) {
@@ -135,6 +220,8 @@ export function IssueForm() {
       <form ref={formRef} action={action} className="mt-6 space-y-5">
         <input type="hidden" name="submitted_at" value={submittedAt} />
         <input type="text" name="website" className="hidden" tabIndex={-1} autoComplete="off" />
+        <input type="hidden" name="auth_email" value={loggedInEmail} readOnly />
+        <input type="hidden" name="auth_password" value={loggedInPassword} readOnly />
 
         <div>
           <Label htmlFor="contact_name">Nume</Label>
@@ -276,6 +363,61 @@ export function IssueForm() {
             </p>
           )
         )}
+
+        {showAuthPrompt ? (
+          <div className="rounded-3xl border border-amber-200 bg-amber-50 px-5 py-5">
+            <p className="text-base font-semibold text-amber-950">
+              Trebuie sa fii logat ca sa poti trimite o sesizare.
+            </p>
+            <p className="mt-2 text-sm leading-6 text-amber-900">
+              Pentru trimitere, intra in cont sau mergi la inscriere daca nu ai parola inca.
+            </p>
+
+            <div className="mt-4 flex flex-col gap-3 sm:flex-row">
+              <button
+                type="button"
+                onClick={() => setShowLoginForm((current) => !current)}
+                className="rounded-xl bg-[#005eb8] px-4 py-3 text-sm font-semibold text-white transition hover:bg-[#004799]"
+              >
+                Login
+              </button>
+              <Link
+                href="/#inscriere"
+                className="rounded-xl border border-amber-300 bg-white px-4 py-3 text-center text-sm font-semibold text-amber-950 transition hover:bg-amber-100"
+              >
+                Inscriere
+              </Link>
+            </div>
+
+            {showLoginForm ? (
+              <div className="mt-4 rounded-2xl border border-amber-200 bg-white p-4">
+                <div className="grid gap-3">
+                  <Input
+                    type="email"
+                    value={loginEmail}
+                    onChange={(event) => setLoginEmail(event.target.value)}
+                    placeholder="Email"
+                  />
+                  <Input
+                    type="password"
+                    value={loginPassword}
+                    onChange={(event) => setLoginPassword(event.target.value)}
+                    placeholder="Parola"
+                  />
+                  <button
+                    type="button"
+                    onClick={handleInlineLogin}
+                    disabled={loginLoading}
+                    className="rounded-xl bg-slate-950 px-4 py-3 text-sm font-semibold text-white transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-70"
+                  >
+                    {loginLoading ? "Se verifica..." : "Intra si trimite"}
+                  </button>
+                  {loginError ? <p className="text-sm text-rose-700">{loginError}</p> : null}
+                </div>
+              </div>
+            ) : null}
+          </div>
+        ) : null}
 
         <FormSubmit label="Trimite sesizarea" />
       </form>

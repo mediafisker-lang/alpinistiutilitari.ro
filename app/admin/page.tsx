@@ -2,6 +2,7 @@ import { cookies } from "next/headers";
 
 import { AdminDeleteVoteMessageButton } from "@/components/admin-delete-vote-message-button";
 import { AdminImageGallery } from "@/components/admin-image-gallery";
+import { AdminIssueActions } from "@/components/admin-issue-actions";
 import { AdminLoginForm } from "@/components/admin-login-form";
 import { AdminLogoutButton } from "@/components/admin-logout-button";
 import { AdminProposalForm } from "@/components/admin-proposal-form";
@@ -310,13 +311,16 @@ export default async function AdminPage({
                         )}
                       </TableCell>
                       <TableCell>{formatDate(issue.created_at)}</TableCell>
-                      <TableCell className="min-w-44">
-                        <AdminStatusForm
-                          id={issue.id}
-                          table="issues"
-                          currentValue={issue.status}
-                          options={issueOptions}
-                        />
+                      <TableCell className="min-w-80">
+                        <div className="space-y-4">
+                          <AdminStatusForm
+                            id={issue.id}
+                            table="issues"
+                            currentValue={issue.status}
+                            options={issueOptions}
+                          />
+                          <AdminIssueActions issue={issue} />
+                        </div>
                       </TableCell>
                     </tr>
                   ))}

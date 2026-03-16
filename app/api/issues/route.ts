@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import type { ZodIssue } from "zod";
 
+import { verifyPassword } from "@/lib/password";
 import { createAdminSupabaseClient, hasAdminSupabaseEnv } from "@/lib/supabase";
 import { issueSchema, validateAntiSpam } from "@/lib/validations";
 
@@ -18,6 +19,10 @@ const maxImages = 3;
 
 export async function POST(request: Request) {
   const formData = await request.formData();
+  const authEmail = String(formData.get("auth_email") ?? "")
+    .trim()
+    .toLowerCase();
+  const authPassword = String(formData.get("auth_password") ?? "");
   const photoEntries = formData
     .getAll("photos")
     .filter((entry): entry is File => entry instanceof File && entry.size > 0);
@@ -108,6 +113,35 @@ export async function POST(request: Request) {
         message: "Conexiunea la baza de date nu este disponibilă.",
       },
       { status: 503 },
+    );
+  }
+
+  if (!authEmail || !authPassword) {
+    return NextResponse.json(
+      {
+        success: false,
+        message: "Trebuie sa fii logat ca sa poti trimite o sesizare.",
+      },
+      { status: 401 },
+    );
+  }
+
+  const { data: residents } = await supabase
+    .from("residents")
+    .select("id, password_hash")
+    .eq("email", authEmail)
+    .order("created_at", { ascending: false })
+    .limit(1);
+
+  const resident = residents?.[0];
+
+  if (!resident?.password_hash || !verifyPassword(authPassword, resident.password_hash)) {
+    return NextResponse.json(
+      {
+        success: false,
+        message: "Trebuie sa fii logat ca sa poti trimite o sesizare.",
+      },
+      { status: 401 },
     );
   }
 

@@ -22,6 +22,7 @@ export default async function HomePage() {
   return (
     <>
       <HeroSection />
+      <CommunitySection links={links} />
       <BenefitsSection />
       <section className="bg-white">
         <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
@@ -29,6 +30,8 @@ export default async function HomePage() {
             eyebrow="Actiune"
             title="Alege rapid ce vrei sa faci"
             description="Te inscrii daca vrei sa fii tinut la curent. Trimiti o sesizare daca vrei sa semnalezi o problema concreta."
+            className="max-w-4xl"
+            descriptionClassName="lg:whitespace-nowrap"
           />
           <div className="mt-8">
             <JoinForm />
@@ -45,7 +48,6 @@ export default async function HomePage() {
       <ProgressSection items={progress} />
       <HowItWorksSection />
       <VoteazaSchimbarileSection />
-      <CommunitySection links={links} />
       <UpdatesSection updates={updates} />
     </>
   );

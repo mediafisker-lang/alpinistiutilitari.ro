@@ -1,5 +1,6 @@
 import { CheckCircle2, Circle } from "lucide-react";
 
+import { ProgressDetailsPanel } from "@/components/progress-details-panel";
 import { SectionHeading } from "@/components/section-heading";
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
 import type { AssociationProgress } from "@/types/database";
@@ -40,6 +41,7 @@ export function ProgressSection({ items }: { items: AssociationProgress[] }) {
           </CardDescription>
         </Card>
       )}
+      <ProgressDetailsPanel />
     </section>
   );
 }

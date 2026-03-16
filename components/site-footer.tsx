@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 export function SiteFooter() {
@@ -7,8 +8,14 @@ export function SiteFooter() {
         <div className="grid gap-10 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,0.9fr)]">
           <div>
             <div className="inline-flex items-center gap-3 rounded-full border border-[#8b6b2f] bg-black/30 px-4 py-2">
-              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[linear-gradient(135deg,#f4df9d_0%,#b68a2f_55%,#6f531d_100%)] text-sm font-black text-black">
-                CN
+              <div className="overflow-hidden rounded-xl border border-[#8b6b2f]/70 bg-white/95 shadow-[0_10px_30px_rgba(0,0,0,0.25)]">
+                <Image
+                  src="/logo.png"
+                  alt="Cortina North"
+                  width={180}
+                  height={60}
+                  className="h-12 w-auto object-contain"
+                />
               </div>
               <div>
                 <p className="text-lg font-extrabold tracking-tight text-[#fff4d0]">Cortina North</p>
