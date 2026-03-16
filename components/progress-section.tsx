@@ -9,9 +9,11 @@ export function ProgressSection({ items }: { items: AssociationProgress[] }) {
   return (
     <section id="stadiu" className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
       <SectionHeading
-        eyebrow="Stadiul legal al asociației"
-        title="Documentația este pregătită. Acum suntem în etapa operațională."
-        description="Mai jos vezi pe scurt pașii parcurși și punctul în care se află acum demersul."
+        eyebrow="Stadiul legal al asociatiei"
+        title="Documentatia este pregatita. Acum suntem in etapa operationala."
+        description="Mai jos vezi pe scurt pasii parcursi si punctul in care se afla acum demersul."
+        className="max-w-5xl"
+        titleClassName="lg:whitespace-nowrap"
       />
       {items.length ? (
         <div className="mt-8 grid gap-4 md:grid-cols-3">
@@ -23,9 +25,7 @@ export function ProgressSection({ items }: { items: AssociationProgress[] }) {
                 ) : (
                   <Circle className="size-6 text-slate-300" />
                 )}
-                <span className="text-sm font-semibold text-slate-500">
-                  Pasul {item.step_order}
-                </span>
+                <span className="text-sm font-semibold text-slate-500">Pasul {item.step_order}</span>
               </div>
               <CardTitle>{item.step_title}</CardTitle>
               <CardDescription className="mt-3">{item.description}</CardDescription>
@@ -36,8 +36,8 @@ export function ProgressSection({ items }: { items: AssociationProgress[] }) {
         <Card className="mt-8">
           <CardTitle>Stadiul va fi publicat aici</CardTitle>
           <CardDescription className="mt-3">
-            Secțiunea este pregătită. După ce adaugi pașii reali în baza de date,
-            vor apărea automat aici.
+            Sectiunea este pregatita. Dupa ce adaugi pasii reali in baza de date, vor aparea
+            automat aici.
           </CardDescription>
         </Card>
       )}

@@ -45,7 +45,7 @@ export function PublicIssuesList({ issues }: { issues: PublicIssue[] }) {
       {issues.length ? (
         <div className="mt-6 space-y-4">
           {issues.map((issue) => (
-            <div key={issue.id} className="rounded-3xl border border-slate-200 bg-slate-50 p-5">
+            <div key={issue.id} className="surface-3d rounded-3xl bg-slate-50 p-5">
               <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                 <div className="space-y-2">
                   <div className="flex flex-wrap items-center gap-2">
@@ -79,10 +79,10 @@ export function PublicIssuesList({ issues }: { issues: PublicIssue[] }) {
                     return (
                       <div
                         key={step.value}
-                        className={`rounded-2xl border px-4 py-3 text-sm ${
+                        className={`rounded-2xl px-4 py-3 text-sm ${
                           reached
-                            ? "border-emerald-200 bg-emerald-50 text-emerald-800"
-                            : "border-slate-200 bg-white text-slate-500"
+                            ? "surface-3d border-emerald-200 bg-emerald-50 text-emerald-800"
+                            : "surface-3d bg-white text-slate-500"
                         }`}
                       >
                         {step.label}

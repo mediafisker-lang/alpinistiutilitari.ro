@@ -8,6 +8,7 @@ import { SectionHeading } from "@/components/section-heading";
 import { Button } from "@/components/ui/button";
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { fetchCurrentClientIp } from "@/lib/client-ip";
 import { readVoteAuth, subscribeVoteAuth, writeVoteAuth } from "@/lib/vote-auth";
 import type { CommunityLink } from "@/types/database";
 
@@ -27,24 +28,41 @@ export function CommunitySection({ links }: { links: CommunityLink[] }) {
   const [pendingUrl, setPendingUrl] = useState("");
   const [loginLoading, setLoginLoading] = useState(false);
   const [loginError, setLoginError] = useState("");
+  const [currentIp, setCurrentIp] = useState("");
+
+  useEffect(() => {
+    let isMounted = true;
+
+    void fetchCurrentClientIp().then((ip) => {
+      if (!isMounted) {
+        return;
+      }
+
+      setCurrentIp(ip);
+    });
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   useEffect(() => {
     const syncSession = () => {
-      const session = readVoteAuth();
+      const session = readVoteAuth(currentIp);
       setLoggedInEmail(session?.email ?? "");
       setPassword(session?.password ?? "");
     };
 
     syncSession();
     return subscribeVoteAuth(syncSession);
-  }, []);
+  }, [currentIp]);
 
   function openLink(url: string) {
     window.open(url, "_blank", "noopener,noreferrer");
   }
 
   function handleProtectedLinkClick(url: string) {
-    const session = readVoteAuth();
+    const session = readVoteAuth(currentIp);
 
     if (session?.email && session?.password) {
       openLink(url);
@@ -79,10 +97,14 @@ export function CommunitySection({ links }: { links: CommunityLink[] }) {
     };
 
     if (payload.success && payload.email) {
+      const ipToUse = currentIp || (await fetchCurrentClientIp());
+      if (ipToUse && ipToUse !== currentIp) {
+        setCurrentIp(ipToUse);
+      }
       writeVoteAuth({
         email: payload.email,
         password,
-      });
+      }, ipToUse);
       setLoginLoading(false);
       setShowAuthPrompt(false);
       setShowLoginForm(false);

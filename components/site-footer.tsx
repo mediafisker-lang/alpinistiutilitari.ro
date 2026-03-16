@@ -7,16 +7,14 @@ export function SiteFooter() {
       <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
         <div className="grid gap-10 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,0.9fr)]">
           <div>
-            <div className="inline-flex items-center gap-3 rounded-full border border-[#8b6b2f] bg-black/30 px-4 py-2">
-              <div className="overflow-hidden rounded-xl border border-[#8b6b2f]/70 bg-white/95 shadow-[0_10px_30px_rgba(0,0,0,0.25)]">
-                <Image
-                  src="/logo.png"
-                  alt="Cortina North"
-                  width={180}
-                  height={60}
-                  className="h-12 w-auto object-contain"
-                />
-              </div>
+            <div className="inline-flex items-center gap-4 rounded-full border border-[#8b6b2f] bg-black/30 px-4 py-2">
+              <Image
+                src="/logo.png"
+                alt="Cortina North"
+                width={208}
+                height={68}
+                className="h-14 w-auto object-contain"
+              />
               <div>
                 <p className="text-lg font-extrabold tracking-tight text-[#fff4d0]">Cortina North</p>
                 <p className="text-xs uppercase tracking-[0.22em] text-[#bfa169]">
@@ -74,7 +72,7 @@ export function SiteFooter() {
 
         <div className="mt-10 flex flex-col gap-3 border-t border-[#8b6b2f]/60 pt-6 text-xs uppercase tracking-[0.18em] text-[#bfa169] sm:flex-row sm:items-center sm:justify-between">
           <p>Cortina North portal comunitate</p>
-          <p>Black and gold footer</p>
+          <p>Comunitate conectata si implicata</p>
         </div>
       </div>
     </footer>

@@ -1,4 +1,4 @@
-import { ClipboardList, MessagesSquare, MessageCircleMore, Vote, } from "lucide-react";
+import { ClipboardList, MessagesSquare, MessageCircleMore, Vote } from "lucide-react";
 
 import { SectionHeading } from "@/components/section-heading";
 import { Button } from "@/components/ui/button";
@@ -7,27 +7,27 @@ import { Card, CardDescription, CardTitle } from "@/components/ui/card";
 const benefits = [
   {
     icon: ClipboardList,
-    title: "Actualizări clare",
+    title: "Actualizari clare",
     description:
-      "Primești informații centralizate, comunicate clar, fără zvonuri și fără să depinzi de mesaje împrăștiate în mai multe grupuri.",
+      "Primesti informatii centralizate, comunicate clar, fara zvonuri si fara sa depinzi de mesaje imprastiate in mai multe grupuri.",
   },
   {
     icon: MessagesSquare,
-    title: "Sesizări și urmărire",
+    title: "Sesizari si urmarire",
     description:
-      "Poți trimite sesizări legate de complex și poți urmări mai ușor ce se întâmplă cu ele.",
+      "Poti trimite sesizari legate de complex si poti urmari mai usor ce se intampla cu ele.",
   },
   {
     icon: MessageCircleMore,
-    title: "Acces în grupul de WhatsApp",
+    title: "Acces in grupul de WhatsApp",
     description:
-      "După confirmarea înscrierii, poți primi acces în grupul de WhatsApp al comunității și rămâi conectat mai ușor la discuțiile importante.",
+      "Dupa confirmarea inscrierii, poti primi acces in grupul de WhatsApp al comunitatii si ramai conectat mai usor la discutiile importante.",
   },
   {
     icon: Vote,
-    title: "Consultări și voturi",
+    title: "Consultari si voturi",
     description:
-      "Poți participa la consultări și voturi privind propunerile, schimbările și deciziile discutate în cadrul inițiativei sau al asociației, conform etapelor și regulilor aplicabile.",
+      "Poti participa la consultari si voturi privind propunerile, schimbarile si deciziile discutate in cadrul initiativei sau al asociatiei.",
   },
 ];
 
@@ -37,8 +37,8 @@ export function BenefitsSection() {
       <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
         <SectionHeading
           eyebrow="Beneficii"
-          title="Ce primești dacă te înscrii în interfața complexului"
-          description="Înscrierea îți oferă acces rapid la informații utile, actualizări importante și posibilitatea de a semnala problemele care contează pentru clădirea ta."
+          title="Ce primesti daca te inscrii in interfata complexului"
+          description="Inscrierea iti ofera acces rapid la informatii utile, actualizari importante si posibilitatea de a semnala problemele care conteaza pentru cladirea ta."
         />
         <div className="mt-8 grid gap-4 sm:grid-cols-2">
           {benefits.map((benefit) => (
@@ -53,10 +53,10 @@ export function BenefitsSection() {
         </div>
         <div className="mt-8 flex flex-col items-start gap-3">
           <a href="#inscriere">
-            <Button size="lg">Vreau să mă înscriu</Button>
+            <Button size="lg">Ma inscriu acum</Button>
           </a>
           <p className="text-sm leading-6 text-slate-600">
-            Înscrierea durează puțin și te ajută să rămâi conectat la informațiile importante pentru clădirea ta.
+            Inscrierea dureaza putin si te ajuta sa ramai conectat la informatiile importante pentru cladirea ta.
           </p>
         </div>
       </div>

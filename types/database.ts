@@ -85,3 +85,9 @@ export interface VoteProposalWithStats extends VoteProposal {
   no_votes: number;
   comments: VoteProposalComment[];
 }
+
+export interface HomepageStats {
+  residentsCount: number;
+  issuesCount: number;
+  votesCount: number;
+}

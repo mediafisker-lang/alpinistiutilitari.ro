@@ -2,10 +2,12 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { ChevronDown, Menu, Search } from "lucide-react";
+import { ChevronDown, Menu } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { fetchCurrentClientIp } from "@/lib/client-ip";
 import {
   clearVoteAuth,
   readVoteAuth,
@@ -30,9 +32,11 @@ const initialLoginState: LoginState = {
 function AccountMenu({
   mobile = false,
   loggedInEmail,
+  currentIp,
 }: {
   mobile?: boolean;
   loggedInEmail: string;
+  currentIp: string;
 }) {
   const [showLoginForm, setShowLoginForm] = useState(false);
   const [state, setState] = useState<LoginState>(initialLoginState);
@@ -59,10 +63,11 @@ function AccountMenu({
     };
 
     if (payload.success && payload.email) {
+      const ipToUse = currentIp || (await fetchCurrentClientIp());
       writeVoteAuth({
         email: payload.email,
         password: state.password,
-      });
+      }, ipToUse);
       setState(initialLoginState);
       setShowLoginForm(false);
       if (detailsRef.current) {
@@ -187,19 +192,86 @@ function AccountMenu({
 
 export function SiteHeader() {
   const [loggedInEmail, setLoggedInEmail] = useState("");
+  const [currentIp, setCurrentIp] = useState("");
+  const [loginState, setLoginState] = useState<LoginState>(initialLoginState);
+  const [loginLoading, setLoginLoading] = useState(false);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    void fetchCurrentClientIp().then((ip) => {
+      if (!isMounted) {
+        return;
+      }
+
+      setCurrentIp(ip);
+    });
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   useEffect(() => {
     const syncSession = () => {
-      const session = readVoteAuth();
+      const session = readVoteAuth(currentIp);
       setLoggedInEmail(session?.email ?? "");
     };
 
     syncSession();
     return subscribeVoteAuth(syncSession);
-  }, []);
+  }, [currentIp]);
 
   function handleLogout() {
     clearVoteAuth();
+  }
+
+  async function handleDesktopLogin(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setLoginLoading(true);
+    setLoginState((current) => ({ ...current, error: "", message: "" }));
+
+    const response = await fetch("/api/votes/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: loginState.email,
+        password: loginState.password,
+      }),
+    });
+
+    const payload = (await response.json()) as {
+      success?: boolean;
+      email?: string;
+      message?: string;
+    };
+
+    if (payload.success && payload.email) {
+      const ipToUse = currentIp || (await fetchCurrentClientIp());
+      if (ipToUse && ipToUse !== currentIp) {
+        setCurrentIp(ipToUse);
+      }
+
+      writeVoteAuth(
+        {
+          email: payload.email,
+          password: loginState.password,
+        },
+        ipToUse,
+      );
+      setLoginState(initialLoginState);
+      setLoginLoading(false);
+      return;
+    }
+
+    setLoginState((current) => ({
+      ...current,
+      message: "",
+      error: payload.message ?? "Nu am putut face autentificarea.",
+    }));
+    setLoginLoading(false);
   }
 
   return (
@@ -215,16 +287,14 @@ export function SiteHeader() {
         <div className="flex items-center justify-between gap-4">
           <Link href="/" className="min-w-0 shrink-0">
             <div className="flex items-center gap-3">
-              <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
-                <Image
-                  src="/logo.png"
-                  alt="Cortina North"
-                  width={168}
-                  height={56}
-                  className="h-12 w-auto object-contain"
-                  priority
-                />
-              </div>
+              <Image
+                src="/logo.png"
+                alt="Cortina North"
+                width={196}
+                height={64}
+                className="h-14 w-auto object-contain"
+                priority
+              />
               <div className="min-w-0">
                 <p className="truncate text-lg font-extrabold tracking-tight text-slate-950">
                   Cortina North
@@ -233,17 +303,6 @@ export function SiteHeader() {
               </div>
             </div>
           </Link>
-
-          <div className="hidden flex-1 lg:block">
-            <div className="relative">
-              <Search className="pointer-events-none absolute left-4 top-1/2 size-4 -translate-y-1/2 text-slate-400" />
-              <input
-                readOnly
-                value="Cauta voturi, sesizari, actualizari..."
-                className="h-12 w-full rounded-xl border border-slate-300 bg-slate-50 pl-11 pr-4 text-sm text-slate-500 outline-none"
-              />
-            </div>
-          </div>
 
           <details className="group lg:hidden">
             <summary className="flex h-11 w-11 cursor-pointer list-none items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-700 transition hover:bg-slate-50 [&::-webkit-details-marker]:hidden">
@@ -275,7 +334,7 @@ export function SiteHeader() {
                 >
                   Voteaza
                 </Link>
-                <AccountMenu mobile loggedInEmail={loggedInEmail} />
+                <AccountMenu mobile loggedInEmail={loggedInEmail} currentIp={currentIp} />
               </nav>
             </div>
           </details>
@@ -305,7 +364,6 @@ export function SiteHeader() {
             >
               Voteaza
             </Link>
-            <AccountMenu loggedInEmail={loggedInEmail} />
             {loggedInEmail ? (
               <button
                 type="button"
@@ -315,9 +373,52 @@ export function SiteHeader() {
               >
                 {loggedInEmail}
               </button>
-            ) : null}
+            ) : (
+              <>
+                <form onSubmit={handleDesktopLogin} className="flex items-center gap-2">
+                  <Button type="submit" size="sm" disabled={loginLoading}>
+                    {loginLoading ? "Se verifica..." : "Login"}
+                  </Button>
+                  <Input
+                    type="email"
+                    value={loginState.email}
+                    onChange={(event) =>
+                      setLoginState((current) => ({
+                        ...current,
+                        email: event.target.value,
+                      }))
+                    }
+                    placeholder="User"
+                    className="h-9 w-28 px-3 text-sm"
+                  />
+                  <Input
+                    type="password"
+                    value={loginState.password}
+                    onChange={(event) =>
+                      setLoginState((current) => ({
+                        ...current,
+                        password: event.target.value,
+                      }))
+                    }
+                    placeholder="Parola"
+                    className="h-9 w-24 px-3 text-sm"
+                  />
+                  <Link
+                    href="/#inscriere"
+                    className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-100"
+                  >
+                    Inscriere
+                  </Link>
+                </form>
+              </>
+            )}
           </div>
         </div>
+        {!loggedInEmail && loginState.error ? (
+          <p className="mt-3 hidden rounded-xl bg-rose-50 px-4 py-3 text-sm text-rose-700 lg:block">
+            {loginState.error}
+          </p>
+        ) : null}
       </div>
     </header>
   );

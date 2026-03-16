@@ -2,6 +2,7 @@ import { SectionHeading } from "@/components/section-heading";
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
 import { formatDate } from "@/lib/utils";
 import type { UpdateItem } from "@/types/database";
+import Link from "next/link";
 
 export function UpdatesSection({ updates }: { updates: UpdateItem[] }) {
   return (
@@ -14,11 +15,13 @@ export function UpdatesSection({ updates }: { updates: UpdateItem[] }) {
       {updates.length ? (
         <div className="mt-8 grid gap-4 md:grid-cols-3">
           {updates.map((update) => (
-            <Card key={update.id}>
-              <p className="text-sm text-slate-500">{formatDate(update.created_at)}</p>
-              <CardTitle className="mt-4">{update.title}</CardTitle>
-              <CardDescription className="mt-3">{update.content}</CardDescription>
-            </Card>
+            <Link key={update.id} href="/#detalii-etape">
+              <Card className="h-full transition hover:-translate-y-1 hover:border-slate-300 hover:shadow-md">
+                <p className="text-sm text-slate-500">{formatDate(update.created_at)}</p>
+                <CardTitle className="mt-4">{update.title}</CardTitle>
+                <CardDescription className="mt-3">{update.content}</CardDescription>
+              </Card>
+            </Link>
           ))}
         </div>
       ) : (

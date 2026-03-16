@@ -8,6 +8,7 @@ import {
 import type {
   AssociationProgress,
   CommunityLink,
+  HomepageStats,
   Issue,
   PublicIssue,
   Resident,
@@ -108,6 +109,38 @@ export async function getPublicIssues(): Promise<PublicIssue[]> {
     .limit(20);
 
   return data ?? [];
+}
+
+export async function getHomepageStats(): Promise<HomepageStats> {
+  if (!hasAdminSupabaseEnv()) {
+    return {
+      residentsCount: 0,
+      issuesCount: 0,
+      votesCount: 0,
+    };
+  }
+
+  const supabase = createAdminSupabaseClient();
+  if (!supabase) {
+    return {
+      residentsCount: 0,
+      issuesCount: 0,
+      votesCount: 0,
+    };
+  }
+
+  const [{ count: residentsCount }, { count: issuesCount }, { count: votesCount }] =
+    await Promise.all([
+      supabase.from("residents").select("id", { count: "exact", head: true }),
+      supabase.from("issues").select("id", { count: "exact", head: true }),
+      supabase.from("proposal_votes").select("id", { count: "exact", head: true }),
+    ]);
+
+  return {
+    residentsCount: residentsCount ?? 0,
+    issuesCount: issuesCount ?? 0,
+    votesCount: votesCount ?? 0,
+  };
 }
 
 export async function getAdminResidents(building?: string): Promise<Resident[]> {

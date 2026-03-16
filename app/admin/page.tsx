@@ -1,6 +1,7 @@
 import { cookies } from "next/headers";
 
 import { AdminDeleteVoteMessageButton } from "@/components/admin-delete-vote-message-button";
+import { AdminDeleteProposalButton } from "@/components/admin-delete-proposal-button";
 import { AdminImageGallery } from "@/components/admin-image-gallery";
 import { AdminIssueActions } from "@/components/admin-issue-actions";
 import { AdminLoginForm } from "@/components/admin-login-form";
@@ -109,8 +110,9 @@ export default async function AdminPage({
                           </p>
                         </div>
 
-                        <div className="min-w-48">
+                        <div className="min-w-48 space-y-3">
                           <AdminProposalStatusForm id={proposal.id} currentValue={proposal.status} />
+                          <AdminDeleteProposalButton proposalId={proposal.id} />
                         </div>
                       </div>
 

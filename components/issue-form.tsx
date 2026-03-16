@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { fetchCurrentClientIp } from "@/lib/client-ip";
 import { readVoteAuth, subscribeVoteAuth, writeVoteAuth } from "@/lib/vote-auth";
 
 type FormState = {
@@ -54,6 +55,7 @@ export function IssueForm() {
   const [loginPassword, setLoginPassword] = useState("");
   const [loginError, setLoginError] = useState("");
   const [loginLoading, setLoginLoading] = useState(false);
+  const [currentIp, setCurrentIp] = useState("");
 
   useEffect(() => {
     return () => {
@@ -62,8 +64,24 @@ export function IssueForm() {
   }, [previews]);
 
   useEffect(() => {
+    let isMounted = true;
+
+    void fetchCurrentClientIp().then((ip) => {
+      if (!isMounted) {
+        return;
+      }
+
+      setCurrentIp(ip);
+    });
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  useEffect(() => {
     const syncSession = () => {
-      const session = readVoteAuth();
+      const session = readVoteAuth(currentIp);
       setLoggedInEmail(session?.email ?? "");
       setLoggedInPassword(session?.password ?? "");
       if (session?.email && session?.password) {
@@ -75,7 +93,7 @@ export function IssueForm() {
 
     syncSession();
     return subscribeVoteAuth(syncSession);
-  }, []);
+  }, [currentIp]);
 
   async function action(formData: FormData) {
     if (!loggedInEmail || !loggedInPassword) {
@@ -139,10 +157,14 @@ export function IssueForm() {
     };
 
     if (payload.success && payload.email) {
+      const ipToUse = currentIp || (await fetchCurrentClientIp());
+      if (ipToUse && ipToUse !== currentIp) {
+        setCurrentIp(ipToUse);
+      }
       writeVoteAuth({
         email: payload.email,
         password: loginPassword,
-      });
+      }, ipToUse);
       setLoginLoading(false);
       setShowLoginForm(false);
       setShowAuthPrompt(false);

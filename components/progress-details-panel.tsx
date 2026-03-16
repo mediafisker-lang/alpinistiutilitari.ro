@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
@@ -228,8 +228,23 @@ const legalSteps = [
 export function ProgressDetailsPanel() {
   const [isOpen, setIsOpen] = useState(false);
 
+  useEffect(() => {
+    const syncFromHash = () => {
+      if (window.location.hash === "#detalii-etape") {
+        setIsOpen(true);
+      }
+    };
+
+    syncFromHash();
+    window.addEventListener("hashchange", syncFromHash);
+
+    return () => {
+      window.removeEventListener("hashchange", syncFromHash);
+    };
+  }, []);
+
   return (
-    <div className="mt-6">
+    <div id="detalii-etape" className="mt-6 scroll-mt-24">
       <Button size="lg" onClick={() => setIsOpen((current) => !current)}>
         {isOpen ? "Inchide detaliile" : "Detalii, etape realizate"}
       </Button>
