@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Facebook, MessageCircleMore } from "lucide-react";
+import { Facebook, MessageCircleMore, Users } from "lucide-react";
 import { useEffect, useState } from "react";
 
 import { SectionHeading } from "@/components/section-heading";
@@ -15,6 +15,10 @@ import type { CommunityLink } from "@/types/database";
 function iconForType(type: CommunityLink["type"]) {
   if (type === "whatsapp") {
     return MessageCircleMore;
+  }
+
+  if (type === "facebook_group") {
+    return Users;
   }
 
   return Facebook;
@@ -139,7 +143,15 @@ export function CommunitySection({ links }: { links: CommunityLink[] }) {
                 return (
                   <Card key={link.id} className="flex h-full flex-col justify-between p-5 sm:p-6">
                     <div>
-                      <Icon className="size-7 text-emerald-600 sm:size-8" />
+                      <Icon
+                        className={`size-7 sm:size-8 ${
+                          link.type === "whatsapp"
+                            ? "text-emerald-600"
+                            : link.type === "facebook_group"
+                              ? "text-sky-600"
+                              : "text-[#1877f2]"
+                        }`}
+                      />
                       <CardTitle className="mt-4 sm:mt-5">{link.label}</CardTitle>
                     </div>
                     <button

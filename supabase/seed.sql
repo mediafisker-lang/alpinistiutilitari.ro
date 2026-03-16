@@ -2,7 +2,7 @@ insert into public.community_links (label, url, type)
 values
   ('Grup WhatsApp', 'https://chat.whatsapp.com/JukCLwGhlkH0Lgx7vaq8CU', 'whatsapp'),
   ('Pagina Facebook', 'https://www.facebook.com/share/14XDoK32UFF/?mibextid=wwXIfr', 'facebook_page'),
-  ('Grup Facebook', 'https://www.facebook.com/groups/1495237625295689', 'facebook_group')
+  ('Grup Facebook', 'https://web.facebook.com/groups/1495237625295689', 'facebook_group')
 on conflict (type) do update
 set label = excluded.label,
     url = excluded.url;
