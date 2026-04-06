@@ -1,0 +1,293 @@
+"use client";
+
+import Image from "next/image";
+import Link from "next/link";
+import { type Dispatch, type FormEvent, type SetStateAction, useEffect, useState } from "react";
+
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { fetchCurrentClientIp } from "@/lib/client-ip";
+import { readVoteAuth, subscribeVoteAuth, writeVoteAuth } from "@/lib/vote-auth";
+
+type LoginState = {
+  email: string;
+  password: string;
+  message: string;
+  error: string;
+};
+
+const initialLoginState: LoginState = {
+  email: "",
+  password: "",
+  message: "",
+  error: "",
+};
+
+export function SiteHeader() {
+  const [loggedInEmail, setLoggedInEmail] = useState("");
+  const [currentIp, setCurrentIp] = useState("");
+  const [loginState, setLoginState] = useState<LoginState>(initialLoginState);
+  const [loginLoading, setLoginLoading] = useState(false);
+  const [loginStateMobile, setLoginStateMobile] = useState<LoginState>(initialLoginState);
+  const [loginLoadingMobile, setLoginLoadingMobile] = useState(false);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    void fetchCurrentClientIp().then((ip) => {
+      if (!isMounted) {
+        return;
+      }
+
+      setCurrentIp(ip);
+    });
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  useEffect(() => {
+    const syncSession = () => {
+      const session = readVoteAuth(currentIp);
+      setLoggedInEmail(session?.email ?? "");
+    };
+
+    syncSession();
+    return subscribeVoteAuth(syncSession);
+  }, [currentIp]);
+
+  const loggedInName = loggedInEmail.includes("@")
+    ? loggedInEmail.split("@")[0] || loggedInEmail
+    : loggedInEmail;
+
+  async function runLogin(
+    email: string,
+    password: string,
+    setLoading: (loading: boolean) => void,
+    setState: Dispatch<SetStateAction<LoginState>>,
+  ) {
+    setLoading(true);
+    setState((current) => ({ ...current, error: "", message: "" }));
+
+    const response = await fetch("/api/votes/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email,
+        password,
+      }),
+    });
+
+    const payload = (await response.json()) as {
+      success?: boolean;
+      email?: string;
+      message?: string;
+    };
+
+    if (payload.success && payload.email) {
+      const ipToUse = currentIp || (await fetchCurrentClientIp());
+      if (ipToUse && ipToUse !== currentIp) {
+        setCurrentIp(ipToUse);
+      }
+
+      writeVoteAuth(
+        {
+          email: payload.email,
+          password,
+        },
+        ipToUse,
+      );
+      setState(initialLoginState);
+      setLoading(false);
+      return;
+    }
+
+    setState((current) => ({
+      ...current,
+      message: "",
+      error: payload.message ?? "Nu am putut face autentificarea.",
+    }));
+    setLoading(false);
+  }
+
+  async function handleDesktopLogin(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    await runLogin(loginState.email, loginState.password, setLoginLoading, setLoginState);
+  }
+
+  async function handleMobileLogin(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    await runLogin(
+      loginStateMobile.email,
+      loginStateMobile.password,
+      setLoginLoadingMobile,
+      setLoginStateMobile,
+    );
+  }
+
+  return (
+    <header className="sticky top-0 z-20 border-b border-slate-200 bg-white shadow-sm">
+      <div className="bg-[linear-gradient(90deg,#e31e24_0%,#005eb8_55%,#005eb8_100%)]">
+        <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-2 text-[11px] font-medium text-white sm:px-6 sm:text-xs">
+          <p>Portal comunitate</p>
+          <p className="hidden sm:block">Acces rapid la vot, sesizari si actualizari</p>
+        </div>
+      </div>
+
+      <div className="mx-auto max-w-6xl px-4 py-3 sm:px-6 sm:py-4">
+        <div className="flex items-center justify-between gap-3 sm:gap-4">
+          <Link href="/" className="min-w-0 shrink-0">
+            <div className="flex items-center gap-2.5 sm:gap-3">
+              <Image
+                src="/logo.png"
+                alt="Cortina North"
+                width={196}
+                height={64}
+                className="h-10 w-auto object-contain sm:h-14"
+                priority
+              />
+              <div className="min-w-0">
+                <p className="truncate text-base font-extrabold tracking-tight text-slate-950 sm:text-lg">
+                  Cortina North
+                </p>
+                <p className="hidden text-xs text-slate-500 sm:block">Informatii si schimbari in comunitate</p>
+              </div>
+            </div>
+          </Link>
+
+          <div className="hidden items-center gap-3 lg:flex">
+            <Link
+              href="/#stadiu"
+              className="rounded-xl px-3 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-100"
+            >
+              Asociatie
+            </Link>
+            <Link
+              href="/#sesizari"
+              className="rounded-xl px-3 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-100"
+            >
+              Sesizari
+            </Link>
+            <Link
+              href="/#voteaza"
+              className="rounded-xl px-3 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-100"
+            >
+              Voteaza
+            </Link>
+            {loggedInEmail ? (
+              <div className="rounded-xl border border-blue-200 bg-blue-50 px-4 py-2 text-sm font-semibold text-[#005eb8]">
+                HI, {loggedInName}
+              </div>
+            ) : (
+              <form onSubmit={handleDesktopLogin} className="flex items-center gap-2">
+                <Input
+                  type="email"
+                  value={loginState.email}
+                  onChange={(event) =>
+                    setLoginState((current) => ({
+                      ...current,
+                      email: event.target.value,
+                    }))
+                  }
+                  placeholder="USER"
+                  className="h-9 w-32 px-3 text-sm"
+                />
+                <Input
+                  type="password"
+                  value={loginState.password}
+                  onChange={(event) =>
+                    setLoginState((current) => ({
+                      ...current,
+                      password: event.target.value,
+                    }))
+                  }
+                  placeholder="PASSWORD"
+                  className="h-9 w-32 px-3 text-sm"
+                />
+                <Button type="submit" size="sm" disabled={loginLoading}>
+                  {loginLoading ? "Se verifica..." : "Login"}
+                </Button>
+                <Link
+                  href="/#inscriere"
+                  className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-100"
+                >
+                  Register
+                </Link>
+              </form>
+            )}
+          </div>
+        </div>
+
+        <div className="mt-3 border-t border-slate-200 pt-3 lg:hidden">
+          <nav className="flex items-center justify-center gap-4 text-sm font-semibold text-slate-700">
+            <Link href="/#stadiu" className="transition hover:text-[#005eb8]">
+              Asociatie
+            </Link>
+            <Link href="/#sesizari" className="transition hover:text-[#005eb8]">
+              Sesizari
+            </Link>
+            <Link href="/#voteaza" className="transition hover:text-[#005eb8]">
+              Voteaza
+            </Link>
+          </nav>
+
+          {loggedInEmail ? (
+            <div className="mt-3 rounded-xl border border-blue-200 bg-blue-50 px-4 py-3 text-center text-sm font-semibold text-[#005eb8]">
+              HI, {loggedInName}
+            </div>
+          ) : (
+            <form onSubmit={handleMobileLogin} className="mt-3 grid grid-cols-2 gap-2">
+              <Input
+                type="email"
+                value={loginStateMobile.email}
+                onChange={(event) =>
+                  setLoginStateMobile((current) => ({
+                    ...current,
+                    email: event.target.value,
+                  }))
+                }
+                placeholder="USER"
+                className="h-10"
+              />
+              <Input
+                type="password"
+                value={loginStateMobile.password}
+                onChange={(event) =>
+                  setLoginStateMobile((current) => ({
+                    ...current,
+                    password: event.target.value,
+                  }))
+                }
+                placeholder="PASSWORD"
+                className="h-10"
+              />
+              <Button type="submit" size="sm" disabled={loginLoadingMobile} className="h-10">
+                {loginLoadingMobile ? "Se verifica..." : "Login"}
+              </Button>
+              <Link
+                href="/#inscriere"
+                className="flex h-10 items-center justify-center rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm font-semibold text-slate-700 transition hover:bg-slate-100"
+              >
+                Register
+              </Link>
+            </form>
+          )}
+        </div>
+
+        {!loggedInEmail && loginState.error ? (
+          <p className="mt-3 hidden rounded-xl bg-rose-50 px-4 py-3 text-sm text-rose-700 lg:block">
+            {loginState.error}
+          </p>
+        ) : null}
+        {!loggedInEmail && loginStateMobile.error ? (
+          <p className="mt-3 rounded-xl bg-rose-50 px-4 py-3 text-sm text-rose-700 lg:hidden">
+            {loginStateMobile.error}
+          </p>
+        ) : null}
+      </div>
+    </header>
+  );
+}
