@@ -5,10 +5,7 @@ import { BenefitsSection } from "@/components/benefits-section";
 import { CommunitySection } from "@/components/community-section";
 import { HeroSection } from "@/components/hero-section";
 import { HowItWorksSection } from "@/components/how-it-works-section";
-import { JoinConversionPanel } from "@/components/join-conversion-panel";
-import { JoinForm } from "@/components/join-form";
 import { QuickJoinBanner } from "@/components/quick-join-banner";
-import { SectionHeading } from "@/components/section-heading";
 import {
   getCommunityLinks,
   getHomepageStats,
@@ -76,21 +73,6 @@ export default async function HomePage() {
       <QuickJoinBanner />
       <CommunitySection links={links} />
       <BenefitsSection />
-      <section className="bg-white">
-        <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
-          <SectionHeading
-            eyebrow="Actiune"
-            title="Alege rapid ce vrei sa faci"
-            description="Te inscrii daca vrei sa fii tinut la curent. Trimiti o sesizare daca vrei sa semnalezi o problema concreta."
-            className="max-w-4xl"
-            descriptionClassName="lg:whitespace-nowrap"
-          />
-          <div className="mt-8 grid gap-5 xl:grid-cols-[minmax(0,1fr)_minmax(320px,360px)]">
-            <JoinForm />
-            <JoinConversionPanel stats={stats} />
-          </div>
-        </div>
-      </section>
     </>
   );
 }

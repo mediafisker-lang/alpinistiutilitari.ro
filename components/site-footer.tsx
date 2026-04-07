@@ -48,7 +48,7 @@ export function SiteFooter() {
                 <Link href="/voteaza" className="transition hover:text-white">
                   Voteaza propuneri
                 </Link>
-                <Link href="/#inscriere" className="transition hover:text-white">
+                <Link href="/inregistrare" className="transition hover:text-white">
                   Contul meu
                 </Link>
               </div>

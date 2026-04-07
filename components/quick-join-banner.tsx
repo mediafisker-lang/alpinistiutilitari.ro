@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { ArrowRight, Sparkles } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -28,7 +29,7 @@ export function QuickJoinBanner() {
               Dureaza sub un minut si vezi imediat ce se intampla in complex, fara sa mai cauti prin grupuri si mesaje pierdute.
             </p>
           </div>
-          <a href="#inscriere" className="hidden sm:block">
+          <Link href="/inregistrare" className="hidden sm:block">
             <Button
               size="lg"
               className="min-w-52 border border-white/30 bg-white text-slate-950 shadow-[0_18px_36px_rgba(0,0,0,0.18)] hover:bg-white/95"
@@ -36,7 +37,7 @@ export function QuickJoinBanner() {
               Vreau sa ma inscriu
               <ArrowRight className="size-4" />
             </Button>
-          </a>
+          </Link>
         </div>
       </div>
     </section>

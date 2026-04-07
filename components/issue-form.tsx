@@ -394,10 +394,10 @@ export function IssueForm() {
                 Login
               </button>
               <Link
-                href="/#inscriere"
+                href="/inregistrare"
                 className="rounded-xl border border-amber-300 bg-white px-4 py-3 text-center text-sm font-semibold text-amber-950 transition hover:bg-amber-100"
               >
-                Inscriere
+                Inregistreaza-te
               </Link>
             </div>
 

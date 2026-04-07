@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { ClipboardList, MessagesSquare, MessageCircleMore, Vote } from "lucide-react";
 
 import { SectionHeading } from "@/components/section-heading";
@@ -58,9 +59,9 @@ export function BenefitsSection() {
         </div>
         {!isLoggedIn ? (
           <div className="mt-8 flex flex-col items-start gap-3">
-            <a href="#inscriere">
+            <Link href="/inregistrare">
               <Button size="lg">Ma inscriu acum</Button>
-            </a>
+            </Link>
             <p className="text-sm leading-6 text-slate-600">
               Inscrierea dureaza putin si te ajuta sa ramai conectat la informatiile importante pentru cladirea ta.
             </p>

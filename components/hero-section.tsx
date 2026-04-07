@@ -34,12 +34,12 @@ export function HeroSection({ stats }: { stats: HomepageStats }) {
             </div>
             <div className="flex flex-col gap-3 sm:flex-row">
               {!isLoggedIn ? (
-                <a href="#inscriere" className="hidden sm:block">
+                <Link href="/inregistrare" className="hidden sm:block">
                   <Button size="lg" className="w-full sm:w-auto">
                     Vreau sa ma inscriu
                     <ArrowRight className="size-4" />
                   </Button>
-                </a>
+                </Link>
               ) : null}
               <Link href="/stadiu-asociatie">
                 <Button variant="outline" size="lg" className="w-full sm:w-auto">

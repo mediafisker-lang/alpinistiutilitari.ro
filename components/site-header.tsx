@@ -254,10 +254,10 @@ export function SiteHeader() {
                   {loginLoading ? "Se verifica..." : "Login"}
                 </Button>
                 <Link
-                  href="/#inscriere"
+                  href="/inregistrare"
                   className="inline-flex h-7 items-center rounded-md border border-[#7b5b2a] bg-[rgba(30,22,12,0.92)] px-2 text-[11px] font-semibold text-[#edd7a3] transition hover:bg-[rgba(40,29,16,0.95)]"
                 >
-                  Register
+                  Inregistreaza-te
                 </Link>
               </form>
             )}
@@ -342,10 +342,10 @@ export function SiteHeader() {
                 {loginLoadingMobile ? "Se verifica..." : "Login"}
               </Button>
               <Link
-                href="/#inscriere"
-                className="flex h-8 items-center justify-center rounded-lg border border-slate-200 bg-slate-50 px-2 text-xs font-semibold text-slate-700 transition hover:bg-slate-100"
+                href="/inregistrare"
+                className="flex h-8 items-center justify-center whitespace-nowrap rounded-lg border border-slate-200 bg-slate-50 px-2 text-[11px] font-semibold text-slate-700 transition hover:bg-slate-100"
               >
-                Register
+                Inregistreaza-te
               </Link>
             </form>
           )}
