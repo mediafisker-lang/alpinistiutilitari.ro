@@ -26,10 +26,10 @@ export function HeroSection({ stats }: { stats: HomepageStats }) {
             </span>
             <div className="space-y-4">
               <h1 className="max-w-3xl text-4xl font-extrabold tracking-tight text-[#f7e7bf] sm:text-5xl">
-                Primesti acces la grupuri, vot, sesizari si actualizari intr-un minut
+                Primesti acces la grupuri de comunicare, sesizari/stare, vot intr-un minut
               </h1>
               <p className="max-w-2xl text-base leading-7 text-[#d9c598] sm:text-lg">
-                Portalul comunitatii Cortina North din Bucuresti si Ilfov este gandit ca sa intri rapid in comunitate, sa vezi ce se intampla si sa actionezi imediat atunci cand apare ceva important.
+                Interfata Cortina North Pipera - Ilfov este gandita sa intri rapid in comunitate, sa fii informat si daca consideri sa participi activ la schimbari.
               </p>
             </div>
             <div className="flex flex-col gap-3 sm:flex-row">
