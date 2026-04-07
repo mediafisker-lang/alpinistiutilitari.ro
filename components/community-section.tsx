@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { Facebook, MessageCircleMore, Users } from "lucide-react";
 
 import { SectionHeading } from "@/components/section-heading";
@@ -21,6 +22,7 @@ function iconForType(type: CommunityLink["type"]) {
 }
 
 export function CommunitySection({ links }: { links: CommunityLink[] }) {
+  const router = useRouter();
   const { isLoggedIn } = useVoteSession();
 
   function openLink(url: string) {
@@ -33,8 +35,7 @@ export function CommunitySection({ links }: { links: CommunityLink[] }) {
       return;
     }
 
-    window.alert("Necesita Logare/Inregistrare");
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    router.push("/inregistrare");
   }
 
   return (
