@@ -37,8 +37,8 @@ export async function POST(request: Request) {
     .filter((entry): entry is File => entry instanceof File && entry.size > 0);
 
   const parsed = issueSchema.safeParse({
-    contact_name: formData.get("contact_name"),
-    contact_phone: formData.get("contact_phone"),
+    contact_name: String(formData.get("contact_name") ?? ""),
+    contact_phone: String(formData.get("contact_phone") ?? ""),
     category: formData.get("category"),
     description: formData.get("description"),
     website: formData.get("website"),
@@ -135,7 +135,7 @@ export async function POST(request: Request) {
 
   const { data: residents } = await supabase
     .from("residents")
-    .select("id, password_hash")
+    .select("id, full_name, phone, password_hash")
     .eq("email", authEmail)
     .order("created_at", { ascending: false })
     .limit(1);
@@ -151,6 +151,9 @@ export async function POST(request: Request) {
       { status: 401 },
     );
   }
+
+  const resolvedContactName = resident.full_name?.trim() || parsed.data.contact_name?.trim() || "Rezident";
+  const resolvedContactPhone = resident.phone?.trim() || parsed.data.contact_phone?.trim() || null;
 
   const attachmentUrls: string[] = [];
 
@@ -182,8 +185,8 @@ export async function POST(request: Request) {
   }
 
   const { error } = await supabase.from("issues").insert({
-    contact_name: parsed.data.contact_name,
-    contact_phone: parsed.data.contact_phone || null,
+    contact_name: resolvedContactName,
+    contact_phone: resolvedContactPhone,
     contact_email: null,
     category: parsed.data.category,
     title: buildIssueTitle(parsed.data.category, parsed.data.description),

@@ -31,12 +31,13 @@ export const residentSchema = z.object({
 });
 
 export const issueSchema = z.object({
-  contact_name: z.string().trim().min(2, "Introdu numele."),
+  contact_name: z.string().trim().min(2, "Introdu numele.").optional().or(z.literal("")),
   contact_phone: z
     .string()
     .transform(normalizePhone)
     .refine((value) => phoneRegex.test(value), "Telefon invalid.")
-    .or(z.literal("")),
+    .or(z.literal(""))
+    .optional(),
   category: z.string().trim().min(2, "Alege categoria."),
   description: z.string().trim().min(12, "Descrierea este prea scurtă."),
   website: z.string().max(0).optional(),

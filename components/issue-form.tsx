@@ -245,39 +245,8 @@ export function IssueForm() {
         <input type="hidden" name="auth_email" value={loggedInEmail} readOnly />
         <input type="hidden" name="auth_password" value={loggedInPassword} readOnly />
 
-        <div>
-          <Label htmlFor="contact_name" className="mb-1.5 text-xs sm:mb-2 sm:text-sm">
-            Nume
-          </Label>
-          <Input
-            id="contact_name"
-            name="contact_name"
-            placeholder="Ex: Maria Ionescu"
-            autoComplete="name"
-            className="h-10 sm:h-11"
-            required
-          />
-          {state.errors?.contact_name && (
-            <p className="mt-2 text-sm text-rose-600">{state.errors.contact_name[0]}</p>
-          )}
-        </div>
-
-        <div>
-          <Label htmlFor="contact_phone" className="mb-1.5 text-xs sm:mb-2 sm:text-sm">
-            Telefon (opțional)
-          </Label>
-          <Input
-            id="contact_phone"
-            name="contact_phone"
-            placeholder="Ex: 07xx xxx xxx"
-            autoComplete="tel"
-            inputMode="tel"
-            maxLength={20}
-            className="h-10 sm:h-11"
-          />
-          {state.errors?.contact_phone && (
-            <p className="mt-2 text-sm text-rose-600">{state.errors.contact_phone[0]}</p>
-          )}
+        <div className="rounded-2xl border border-blue-200 bg-blue-50 px-3 py-2 text-xs leading-5 text-blue-800 sm:text-sm">
+          Numele si telefonul se preiau automat din profilul contului logat.
         </div>
 
         <div>

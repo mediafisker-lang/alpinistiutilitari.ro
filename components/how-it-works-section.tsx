@@ -1,5 +1,8 @@
+"use client";
+
 import { SectionHeading } from "@/components/section-heading";
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
+import { useVoteSession } from "@/components/use-vote-session";
 
 const steps = [
   {
@@ -41,6 +44,12 @@ const steps = [
 ];
 
 export function HowItWorksSection() {
+  const { currentIp, isLoggedIn } = useVoteSession();
+
+  if (!currentIp || isLoggedIn) {
+    return null;
+  }
+
   return (
     <section id="cum-functioneaza" className="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-16">
       <SectionHeading

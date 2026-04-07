@@ -8,7 +8,6 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { fetchCurrentClientIp } from "@/lib/client-ip";
 import { formatDate } from "@/lib/utils";
@@ -37,41 +36,20 @@ const voteOptions = [
   {
     value: "yes" as const,
     title: "Sunt pentru",
-    description: "Sustin propunerea si sunt de acord sa mearga mai departe.",
+    description: "Sustin propunerea.",
     activeClassName: "border-[#005eb8] bg-blue-50 text-[#005eb8]",
   },
   {
     value: "no" as const,
     title: "Sunt impotriva",
-    description: "Nu sunt de acord cu propunerea in forma actuala.",
+    description: "Nu sunt de acord.",
     activeClassName: "border-[#e31e24] bg-rose-50 text-[#e31e24]",
   },
 ];
 
 const authTitle = "Trebuie sa fii logat ca sa poti vota.";
-const authText = "Intra in cont sau mergi la inscriere daca nu ai parola inca.";
+const authText = "Intra in cont sau mergi la inregistrare daca nu ai parola inca.";
 const maxCommentLength = 700;
-
-function StepBadge({
-  step,
-  title,
-  active,
-}: {
-  step: string;
-  title: string;
-  active?: boolean;
-}) {
-  return (
-    <div
-      className={`rounded-xl border px-4 py-3 ${
-        active ? "border-[#005eb8] bg-blue-50" : "border-slate-200 bg-white"
-      }`}
-    >
-      <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">{step}</p>
-      <p className="mt-1 text-sm font-semibold text-slate-950">{title}</p>
-    </div>
-  );
-}
 
 export function VoteazaSchimbarileSection() {
   const [proposals, setProposals] = useState<Proposal[]>([]);
@@ -85,12 +63,6 @@ export function VoteazaSchimbarileSection() {
   const [showLoginForm, setShowLoginForm] = useState(false);
   const [loginLoading, setLoginLoading] = useState(false);
   const [loginError, setLoginError] = useState("");
-  const [showSetupForm, setShowSetupForm] = useState(false);
-  const [setupEmail, setSetupEmail] = useState("");
-  const [setupPhone, setSetupPhone] = useState("");
-  const [setupPasswordValue, setSetupPasswordValue] = useState("");
-  const [setupMessage, setSetupMessage] = useState("");
-  const [setupError, setSetupError] = useState("");
   const [currentIp, setCurrentIp] = useState("");
 
   async function loadProposals() {
@@ -143,7 +115,6 @@ export function VoteazaSchimbarileSection() {
     setMessage("");
     setError("");
     setLoginError("");
-    setShowSetupForm(false);
     const session = readVoteAuth(currentIp);
     setShowAuthPrompt(!session?.email || !session?.password);
     setShowLoginForm(false);
@@ -176,41 +147,6 @@ export function VoteazaSchimbarileSection() {
 
     setLoginError(payload.message ?? "Nu am putut face autentificarea.");
     setLoginLoading(false);
-  }
-
-  async function handleSetupPassword() {
-    setSetupMessage("");
-    setSetupError("");
-
-    const response = await fetch("/api/votes/set-password", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        email: setupEmail,
-        phone: setupPhone,
-        password: setupPasswordValue,
-      }),
-    });
-
-    const payload = (await response.json()) as { success?: boolean; message?: string };
-
-    if (payload.success) {
-      const normalizedEmail = setupEmail.trim().toLowerCase();
-      const ipToUse = currentIp || (await fetchCurrentClientIp());
-      if (ipToUse && ipToUse !== currentIp) {
-        setCurrentIp(ipToUse);
-      }
-
-      writeVoteAuth({ email: normalizedEmail, password: setupPasswordValue }, ipToUse);
-      setEmail(normalizedEmail);
-      setPassword(setupPasswordValue);
-      setSetupMessage(payload.message ?? "Parola a fost salvata.");
-      setShowAuthPrompt(false);
-      setShowSetupForm(false);
-      return;
-    }
-
-    setSetupError(payload.message ?? "Nu am putut salva parola.");
   }
 
   async function submitVote(proposalId: string) {
@@ -251,7 +187,7 @@ export function VoteazaSchimbarileSection() {
       }
 
       writeVoteAuth({ email: email.trim().toLowerCase(), password }, ipToUse);
-      setMessage(payload.message ?? "Vot inregistrat.");
+      setMessage("Multumim pentru ca ati votat, parerea dvs conteaza!");
       setForms((current) => ({
         ...current,
         [proposalId]: { choice: form.choice, reason: "" },
@@ -263,6 +199,8 @@ export function VoteazaSchimbarileSection() {
     setError(payload.message ?? "Nu am putut inregistra votul.");
   }
 
+  const activeProposals = proposals.filter((proposal) => proposal.status === "open");
+
   return (
     <section id="voteaza" className="bg-[#f5f7fb]">
       <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-16">
@@ -270,16 +208,16 @@ export function VoteazaSchimbarileSection() {
           <Badge>Voteaza propuneri</Badge>
           <div className="space-y-3">
             <h2 className="max-w-5xl text-3xl font-semibold leading-tight tracking-tight text-slate-950 sm:text-4xl">
-              Voteaza usor, vezi rezultatele in timp real si lasa un comentariu optional.
+              Voteaza usor, vezi rezultatele si lasa un comentariu optional.
             </h2>
             <p className="text-base leading-7 text-slate-600">
-              Formularul este optimizat pentru mobil si desktop. Pentru fiecare mesaj se afiseaza cine a scris si data/ora.
+              Fiecare comentariu afiseaza numele rezidentului si data/ora publicarii.
             </p>
           </div>
         </div>
 
         <div className="mt-8 space-y-6">
-          {proposals.map((proposal) => {
+          {activeProposals.map((proposal) => {
             const currentForm = forms[proposal.id] ?? { choice: "yes" as VoteChoice, reason: "" };
             const isVotingOpen = activeProposalId === proposal.id;
 
@@ -298,30 +236,25 @@ export function VoteazaSchimbarileSection() {
                     </CardDescription>
                   </div>
 
-                  <div className="mt-6 grid gap-3 sm:grid-cols-2">
-                    <div className="rounded-xl border border-blue-100 bg-blue-50 p-4 sm:p-5">
-                      <p className="text-sm font-semibold text-[#005eb8]">Voturi pentru</p>
-                      <p className="mt-2 text-3xl font-extrabold text-[#005eb8] sm:text-4xl">{proposal.yes_votes}</p>
+                  <div className="mt-4 grid max-w-xs grid-cols-2 gap-2">
+                    <div className="rounded-xl border border-blue-100 bg-blue-50 p-3">
+                      <p className="text-xs font-semibold text-[#005eb8]">Pentru</p>
+                      <p className="mt-1 text-xl font-extrabold text-[#005eb8]">{proposal.yes_votes}</p>
                     </div>
-                    <div className="rounded-xl border border-rose-100 bg-rose-50 p-4 sm:p-5">
-                      <p className="text-sm font-semibold text-[#e31e24]">Voturi impotriva</p>
-                      <p className="mt-2 text-3xl font-extrabold text-[#e31e24] sm:text-4xl">{proposal.no_votes}</p>
+                    <div className="rounded-xl border border-rose-100 bg-rose-50 p-3">
+                      <p className="text-xs font-semibold text-[#e31e24]">Impotriva</p>
+                      <p className="mt-1 text-xl font-extrabold text-[#e31e24]">{proposal.no_votes}</p>
                     </div>
                   </div>
 
-                  {proposal.status === "open" ? (
-                    <div className="mt-5">
-                      <Button
-                        className="w-full sm:min-w-44 sm:w-auto"
-                        onClick={() => openVotingPanel(proposal.id)}
-                      >
-                        Votez acum
-                      </Button>
-                    </div>
-                  ) : null}
+                  <div className="mt-4">
+                    <Button className="w-full sm:min-w-44 sm:w-auto" onClick={() => openVotingPanel(proposal.id)}>
+                      Voteaza
+                    </Button>
+                  </div>
                 </div>
 
-                {proposal.status === "open" && isVotingOpen ? (
+                {isVotingOpen ? (
                   <div className="bg-slate-50 p-4 sm:p-6">
                     <div className="rounded-2xl border border-slate-200 bg-white p-4 sm:p-6">
                       {showAuthPrompt ? (
@@ -346,9 +279,21 @@ export function VoteazaSchimbarileSection() {
 
                           {showLoginForm ? (
                             <div className="mt-4 rounded-2xl border border-amber-200 bg-white p-4">
-                              <div className="grid gap-3">
-                                <Input type="email" value={email} onChange={(event) => setEmail(event.target.value)} placeholder="Email" />
-                                <Input type="password" value={password} onChange={(event) => setPassword(event.target.value)} placeholder="Parola" />
+                              <div className="grid gap-3 sm:grid-cols-2">
+                                <Input
+                                  type="email"
+                                  value={email}
+                                  onChange={(event) => setEmail(event.target.value)}
+                                  placeholder="Email"
+                                />
+                                <Input
+                                  type="password"
+                                  value={password}
+                                  onChange={(event) => setPassword(event.target.value)}
+                                  placeholder="Parola"
+                                />
+                              </div>
+                              <div className="mt-3">
                                 <button
                                   type="button"
                                   onClick={handleInlineLogin}
@@ -357,56 +302,13 @@ export function VoteazaSchimbarileSection() {
                                 >
                                   {loginLoading ? "Se verifica..." : "Login"}
                                 </button>
-                                {loginError ? <p className="text-sm text-rose-700">{loginError}</p> : null}
                               </div>
+                              {loginError ? <p className="mt-3 text-sm text-rose-700">{loginError}</p> : null}
                             </div>
                           ) : null}
                         </div>
                       ) : (
-                        <div className="space-y-5">
-                          <div className="grid gap-3 lg:grid-cols-3">
-                            <StepBadge step="Pasul 1" title="Autentificare" active />
-                            <StepBadge step="Pasul 2" title="Alegere vot" active />
-                            <StepBadge step="Pasul 3" title="Comentariu optional" active />
-                          </div>
-
-                          <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4 sm:p-5">
-                            <p className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">
-                              Date cont pentru validarea votului
-                            </p>
-                            <div className="grid gap-4 sm:grid-cols-2">
-                              <div>
-                                <Label htmlFor={`vote-email-${proposal.id}`}>Email</Label>
-                                <Input
-                                  id={`vote-email-${proposal.id}`}
-                                  type="email"
-                                  value={email}
-                                  onChange={(event) => setEmail(event.target.value)}
-                                  placeholder="Ex: nume@email.ro"
-                                  className="mt-2"
-                                />
-                              </div>
-                              <div>
-                                <Label htmlFor={`vote-password-${proposal.id}`}>Parola</Label>
-                                <Input
-                                  id={`vote-password-${proposal.id}`}
-                                  type="password"
-                                  value={password}
-                                  onChange={(event) => setPassword(event.target.value)}
-                                  placeholder="Parola aleasa la inscriere"
-                                  className="mt-2"
-                                />
-                              </div>
-                            </div>
-                          </div>
-
-                          <div className="rounded-2xl border border-slate-200 bg-white p-4 sm:p-5">
-                            <p className="text-sm font-semibold text-slate-950">Alege optiunea de vot</p>
-                            <p className="mt-1 text-sm text-slate-500">
-                              Selecteaza o singura varianta. Votul poate fi actualizat daca votezi din nou.
-                            </p>
-                          </div>
-
+                        <div className="space-y-4">
                           <div className="grid gap-3 sm:grid-cols-2">
                             {voteOptions.map((option) => {
                               const isActive = currentForm.choice === option.value;
@@ -444,7 +346,9 @@ export function VoteazaSchimbarileSection() {
                           </div>
 
                           <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4 sm:p-5">
-                            <Label htmlFor={`reason-${proposal.id}`}>Comentariu (optional)</Label>
+                            <label htmlFor={`reason-${proposal.id}`} className="text-sm font-semibold text-slate-900">
+                              Comentariu (optional)
+                            </label>
                             <Textarea
                               id={`reason-${proposal.id}`}
                               value={currentForm.reason}
@@ -454,7 +358,7 @@ export function VoteazaSchimbarileSection() {
                                   [proposal.id]: { ...currentForm, reason: event.target.value },
                                 }))
                               }
-                              placeholder="Poti lasa un comentariu scurt care va fi afisat cu numele tau si data/ora."
+                              placeholder="Poti lasa un comentariu care va fi afisat cu numele tau si data/ora."
                               className="mt-2"
                               maxLength={maxCommentLength}
                             />
@@ -463,59 +367,22 @@ export function VoteazaSchimbarileSection() {
                             </p>
                           </div>
 
-                          <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+                          <div className="pt-1">
                             <Button className="w-full sm:w-auto" onClick={() => submitVote(proposal.id)}>
                               Trimite votul
                             </Button>
-                            <Button
-                              className="w-full sm:w-auto"
-                              variant="secondary"
-                              onClick={() => setShowSetupForm((current) => !current)}
-                            >
-                              Mi-am facut inscrierea inainte de parola
-                            </Button>
                           </div>
 
-                          {message ? <p className="rounded-xl bg-blue-50 px-4 py-3 text-sm text-[#005eb8]">{message}</p> : null}
-                          {error ? <p className="rounded-xl bg-rose-50 px-4 py-3 text-sm text-rose-700">{error}</p> : null}
-
-                          {showSetupForm ? (
-                            <div className="rounded-xl border border-slate-200 bg-slate-50 p-5">
-                              <h4 className="text-base font-extrabold text-slate-950">Seteaza parola daca ai o inscriere mai veche</h4>
-                              <p className="mt-2 text-sm leading-6 text-slate-600">
-                                Foloseste emailul si telefonul deja salvate pentru a activa parola de vot.
-                              </p>
-                              <div className="mt-5 grid gap-4 md:grid-cols-3">
-                                <div>
-                                  <Label htmlFor="setup-email">Email</Label>
-                                  <Input id="setup-email" type="email" value={setupEmail} onChange={(event) => setSetupEmail(event.target.value)} className="mt-2" />
-                                </div>
-                                <div>
-                                  <Label htmlFor="setup-phone">Telefon</Label>
-                                  <Input id="setup-phone" value={setupPhone} onChange={(event) => setSetupPhone(event.target.value)} className="mt-2" />
-                                </div>
-                                <div>
-                                  <Label htmlFor="setup-password">Parola noua</Label>
-                                  <Input id="setup-password" type="password" value={setupPasswordValue} onChange={(event) => setSetupPasswordValue(event.target.value)} className="mt-2" />
-                                </div>
-                              </div>
-                              <div className="mt-4">
-                                <Button onClick={handleSetupPassword}>Seteaza parola pentru vot</Button>
-                              </div>
-                              {setupMessage ? <p className="mt-4 rounded-xl bg-blue-50 px-4 py-3 text-sm text-[#005eb8]">{setupMessage}</p> : null}
-                              {setupError ? <p className="mt-4 rounded-xl bg-rose-50 px-4 py-3 text-sm text-rose-700">{setupError}</p> : null}
-                            </div>
+                          {message ? (
+                            <p className="rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-semibold text-emerald-800">
+                              {message}
+                            </p>
                           ) : null}
+                          {error ? <p className="rounded-xl bg-rose-50 px-4 py-3 text-sm text-rose-700">{error}</p> : null}
                         </div>
                       )}
                     </div>
                   </div>
-                ) : null}
-
-                {proposal.status === "closed" ? (
-                  <p className="mx-6 my-6 rounded-xl bg-slate-100 px-4 py-3 text-sm text-slate-700">
-                    Votul pentru acest subiect este inchis.
-                  </p>
                 ) : null}
 
                 <div className="border-t border-slate-200 bg-white p-4 sm:p-6">
@@ -552,11 +419,11 @@ export function VoteazaSchimbarileSection() {
             );
           })}
 
-          {!proposals.length ? (
+          {!activeProposals.length ? (
             <Card className="rounded-2xl">
-              <CardTitle>Nu exista inca subiecte active pentru vot</CardTitle>
+              <CardTitle>Nu exista inca propuneri active pentru vot</CardTitle>
               <CardDescription className="mt-3">
-                Cand administratorul adauga un subiect nou din panoul de administrare, acesta va aparea aici.
+                Cand administratorul adauga un subiect nou si il marcheaza activ, acesta va aparea aici.
               </CardDescription>
             </Card>
           ) : null}

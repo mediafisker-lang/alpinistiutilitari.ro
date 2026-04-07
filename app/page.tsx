@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Script from "next/script";
 
-import { BenefitsSection } from "@/components/benefits-section";
 import { CommunitySection } from "@/components/community-section";
 import { HeroSection } from "@/components/hero-section";
 import { HowItWorksSection } from "@/components/how-it-works-section";
@@ -72,7 +71,6 @@ export default async function HomePage() {
       <HowItWorksSection />
       <QuickJoinBanner />
       <CommunitySection links={links} />
-      <BenefitsSection />
     </>
   );
 }
