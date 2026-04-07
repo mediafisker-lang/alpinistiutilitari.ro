@@ -7,7 +7,7 @@ import { type Dispatch, type FormEvent, type SetStateAction, useEffect, useState
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { fetchCurrentClientIp } from "@/lib/client-ip";
-import { readVoteAuth, subscribeVoteAuth, writeVoteAuth } from "@/lib/vote-auth";
+import { clearVoteAuth, readVoteAuth, subscribeVoteAuth, writeVoteAuth } from "@/lib/vote-auth";
 
 type LoginState = {
   email: string;
@@ -30,6 +30,7 @@ export function SiteHeader() {
   const [loginLoading, setLoginLoading] = useState(false);
   const [loginStateMobile, setLoginStateMobile] = useState<LoginState>(initialLoginState);
   const [loginLoadingMobile, setLoginLoadingMobile] = useState(false);
+  const [dateTimeLabel, setDateTimeLabel] = useState("");
 
   useEffect(() => {
     let isMounted = true;
@@ -57,9 +58,35 @@ export function SiteHeader() {
     return subscribeVoteAuth(syncSession);
   }, [currentIp]);
 
+  useEffect(() => {
+    const formatter = new Intl.DateTimeFormat("ro-RO", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+
+    const updateLabel = () => {
+      setDateTimeLabel(formatter.format(new Date()));
+    };
+
+    updateLabel();
+    const timer = setInterval(updateLabel, 30_000);
+    return () => clearInterval(timer);
+  }, []);
+
   const loggedInName = loggedInEmail.includes("@")
     ? loggedInEmail.split("@")[0] || loggedInEmail
     : loggedInEmail;
+
+  function handleLogout() {
+    clearVoteAuth();
+    setLoginState(initialLoginState);
+    setLoginStateMobile(initialLoginState);
+    setLoginLoading(false);
+    setLoginLoadingMobile(false);
+  }
 
   async function runLogin(
     email: string,
@@ -178,8 +205,20 @@ export function SiteHeader() {
               Voteaza
             </Link>
             {loggedInEmail ? (
-              <div className="rounded-xl border border-blue-200 bg-blue-50 px-4 py-2 text-sm font-semibold text-[#005eb8]">
-                HI, {loggedInName}
+              <div className="flex items-center gap-2 rounded-xl border border-blue-200 bg-blue-50 px-3 py-2">
+                <div className="text-right">
+                  <p className="text-[11px] leading-4 text-slate-600">
+                    Data si ora: {dateTimeLabel || "--"}
+                  </p>
+                  <p className="text-sm font-semibold text-[#005eb8]">Hello, {loggedInName}</p>
+                </div>
+                <button
+                  type="button"
+                  onClick={handleLogout}
+                  className="rounded-md border border-slate-300 bg-white px-2 py-1 text-[11px] font-medium text-slate-600 transition hover:bg-slate-100"
+                >
+                  Logout
+                </button>
               </div>
             ) : (
               <form onSubmit={handleDesktopLogin} className="flex items-center gap-2">
@@ -244,8 +283,18 @@ export function SiteHeader() {
           </nav>
 
           {loggedInEmail ? (
-            <div className="mt-3 rounded-xl border border-blue-200 bg-blue-50 px-4 py-3 text-center text-sm font-semibold text-[#005eb8]">
-              HI, {loggedInName}
+            <div className="mt-2.5 rounded-xl border border-blue-200 bg-blue-50 px-3 py-2">
+              <p className="text-center text-[11px] text-slate-600">Data si ora: {dateTimeLabel || "--"}</p>
+              <div className="mt-1 flex items-center justify-between gap-2">
+                <p className="text-sm font-semibold text-[#005eb8]">Hello, {loggedInName}</p>
+                <button
+                  type="button"
+                  onClick={handleLogout}
+                  className="rounded-md border border-slate-300 bg-white px-2 py-1 text-[11px] font-medium text-slate-600 transition hover:bg-slate-100"
+                >
+                  Logout
+                </button>
+              </div>
             </div>
           ) : (
             <form onSubmit={handleMobileLogin} className="mt-2.5 grid grid-cols-2 gap-1.5">
