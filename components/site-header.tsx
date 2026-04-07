@@ -290,7 +290,10 @@ export function SiteHeader() {
               </button>
             </div>
           ) : (
-            <form onSubmit={handleMobileLogin} className="mt-2.5 grid grid-cols-2 gap-1.5">
+            <form
+              onSubmit={handleMobileLogin}
+              className="mt-2.5 grid grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto_auto] items-center gap-1.5"
+            >
               <Input
                 type="email"
                 value={loginStateMobile.email}
@@ -301,7 +304,7 @@ export function SiteHeader() {
                   }))
                 }
                 placeholder="USER"
-                className="h-8 rounded-lg px-2 text-xs"
+                className="h-8 min-w-0 rounded-lg px-2 text-xs"
               />
               <Input
                 type="password"
@@ -313,7 +316,7 @@ export function SiteHeader() {
                   }))
                 }
                 placeholder="PASSWORD"
-                className="h-8 rounded-lg px-2 text-xs"
+                className="h-8 min-w-0 rounded-lg px-2 text-xs"
               />
               <Button
                 type="submit"
