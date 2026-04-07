@@ -62,7 +62,6 @@ export function SiteHeader() {
     const formatter = new Intl.DateTimeFormat("ro-RO", {
       day: "2-digit",
       month: "2-digit",
-      year: "numeric",
       hour: "2-digit",
       minute: "2-digit",
     });
@@ -157,14 +156,7 @@ export function SiteHeader() {
 
   return (
     <header className="sticky top-0 z-20 border-b border-slate-200 bg-white shadow-sm">
-      <div className="bg-[linear-gradient(90deg,#e31e24_0%,#005eb8_55%,#005eb8_100%)]">
-        <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-2 text-[11px] font-medium text-white sm:px-6 sm:text-xs">
-          <p>Portal comunitate</p>
-          <p className="hidden sm:block">Acces rapid la vot, sesizari si actualizari</p>
-        </div>
-      </div>
-
-      <div className="mx-auto max-w-6xl px-4 py-3 sm:px-6 sm:py-4">
+      <div className="mx-auto max-w-6xl px-4 py-2.5 sm:px-6 sm:py-3">
         <div className="flex items-center justify-between gap-3 sm:gap-4">
           <Link href="/" className="min-w-0 shrink-0">
             <div className="flex items-center gap-2.5 sm:gap-3">
@@ -173,14 +165,19 @@ export function SiteHeader() {
                 alt="Cortina North"
                 width={196}
                 height={64}
-                className="h-10 w-auto object-contain sm:h-14"
+                className="h-9 w-auto object-contain sm:h-12"
                 priority
               />
               <div className="min-w-0">
-                <p className="truncate text-base font-extrabold tracking-tight text-slate-950 sm:text-lg">
-                  Cortina North
-                </p>
-                <p className="hidden text-xs text-slate-500 sm:block">Informatii si schimbari in comunitate</p>
+                <div className="flex items-center gap-1.5 sm:gap-2">
+                  <p className="truncate text-base font-extrabold tracking-tight text-slate-950 sm:text-lg">
+                    Cortina North
+                  </p>
+                  <span className="rounded-full bg-[linear-gradient(90deg,#e31e24_0%,#005eb8_100%)] px-2 py-0.5 text-[10px] font-semibold text-white sm:text-[11px]">
+                    Portal comunitate
+                  </span>
+                </div>
+                <p className="hidden text-xs text-slate-500 sm:block">Acces rapid la vot, sesizari si actualizari</p>
               </div>
             </div>
           </Link>
@@ -188,30 +185,28 @@ export function SiteHeader() {
           <div className="hidden items-center gap-3 lg:flex">
             <Link
               href="/#stadiu"
-              className="rounded-xl px-3 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-100"
+              className="rounded-lg border border-[#004f99] bg-[#005eb8] px-3 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-[#004a92]"
             >
               Asociatie
             </Link>
             <Link
               href="/#sesizari"
-              className="rounded-xl px-3 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-100"
+              className="rounded-lg border border-[#004f99] bg-[#005eb8] px-3 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-[#004a92]"
             >
               Sesizari
             </Link>
             <Link
               href="/#voteaza"
-              className="rounded-xl px-3 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-100"
+              className="rounded-lg border border-[#004f99] bg-[#005eb8] px-3 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-[#004a92]"
             >
               Voteaza
             </Link>
             {loggedInEmail ? (
-              <div className="flex items-center gap-2 rounded-xl border border-blue-200 bg-blue-50 px-3 py-2">
-                <div className="text-right">
-                  <p className="text-[11px] leading-4 text-slate-600">
-                    Data si ora: {dateTimeLabel || "--"}
-                  </p>
-                  <p className="text-sm font-semibold text-[#005eb8]">Hello, {loggedInName}</p>
-                </div>
+              <div className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-2 rounded-lg border border-blue-200 bg-blue-50 px-2.5 py-1.5">
+                <p className="whitespace-nowrap text-[11px] leading-4 text-slate-600">
+                  Data si ora {dateTimeLabel || "--"}
+                </p>
+                <p className="min-w-0 truncate text-sm font-semibold text-[#005eb8]">Hello, {loggedInName}</p>
                 <button
                   type="button"
                   onClick={handleLogout}
@@ -264,37 +259,35 @@ export function SiteHeader() {
           <nav className="grid grid-cols-3 gap-2">
             <Link
               href="/#stadiu"
-              className="rounded-lg border border-slate-200 bg-slate-50 px-2 py-2.5 text-center text-[12px] font-semibold text-slate-700 transition hover:bg-slate-100"
+              className="rounded-lg border border-[#004f99] bg-[#005eb8] px-2 py-2.5 text-center text-[12px] font-semibold text-white shadow-sm transition hover:bg-[#004a92]"
             >
               Asociatie
             </Link>
             <Link
               href="/#sesizari"
-              className="rounded-lg border border-slate-200 bg-slate-50 px-2 py-2.5 text-center text-[12px] font-semibold text-slate-700 transition hover:bg-slate-100"
+              className="rounded-lg border border-[#004f99] bg-[#005eb8] px-2 py-2.5 text-center text-[12px] font-semibold text-white shadow-sm transition hover:bg-[#004a92]"
             >
               Sesizari / Istoric
             </Link>
             <Link
               href="/#voteaza"
-              className="rounded-lg border border-slate-200 bg-slate-50 px-2 py-2.5 text-center text-[12px] font-semibold text-slate-700 transition hover:bg-slate-100"
+              className="rounded-lg border border-[#004f99] bg-[#005eb8] px-2 py-2.5 text-center text-[12px] font-semibold text-white shadow-sm transition hover:bg-[#004a92]"
             >
               Voteaza propuneri
             </Link>
           </nav>
 
           {loggedInEmail ? (
-            <div className="mt-2.5 rounded-xl border border-blue-200 bg-blue-50 px-3 py-2">
-              <p className="text-center text-[11px] text-slate-600">Data si ora: {dateTimeLabel || "--"}</p>
-              <div className="mt-1 flex items-center justify-between gap-2">
-                <p className="text-sm font-semibold text-[#005eb8]">Hello, {loggedInName}</p>
-                <button
-                  type="button"
-                  onClick={handleLogout}
-                  className="rounded-md border border-slate-300 bg-white px-2 py-1 text-[11px] font-medium text-slate-600 transition hover:bg-slate-100"
-                >
-                  Logout
-                </button>
-              </div>
+            <div className="mt-2.5 grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-1.5 rounded-xl border border-blue-200 bg-blue-50 px-2 py-1.5">
+              <p className="whitespace-nowrap text-[10px] text-slate-600">Data si ora {dateTimeLabel || "--"}</p>
+              <p className="min-w-0 truncate text-xs font-semibold text-[#005eb8]">Hello, {loggedInName}</p>
+              <button
+                type="button"
+                onClick={handleLogout}
+                className="rounded-md border border-slate-300 bg-white px-2 py-1 text-[10px] font-medium text-slate-600 transition hover:bg-slate-100"
+              >
+                Logout
+              </button>
             </div>
           ) : (
             <form onSubmit={handleMobileLogin} className="mt-2.5 grid grid-cols-2 gap-1.5">
