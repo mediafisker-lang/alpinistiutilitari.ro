@@ -20,7 +20,7 @@ export function HeroSection({ stats }: { stats: HomepageStats }) {
       className="relative overflow-hidden bg-cover bg-center bg-no-repeat"
       style={{
         backgroundImage:
-          "linear-gradient(180deg, rgba(11, 19, 36, 0.78) 0%, rgba(15, 26, 49, 0.82) 42%, rgba(10, 18, 33, 0.86) 100%), url('/hero-label-bg.jpg')",
+          "linear-gradient(180deg, rgba(11, 19, 36, 0.78) 0%, rgba(15, 26, 49, 0.82) 42%, rgba(10, 18, 33, 0.86) 100%), url('/images/cortina/cortina-north-pipera-hero.webp')",
       }}
     >
       <div className="absolute inset-x-0 top-0 h-64 bg-[radial-gradient(circle_at_top,_rgba(56,189,248,0.2),_transparent_58%)]" />
