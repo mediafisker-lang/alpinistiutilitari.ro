@@ -4,7 +4,6 @@ import Script from "next/script";
 import { CommunitySection } from "@/components/community-section";
 import { HeroSection } from "@/components/hero-section";
 import { HowItWorksSection } from "@/components/how-it-works-section";
-import { QuickJoinBanner } from "@/components/quick-join-banner";
 import {
   getCommunityLinks,
   getHomepageStats,
@@ -69,7 +68,6 @@ export default async function HomePage() {
       />
       <HeroSection stats={stats} />
       <HowItWorksSection />
-      <QuickJoinBanner />
       <CommunitySection links={links} />
     </>
   );
