@@ -26,7 +26,7 @@ export function HeroSection({ stats }: { stats: HomepageStats }) {
             </span>
             <div className="space-y-4">
               <h1 className="max-w-3xl text-4xl font-extrabold tracking-tight text-[#f7e7bf] sm:text-5xl">
-                Conectează-te. Informează-te. Fii parte din comunitate.
+                Conectează-te! Informează-te! Fii parte din comunitate!
               </h1>
               <p className="max-w-2xl text-base leading-7 text-[#d9c598] sm:text-lg">
                 Interfata Cortina North Pipera - Ilfov este gandita sa intri rapid in comunitate, sa fii informat si daca consideri sa participi activ la schimbari.
