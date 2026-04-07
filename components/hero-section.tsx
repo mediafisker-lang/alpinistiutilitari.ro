@@ -48,7 +48,11 @@ export function HeroSection({ stats }: { stats: HomepageStats }) {
                 </Link>
               ) : null}
               <Link href="/stadiu-asociatie">
-                <Button variant="outline" size="lg" className="w-full sm:w-auto">
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="w-full border-white/80 bg-white/10 text-white shadow-[0_12px_26px_rgba(15,23,42,0.28)] hover:bg-white/20 hover:text-white sm:w-auto"
+                >
                   {isLoggedIn ? "Vezi noutatile si stadiul" : "Vezi stadiul actual"}
                 </Button>
               </Link>
