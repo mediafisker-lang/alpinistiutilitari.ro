@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowLeft, ArrowRight, CheckCircle2 } from "lucide-react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import { useRef, useState } from "react";
 
 import { FormSubmit } from "@/components/form-submit";
@@ -218,29 +218,6 @@ export function JoinForm() {
             {state.errors?.password ? (
               <p className="mt-2 text-sm text-rose-600">{state.errors.password[0]}</p>
             ) : null}
-          </div>
-
-          <div className="surface-3d rounded-3xl bg-slate-50 p-5">
-            <div className="flex items-start gap-3">
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-700">
-                <CheckCircle2 className="size-5" />
-              </div>
-              <div>
-                <h3 className="text-base font-semibold text-slate-950">Ce primesti dupa inscriere</h3>
-                <p className="mt-1 text-sm leading-6 text-slate-600">
-                  Totul ramane intr-un singur loc, usor de urmarit si usor de folosit.
-                </p>
-              </div>
-            </div>
-            <ul className="mt-4 space-y-3 text-sm leading-6 text-slate-700">
-              <li>- Primesti actualizari clare despre initiativa si noutatile importante</li>
-              <li>- Poti trimite sesizari si urmari mai usor ce se intampla</li>
-              <li>- Dupa confirmarea inscrierii, poti primi acces in grupul de WhatsApp al comunitatii</li>
-              <li>- Poti participa la consultari si voturi privind propunerile si schimbarile discutate in cadrul initiativei sau al asociatiei</li>
-            </ul>
-            <p className="mt-4 text-sm leading-6 text-slate-600">
-              Datele tale sunt folosite doar pentru comunicari legate de complex, initiativa asociatiei si gestionarea sesizarilor.
-            </p>
           </div>
 
           <label className="surface-3d flex items-start gap-3 rounded-2xl bg-slate-50 p-4 text-sm leading-6 text-slate-700">
