@@ -70,6 +70,7 @@ export interface VoteProposalComment {
   resident_name: string;
   vote_choice: VoteChoice;
   reason: string | null;
+  created_at: string;
 }
 
 export interface VoteProposal {

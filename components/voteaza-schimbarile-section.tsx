@@ -11,6 +11,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { fetchCurrentClientIp } from "@/lib/client-ip";
+import { formatDate } from "@/lib/utils";
 import { readVoteAuth, subscribeVoteAuth, writeVoteAuth } from "@/lib/vote-auth";
 
 type Proposal = {
@@ -20,7 +21,13 @@ type Proposal = {
   status: "open" | "closed";
   yes_votes: number;
   no_votes: number;
-  comments: { id: string; resident_name: string; vote_choice: "yes" | "no"; reason: string | null }[];
+  comments: {
+    id: string;
+    resident_name: string;
+    vote_choice: "yes" | "no";
+    reason: string | null;
+    created_at: string;
+  }[];
 };
 
 type VoteChoice = "yes" | "no";
@@ -41,8 +48,9 @@ const voteOptions = [
   },
 ];
 
-const authTitle = "Trebuie sa fii logat ca sa poti trimite o sesizare.";
-const authText = "Pentru trimitere, intra in cont sau mergi la inscriere daca nu ai parola inca.";
+const authTitle = "Trebuie sa fii logat ca sa poti vota.";
+const authText = "Intra in cont sau mergi la inscriere daca nu ai parola inca.";
+const maxCommentLength = 700;
 
 function StepBadge({
   step,
@@ -259,15 +267,13 @@ export function VoteazaSchimbarileSection() {
     <section id="voteaza" className="bg-[#f5f7fb]">
       <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-16">
         <div className="space-y-4">
-          <Badge>Voteaza</Badge>
+          <Badge>Voteaza propuneri</Badge>
           <div className="space-y-3">
-            <h2 className="max-w-5xl text-[1.95rem] font-semibold leading-tight tracking-tight text-slate-950 sm:text-4xl">
-              Voteaza rapid pe subiectele propuse pentru a sti dorinta majoritatii
-              <br />
-              si a actiona in consecinta.
+            <h2 className="max-w-5xl text-3xl font-semibold leading-tight tracking-tight text-slate-950 sm:text-4xl">
+              Voteaza usor, vezi rezultatele in timp real si lasa un comentariu optional.
             </h2>
             <p className="text-base leading-7 text-slate-600">
-              Formularul de vot este acum organizat pe pasi, cu selectie mai clara si feedback vizual mai bun.
+              Formularul este optimizat pentru mobil si desktop. Pentru fiecare mesaj se afiseaza cine a scris si data/ora.
             </p>
           </div>
         </div>
@@ -284,25 +290,32 @@ export function VoteazaSchimbarileSection() {
                     <div className="mb-3 inline-flex rounded-lg bg-blue-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.16em] text-[#005eb8]">
                       Propunere activa
                     </div>
-                    <CardTitle className="text-2xl font-extrabold tracking-tight sm:text-3xl">{proposal.title}</CardTitle>
-                    <CardDescription className="mt-3 text-base">{proposal.description}</CardDescription>
+                    <CardTitle className="text-2xl font-extrabold tracking-tight sm:text-3xl">
+                      {proposal.title}
+                    </CardTitle>
+                    <CardDescription className="mt-3 text-sm leading-7 sm:text-base">
+                      {proposal.description}
+                    </CardDescription>
                   </div>
 
-                  <div className="mt-6 grid gap-4 sm:grid-cols-2">
-                    <div className="rounded-xl border border-blue-100 bg-blue-50 p-5">
+                  <div className="mt-6 grid gap-3 sm:grid-cols-2">
+                    <div className="rounded-xl border border-blue-100 bg-blue-50 p-4 sm:p-5">
                       <p className="text-sm font-semibold text-[#005eb8]">Voturi pentru</p>
-                      <p className="mt-2 text-4xl font-extrabold text-[#005eb8]">{proposal.yes_votes}</p>
+                      <p className="mt-2 text-3xl font-extrabold text-[#005eb8] sm:text-4xl">{proposal.yes_votes}</p>
                     </div>
-                    <div className="rounded-xl border border-rose-100 bg-rose-50 p-5">
+                    <div className="rounded-xl border border-rose-100 bg-rose-50 p-4 sm:p-5">
                       <p className="text-sm font-semibold text-[#e31e24]">Voturi impotriva</p>
-                      <p className="mt-2 text-4xl font-extrabold text-[#e31e24]">{proposal.no_votes}</p>
+                      <p className="mt-2 text-3xl font-extrabold text-[#e31e24] sm:text-4xl">{proposal.no_votes}</p>
                     </div>
                   </div>
 
                   {proposal.status === "open" ? (
                     <div className="mt-5">
-                      <Button className="w-full sm:min-w-36 sm:w-auto" onClick={() => openVotingPanel(proposal.id)}>
-                        Votez
+                      <Button
+                        className="w-full sm:min-w-44 sm:w-auto"
+                        onClick={() => openVotingPanel(proposal.id)}
+                      >
+                        Votez acum
                       </Button>
                     </div>
                   ) : null}
@@ -354,10 +367,13 @@ export function VoteazaSchimbarileSection() {
                           <div className="grid gap-3 lg:grid-cols-3">
                             <StepBadge step="Pasul 1" title="Autentificare" active />
                             <StepBadge step="Pasul 2" title="Alegere vot" active />
-                            <StepBadge step="Pasul 3" title="Mesaj optional" active />
+                            <StepBadge step="Pasul 3" title="Comentariu optional" active />
                           </div>
 
                           <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4 sm:p-5">
+                            <p className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">
+                              Date cont pentru validarea votului
+                            </p>
                             <div className="grid gap-4 sm:grid-cols-2">
                               <div>
                                 <Label htmlFor={`vote-email-${proposal.id}`}>Email</Label>
@@ -382,6 +398,13 @@ export function VoteazaSchimbarileSection() {
                                 />
                               </div>
                             </div>
+                          </div>
+
+                          <div className="rounded-2xl border border-slate-200 bg-white p-4 sm:p-5">
+                            <p className="text-sm font-semibold text-slate-950">Alege optiunea de vot</p>
+                            <p className="mt-1 text-sm text-slate-500">
+                              Selecteaza o singura varianta. Votul poate fi actualizat daca votezi din nou.
+                            </p>
                           </div>
 
                           <div className="grid gap-3 sm:grid-cols-2">
@@ -421,7 +444,7 @@ export function VoteazaSchimbarileSection() {
                           </div>
 
                           <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4 sm:p-5">
-                            <Label htmlFor={`reason-${proposal.id}`}>Motivul tau</Label>
+                            <Label htmlFor={`reason-${proposal.id}`}>Comentariu (optional)</Label>
                             <Textarea
                               id={`reason-${proposal.id}`}
                               value={currentForm.reason}
@@ -431,14 +454,24 @@ export function VoteazaSchimbarileSection() {
                                   [proposal.id]: { ...currentForm, reason: event.target.value },
                                 }))
                               }
-                              placeholder="Scrie pe scurt motivul tau."
+                              placeholder="Poti lasa un comentariu scurt care va fi afisat cu numele tau si data/ora."
                               className="mt-2"
+                              maxLength={maxCommentLength}
                             />
+                            <p className="mt-2 text-xs text-slate-500">
+                              {currentForm.reason.length}/{maxCommentLength} caractere
+                            </p>
                           </div>
 
-                          <div className="flex flex-col gap-3 sm:flex-row">
-                            <Button onClick={() => submitVote(proposal.id)}>Trimite votul</Button>
-                            <Button variant="secondary" onClick={() => setShowSetupForm((current) => !current)}>
+                          <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+                            <Button className="w-full sm:w-auto" onClick={() => submitVote(proposal.id)}>
+                              Trimite votul
+                            </Button>
+                            <Button
+                              className="w-full sm:w-auto"
+                              variant="secondary"
+                              onClick={() => setShowSetupForm((current) => !current)}
+                            >
                               Mi-am facut inscrierea inainte de parola
                             </Button>
                           </div>
@@ -487,12 +520,18 @@ export function VoteazaSchimbarileSection() {
 
                 <div className="border-t border-slate-200 bg-white p-4 sm:p-6">
                   <h3 className="text-lg font-extrabold text-slate-950">Mesaje din comunitate</h3>
+                  <p className="mt-1 text-sm text-slate-500">
+                    Fiecare comentariu afiseaza numele rezidentului si data/ora publicarii.
+                  </p>
                   <div className="mt-4 space-y-3">
                     {proposal.comments.length ? (
                       proposal.comments.map((comment) => (
                         <div key={comment.id} className="rounded-xl border border-slate-200 bg-slate-50 p-4">
                           <div className="flex items-center justify-between gap-3">
-                            <p className="text-sm font-semibold text-slate-950">{comment.resident_name}</p>
+                            <div>
+                              <p className="text-sm font-semibold text-slate-950">{comment.resident_name}</p>
+                              <p className="text-xs text-slate-500">{formatDate(comment.created_at)}</p>
+                            </div>
                             <span
                               className={`rounded-lg px-3 py-1 text-xs font-semibold ${
                                 comment.vote_choice === "yes" ? "bg-blue-50 text-[#005eb8]" : "bg-rose-50 text-[#e31e24]"

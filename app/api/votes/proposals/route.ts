@@ -7,6 +7,7 @@ type VoteRow = {
   proposal_id: string;
   vote_choice: "yes" | "no";
   reason: string | null;
+  created_at: string;
   residents: { full_name: string } | { full_name: string }[] | null;
 };
 
@@ -33,7 +34,7 @@ export async function GET() {
   const proposalIds = proposals.map((proposal) => proposal.id);
   const { data: votes } = await supabase
     .from("proposal_votes")
-    .select("id, proposal_id, vote_choice, reason, residents(full_name)")
+    .select("id, proposal_id, vote_choice, reason, created_at, residents(full_name)")
     .in("proposal_id", proposalIds)
     .order("created_at", { ascending: false });
 
@@ -54,6 +55,7 @@ export async function GET() {
           : vote.residents?.full_name ?? "Rezident",
         vote_choice: vote.vote_choice,
         reason: vote.reason,
+        created_at: vote.created_at,
       })),
     };
   });
