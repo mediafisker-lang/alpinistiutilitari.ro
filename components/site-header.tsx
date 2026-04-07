@@ -156,28 +156,28 @@ export function SiteHeader() {
 
   return (
     <header className="sticky top-0 z-20 border-b border-slate-200 bg-white shadow-sm">
-      <div className="mx-auto max-w-6xl px-4 py-2.5 sm:px-6 sm:py-3">
-        <div className="flex items-center justify-between gap-3 sm:gap-4">
-          <Link href="/" className="min-w-0 shrink-0">
-            <div className="flex items-center gap-2.5 sm:gap-3">
+      <div className="mx-auto max-w-6xl px-4 py-2 sm:px-6 sm:py-2.5">
+        <div className="flex items-center justify-between gap-2 sm:gap-3">
+          <Link href="/" className="min-w-0">
+            <div className="flex items-center gap-2 sm:gap-2.5">
               <Image
                 src="/logo.png"
                 alt="Cortina North"
-                width={480}
-                height={156}
-                className="h-20 w-auto object-contain sm:h-24"
+                width={320}
+                height={104}
+                className="h-12 w-auto object-contain sm:h-14"
                 priority
               />
               <div className="min-w-0">
-                <div className="flex items-center gap-1.5 sm:gap-2">
-                  <p className="truncate text-base font-extrabold tracking-tight text-slate-950 sm:text-lg">
+                <div className="flex items-center gap-1.5">
+                  <p className="truncate text-sm font-extrabold tracking-tight text-slate-950 sm:text-base">
                     Cortina North
                   </p>
-                  <span className="rounded-full border border-blue-200 bg-blue-50 px-2 py-0.5 text-[10px] font-semibold text-blue-700 sm:text-[11px]">
+                  <span className="rounded-full border border-blue-200 bg-blue-50 px-1.5 py-0.5 text-[9px] font-semibold text-blue-700 sm:text-[10px]">
                     Portal comunitate
                   </span>
                 </div>
-                <p className="hidden text-xs text-slate-600 sm:block">Acces rapid la vot, sesizari si actualizari</p>
+                <p className="hidden text-[11px] text-slate-600 xl:block">Acces rapid la vot, sesizari si actualizari</p>
               </div>
             </div>
           </Link>
