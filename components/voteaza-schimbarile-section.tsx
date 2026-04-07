@@ -48,8 +48,8 @@ const voteOptions = [
   },
 ];
 
-const authTitle = "Trebuie sa fii logat ca sa poti vota.";
-const authText = "Intra in cont sau mergi la inregistrare daca nu ai parola inca.";
+const authTitle = "Nu esti logat/inregistrat.";
+const authText = "Intra in cont sau mergi la inregistrare ca sa poti vota.";
 const maxCommentLength = 700;
 
 const voteGalleryImages = [

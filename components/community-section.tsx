@@ -103,10 +103,6 @@ export function CommunitySection({ links }: { links: CommunityLink[] }) {
     setShowLoginForm(true);
   }
 
-  if (!currentIp || !isLoggedIn) {
-    return null;
-  }
-
   return (
     <section id="comunitate" className="scroll-mt-24 bg-slate-50">
       <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-16">
@@ -163,10 +159,10 @@ export function CommunitySection({ links }: { links: CommunityLink[] }) {
             {showAuthPrompt ? (
               <Card className="mt-6 border-amber-200 bg-amber-50">
                 <CardTitle className="text-amber-950">
-                  Trebuie sa fii logat ca sa poti vota.
+                  Nu esti logat/inregistrat.
                 </CardTitle>
                 <CardDescription className="mt-3 text-amber-900">
-                  Intra in cont sau mergi la inregistrare daca nu ai parola inca.
+                  Intra in cont sau mergi la inregistrare ca sa poti accesa linkurile comunitatii.
                 </CardDescription>
 
                 <div className="mt-4 flex flex-col gap-3 sm:flex-row">
