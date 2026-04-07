@@ -348,10 +348,10 @@ export function IssueForm() {
         {showAuthPrompt ? (
           <div className="rounded-3xl border border-amber-200 bg-amber-50 px-5 py-5">
             <p className="text-base font-semibold text-amber-950">
-              Trebuie sa fii logat ca sa poti trimite o sesizare.
+              Trebuie sa fii logat ca sa poti vota.
             </p>
             <p className="mt-2 text-sm leading-6 text-amber-900">
-              Pentru trimitere, intra in cont sau mergi la inscriere daca nu ai parola inca.
+              Intra in cont sau mergi la inregistrare daca nu ai parola inca.
             </p>
 
             <div className="mt-4 flex flex-col gap-3 sm:flex-row">
