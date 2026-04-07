@@ -185,25 +185,25 @@ export function SiteHeader() {
           <div className="hidden items-center gap-1.5 lg:flex">
             <Link
               href="/#stadiu"
-              className="inline-flex h-8 items-center rounded-md border border-[#d7b36a] bg-[linear-gradient(120deg,#a87a29_0%,#ddb45e_45%,#8e6420_100%)] px-2.5 text-[12px] font-semibold text-[#1a1207] shadow-sm transition hover:brightness-[1.07]"
+              className="inline-flex h-8 items-center rounded-md border border-[#d7b36a] bg-[linear-gradient(120deg,#a87a29_0%,#ddb45e_45%,#8e6420_100%)] px-2.5 text-[12px] font-extrabold tracking-[0.01em] text-[#120b04] shadow-sm transition hover:brightness-[1.07]"
             >
               Asociatie
             </Link>
             <Link
               href="/sesizari"
-              className="inline-flex h-8 items-center rounded-md border border-[#d7b36a] bg-[linear-gradient(120deg,#a87a29_0%,#ddb45e_45%,#8e6420_100%)] px-2.5 text-[12px] font-semibold text-[#1a1207] shadow-sm transition hover:brightness-[1.07]"
+              className="inline-flex h-8 items-center rounded-md border border-[#d7b36a] bg-[linear-gradient(120deg,#a87a29_0%,#ddb45e_45%,#8e6420_100%)] px-2.5 text-[12px] font-extrabold tracking-[0.01em] text-[#120b04] shadow-sm transition hover:brightness-[1.07]"
             >
               Sesizari / Istoric
             </Link>
             <Link
               href="/voteaza"
-              className="inline-flex h-8 items-center rounded-md border border-[#d7b36a] bg-[linear-gradient(120deg,#a87a29_0%,#ddb45e_45%,#8e6420_100%)] px-2.5 text-[12px] font-semibold text-[#1a1207] shadow-sm transition hover:brightness-[1.07]"
+              className="inline-flex h-8 items-center rounded-md border border-[#d7b36a] bg-[linear-gradient(120deg,#a87a29_0%,#ddb45e_45%,#8e6420_100%)] px-2.5 text-[12px] font-extrabold tracking-[0.01em] text-[#120b04] shadow-sm transition hover:brightness-[1.07]"
             >
               Voteaza propuneri
             </Link>
             <Link
               href="/#comunitate"
-              className="inline-flex h-8 items-center rounded-md border border-[#d7b36a] bg-[linear-gradient(120deg,#a87a29_0%,#ddb45e_45%,#8e6420_100%)] px-2.5 text-[12px] font-semibold text-[#1a1207] shadow-sm transition hover:brightness-[1.07]"
+              className="inline-flex h-8 items-center rounded-md border border-[#d7b36a] bg-[linear-gradient(120deg,#a87a29_0%,#ddb45e_45%,#8e6420_100%)] px-2.5 text-[12px] font-extrabold tracking-[0.01em] text-[#120b04] shadow-sm transition hover:brightness-[1.07]"
             >
               Comunitate
             </Link>
@@ -268,25 +268,25 @@ export function SiteHeader() {
           <nav className="grid grid-cols-2 gap-2">
             <Link
               href="/#stadiu"
-              className="rounded-lg border border-[#d7b36a] bg-[linear-gradient(120deg,#b88a2d_0%,#f1cc78_45%,#9b7226_100%)] px-2 py-2.5 text-center text-[12px] font-semibold text-[#201507] shadow-sm transition hover:brightness-[1.05]"
+              className="rounded-lg border border-[#d7b36a] bg-[linear-gradient(120deg,#b88a2d_0%,#f1cc78_45%,#9b7226_100%)] px-2 py-2.5 text-center text-[12px] font-extrabold tracking-[0.01em] text-[#130c05] shadow-sm transition hover:brightness-[1.05]"
             >
               Asociatie
             </Link>
             <Link
               href="/#comunitate"
-              className="rounded-lg border border-[#d7b36a] bg-[linear-gradient(120deg,#b88a2d_0%,#f1cc78_45%,#9b7226_100%)] px-2 py-2.5 text-center text-[12px] font-semibold text-[#201507] shadow-sm transition hover:brightness-[1.05]"
+              className="rounded-lg border border-[#d7b36a] bg-[linear-gradient(120deg,#b88a2d_0%,#f1cc78_45%,#9b7226_100%)] px-2 py-2.5 text-center text-[12px] font-extrabold tracking-[0.01em] text-[#130c05] shadow-sm transition hover:brightness-[1.05]"
             >
               Comunitate
             </Link>
             <Link
               href="/sesizari"
-              className="rounded-lg border border-[#d7b36a] bg-[linear-gradient(120deg,#b88a2d_0%,#f1cc78_45%,#9b7226_100%)] px-2 py-2.5 text-center text-[12px] font-semibold text-[#201507] shadow-sm transition hover:brightness-[1.05]"
+              className="rounded-lg border border-[#d7b36a] bg-[linear-gradient(120deg,#b88a2d_0%,#f1cc78_45%,#9b7226_100%)] px-2 py-2.5 text-center text-[12px] font-extrabold tracking-[0.01em] text-[#130c05] shadow-sm transition hover:brightness-[1.05]"
             >
               Sesizari / Istoric
             </Link>
             <Link
               href="/voteaza"
-              className="rounded-lg border border-[#d7b36a] bg-[linear-gradient(120deg,#b88a2d_0%,#f1cc78_45%,#9b7226_100%)] px-2 py-2.5 text-center text-[12px] font-semibold text-[#201507] shadow-sm transition hover:brightness-[1.05]"
+              className="rounded-lg border border-[#d7b36a] bg-[linear-gradient(120deg,#b88a2d_0%,#f1cc78_45%,#9b7226_100%)] px-2 py-2.5 text-center text-[12px] font-extrabold tracking-[0.01em] text-[#130c05] shadow-sm transition hover:brightness-[1.05]"
             >
               Voteaza propuneri
             </Link>
