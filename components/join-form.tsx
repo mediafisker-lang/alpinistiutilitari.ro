@@ -264,10 +264,10 @@ export function JoinForm() {
 
           {state.message ? (
             state.success ? (
-              <div className="rounded-3xl border border-emerald-200 bg-emerald-50 px-5 py-5 text-emerald-800">
-                <p className="text-lg font-semibold sm:text-xl">Inscriere trimisa cu succes</p>
-                <p className="mt-2 text-base leading-7">
-                  Multumim. Datele tale au fost inregistrate. Dupa validare, vei putea primi actualizari relevante pentru cladirea ta si informatii despre pasii urmatori.
+              <div className="rounded-3xl border-2 border-emerald-300 bg-emerald-50 px-5 py-5 text-emerald-900 shadow-sm">
+                <p className="text-xs font-bold uppercase tracking-[0.14em] text-emerald-700">Mesaj oficial</p>
+                <p className="mt-2 text-lg font-extrabold sm:text-xl">
+                  Multumim pt inscriere, te poti loga cu mailul si parola aleasa.
                 </p>
               </div>
             ) : (

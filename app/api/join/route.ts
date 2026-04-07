@@ -93,6 +93,6 @@ export async function POST(request: Request) {
 
   return NextResponse.json({
     success: true,
-    message: "Înscrierea a fost trimisă. Mulțumim.",
+    message: "Multumim pt inscriere, te poti loga cu mailul si parola aleasa.",
   });
 }
