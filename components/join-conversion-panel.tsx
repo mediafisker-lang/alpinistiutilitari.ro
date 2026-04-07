@@ -122,12 +122,12 @@ export function JoinConversionPanel({ stats }: { stats: HomepageStats }) {
         </div>
 
         <div className="mt-5">
-          <a href="#inscriere">
+          <Link href="/inregistrare">
             <Button size="lg" className="w-full">
               Inscrie-ma acum
               <ArrowRight className="size-4" />
             </Button>
-          </a>
+          </Link>
         </div>
       </Card>
     </div>

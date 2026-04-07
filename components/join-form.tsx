@@ -254,7 +254,7 @@ export function JoinForm() {
             )
           ) : null}
 
-          <FormSubmit label="Vreau sa ma inscriu" />
+          <FormSubmit label="Inregistreaza-te" />
           <p className="text-sm leading-6 text-slate-500">
             Inscrierea dureaza putin. Dupa validare, vei putea primi acces la informatiile relevante pentru cladirea ta si la canalele de comunicare ale comunitatii.
           </p>
