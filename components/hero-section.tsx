@@ -22,11 +22,11 @@ export function HeroSection({ stats }: { stats: HomepageStats }) {
         <div className="grid gap-5 lg:grid-cols-[1.05fr_0.95fr] lg:items-start">
           <div className="space-y-5">
             <span className="inline-flex rounded-lg border border-[#c79b4b] bg-[rgba(32,24,14,0.84)] px-4 py-2 text-xs font-semibold tracking-[0.08em] text-[#f1cb79]">
-              Cortina North - B-dul Pipera, Ilfov
+              CORTINA NORTH - Pipera, Ilfov.
             </span>
             <div className="space-y-4">
               <h1 className="max-w-3xl text-4xl font-extrabold tracking-tight text-[#f7e7bf] sm:text-5xl">
-                Ai acces in comunitate, informatii generale intr-un minut!
+                Conectează-te. Informează-te. Fii parte din comunitate.
               </h1>
               <p className="max-w-2xl text-base leading-7 text-[#d9c598] sm:text-lg">
                 Interfata Cortina North Pipera - Ilfov este gandita sa intri rapid in comunitate, sa fii informat si daca consideri sa participi activ la schimbari.
