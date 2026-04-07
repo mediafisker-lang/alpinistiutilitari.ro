@@ -10,12 +10,10 @@ import { JoinForm } from "@/components/join-form";
 import { ProgressSection } from "@/components/progress-section";
 import { QuickJoinBanner } from "@/components/quick-join-banner";
 import { SectionHeading } from "@/components/section-heading";
-import { UpdatesSection } from "@/components/updates-section";
 import {
   getCommunityLinks,
   getHomepageStats,
   getPublicProgress,
-  getPublicUpdates,
 } from "@/lib/data";
 import { buildMetadata, siteName, siteUrl } from "@/lib/seo";
 
@@ -32,10 +30,9 @@ export const metadata: Metadata = buildMetadata({
 });
 
 export default async function HomePage() {
-  const [progress, links, updates, stats] = await Promise.all([
+  const [progress, links, stats] = await Promise.all([
     getPublicProgress(),
     getCommunityLinks(),
-    getPublicUpdates(),
     getHomepageStats(),
   ]);
 
@@ -101,7 +98,6 @@ export default async function HomePage() {
       </section>
       <ProgressSection items={progress} />
       <HowItWorksSection />
-      <UpdatesSection updates={updates} />
     </>
   );
 }
