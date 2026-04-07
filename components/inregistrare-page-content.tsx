@@ -131,6 +131,28 @@ export function InregistrarePageContent({ stats }: { stats: HomepageStats }) {
           className="max-w-4xl"
           descriptionClassName="lg:whitespace-nowrap"
         />
+        <div className="mt-6 grid gap-4 md:grid-cols-2">
+          <div className="relative h-40 overflow-hidden rounded-2xl border border-slate-200">
+            <Image
+              src="/images/cortina/cortina-north-comunitate-01.webp"
+              alt="Cortina North - inregistrare in comunitate"
+              fill
+              className="object-cover"
+              sizes="(max-width: 768px) 100vw, 50vw"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-slate-950/30 to-transparent" />
+          </div>
+          <div className="relative h-40 overflow-hidden rounded-2xl border border-slate-200">
+            <Image
+              src="/images/cortina/cortina-north-comunitate-02.webp"
+              alt="Cortina North - acces comunitate"
+              fill
+              className="object-cover"
+              sizes="(max-width: 768px) 100vw, 50vw"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-slate-950/30 to-transparent" />
+          </div>
+        </div>
         <div className="mt-8 grid gap-5 xl:grid-cols-[minmax(0,1fr)_minmax(320px,360px)]">
           <JoinForm />
           <JoinConversionPanel stats={stats} />

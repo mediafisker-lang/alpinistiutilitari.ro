@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Facebook, MessageCircleMore, Users } from "lucide-react";
 
@@ -20,6 +21,12 @@ function iconForType(type: CommunityLink["type"]) {
 
   return Facebook;
 }
+
+const communityCoverImages = [
+  "/images/cortina/cortina-north-comunitate-01.webp",
+  "/images/cortina/cortina-north-comunitate-02.webp",
+  "/images/cortina/cortina-north-comunitate-03.webp",
+];
 
 export function CommunitySection({ links }: { links: CommunityLink[] }) {
   const router = useRouter();
@@ -49,14 +56,25 @@ export function CommunitySection({ links }: { links: CommunityLink[] }) {
         {links.length ? (
           <>
             <div className="mt-8 grid gap-4 md:grid-cols-3">
-              {links.map((link) => {
+              {links.map((link, index) => {
                 const Icon = iconForType(link.type);
+                const imageSrc = communityCoverImages[index % communityCoverImages.length];
 
                 return (
                   <Card key={link.id} className="flex h-full flex-col justify-between p-5 sm:p-6">
                     <div>
+                      <div className="relative h-36 overflow-hidden rounded-xl border border-slate-200">
+                        <Image
+                          src={imageSrc}
+                          alt={`Canal comunitate ${link.label}`}
+                          fill
+                          sizes="(max-width: 768px) 100vw, 33vw"
+                          className="object-cover"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/35 to-transparent" />
+                      </div>
                       <Icon
-                        className={`size-7 sm:size-8 ${
+                        className={`mt-4 size-7 sm:size-8 ${
                           link.type === "whatsapp"
                             ? "text-emerald-600"
                             : link.type === "facebook_group"

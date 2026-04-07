@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 import { ProgressSection } from "@/components/progress-section";
 import { SectionHeading } from "@/components/section-heading";
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
@@ -206,6 +208,28 @@ export default async function StadiuAsociatiePage() {
     <>
       <ProgressSection items={progress} />
       <section className="mx-auto max-w-5xl px-4 py-16 sm:px-6">
+        <div className="mb-8 grid gap-4 md:grid-cols-[1.2fr_0.8fr]">
+          <div className="relative h-48 overflow-hidden rounded-2xl border border-slate-200 sm:h-56">
+            <Image
+              src="/images/cortina/cortina-north-comunitate-08.webp"
+              alt="Stadiu asociatie Cortina North - imagine comunitate"
+              fill
+              className="object-cover"
+              sizes="(max-width: 768px) 100vw, 65vw"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-slate-950/35 to-transparent" />
+          </div>
+          <div className="relative h-48 overflow-hidden rounded-2xl border border-slate-200 sm:h-56">
+            <Image
+              src="/images/cortina/cortina-north-comunitate-09.webp"
+              alt="Cortina North Pipera - zona rezidentiala"
+              fill
+              className="object-cover"
+              sizes="(max-width: 768px) 100vw, 35vw"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-slate-950/30 to-transparent" />
+          </div>
+        </div>
         <SectionHeading
           eyebrow="Stadiu Asociatie"
           title="Pasii facuti, pe larg"

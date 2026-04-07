@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 import { Badge } from "@/components/ui/badge";
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
 import { formatDate } from "@/lib/utils";
@@ -24,6 +26,13 @@ const statusMeta: Record<IssueStatus, { label: string; className: string }> = {
   },
 };
 
+const issueCardImages = [
+  "/images/cortina/cortina-north-comunitate-04.webp",
+  "/images/cortina/cortina-north-comunitate-05.webp",
+  "/images/cortina/cortina-north-comunitate-06.webp",
+  "/images/cortina/cortina-north-comunitate-07.webp",
+];
+
 function isReached(currentStatus: IssueStatus, stepStatus: IssueStatus) {
   return historySteps.findIndex((step) => step.value === stepStatus) <=
     historySteps.findIndex((step) => step.value === currentStatus);
@@ -46,51 +55,64 @@ export function PublicIssuesList({ issues }: { issues: PublicIssue[] }) {
 
       {issues.length ? (
         <div className="mt-6 space-y-4">
-          {issues.map((issue) => (
+          {issues.map((issue, index) => (
             <div key={issue.id} className="surface-3d rounded-3xl bg-slate-50 p-4 sm:p-5">
-              <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-                <div className="space-y-2">
-                  <div className="flex flex-wrap items-center gap-2">
-                    <CardTitle className="text-base">{issue.title}</CardTitle>
-                    <span
-                      className={`inline-flex rounded-full px-3 py-1 text-xs font-medium ${statusMeta[issue.status].className}`}
-                    >
-                      {statusMeta[issue.status].label}
-                    </span>
-                  </div>
-                  <p className="text-sm font-medium text-slate-500">{issue.category}</p>
-                  <CardDescription>{issue.description}</CardDescription>
+              <div className="grid gap-4 md:grid-cols-[180px_minmax(0,1fr)]">
+                <div className="relative h-32 overflow-hidden rounded-2xl border border-slate-200 md:h-full">
+                  <Image
+                    src={issueCardImages[index % issueCardImages.length]}
+                    alt={`Imagine sesizare ${issue.category}`}
+                    fill
+                    sizes="(max-width: 768px) 100vw, 180px"
+                    className="object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/35 to-transparent" />
                 </div>
-
-                <div className="text-sm text-slate-500 sm:text-right">
-                  <p>{formatDate(issue.created_at)}</p>
-                  <p className="mt-1">
-                    {issue.attachment_urls.length
-                      ? `${issue.attachment_urls.length} poze atasate`
-                      : "Fara poze"}
-                  </p>
-                </div>
-              </div>
-
-              <div className="mt-5">
-                <p className="text-sm font-semibold text-slate-900">Istoric</p>
-                <div className="mt-3 grid gap-3 sm:grid-cols-3">
-                  {historySteps.map((step) => {
-                    const reached = isReached(issue.status, step.value);
-
-                    return (
-                      <div
-                        key={step.value}
-                        className={`rounded-2xl px-4 py-3 text-sm ${
-                          reached
-                            ? "surface-3d border-emerald-200 bg-emerald-50 text-emerald-800"
-                            : "surface-3d bg-white text-slate-500"
-                        }`}
-                      >
-                        {step.label}
+                <div>
+                  <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                    <div className="space-y-2">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <CardTitle className="text-base">{issue.title}</CardTitle>
+                        <span
+                          className={`inline-flex rounded-full px-3 py-1 text-xs font-medium ${statusMeta[issue.status].className}`}
+                        >
+                          {statusMeta[issue.status].label}
+                        </span>
                       </div>
-                    );
-                  })}
+                      <p className="text-sm font-medium text-slate-500">{issue.category}</p>
+                      <CardDescription>{issue.description}</CardDescription>
+                    </div>
+
+                    <div className="text-sm text-slate-500 sm:text-right">
+                      <p>{formatDate(issue.created_at)}</p>
+                      <p className="mt-1">
+                        {issue.attachment_urls.length
+                          ? `${issue.attachment_urls.length} poze atasate`
+                          : "Fara poze"}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="mt-5">
+                    <p className="text-sm font-semibold text-slate-900">Istoric</p>
+                    <div className="mt-3 grid gap-3 sm:grid-cols-3">
+                      {historySteps.map((step) => {
+                        const reached = isReached(issue.status, step.value);
+
+                        return (
+                          <div
+                            key={step.value}
+                            className={`rounded-2xl px-4 py-3 text-sm ${
+                              reached
+                                ? "surface-3d border-emerald-200 bg-emerald-50 text-emerald-800"
+                                : "surface-3d bg-white text-slate-500"
+                            }`}
+                          >
+                            {step.label}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
