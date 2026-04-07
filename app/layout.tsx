@@ -31,7 +31,7 @@ export default function RootLayout({
   return (
     <html lang="ro">
       <body
-        className={`${bodyFont.variable} ${headingFont.variable} min-h-screen bg-white text-slate-950 antialiased`}
+        className={`${bodyFont.variable} ${headingFont.variable} min-h-screen antialiased`}
       >
         <SiteHeader />
         <main>{children}</main>

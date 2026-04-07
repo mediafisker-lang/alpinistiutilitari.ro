@@ -16,7 +16,7 @@ export function TableHead({
   return (
     <th
       className={cn(
-        "border-b border-slate-200 px-4 py-3 text-xs font-semibold uppercase tracking-[0.12em] text-slate-500",
+        "border-b border-[#8f6f34] px-4 py-3 text-xs font-semibold uppercase tracking-[0.12em] text-[#d8c49a]",
         className,
       )}
       {...props}
@@ -28,5 +28,5 @@ export function TableCell({
   className,
   ...props
 }: React.TdHTMLAttributes<HTMLTableCellElement>) {
-  return <td className={cn("border-b border-slate-100 px-4 py-4 align-top", className)} {...props} />;
+  return <td className={cn("border-b border-[#6d5328] px-4 py-4 align-top", className)} {...props} />;
 }
