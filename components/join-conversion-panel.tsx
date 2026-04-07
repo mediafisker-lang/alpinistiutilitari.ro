@@ -79,7 +79,7 @@ export function JoinConversionPanel({ stats }: { stats: HomepageStats }) {
             <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
               Membri inscrisi
             </p>
-            <p className="mt-2 text-3xl font-extrabold text-[#005eb8]">{formatCount(stats.residentsCount)}</p>
+            <p className="mt-2 text-3xl font-extrabold text-[#e31e24]">{formatCount(stats.residentsCount)}</p>
           </div>
           <div className="surface-3d rounded-2xl p-4">
             <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">

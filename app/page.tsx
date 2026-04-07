@@ -72,6 +72,7 @@ export default async function HomePage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
       />
       <HeroSection stats={stats} />
+      <HowItWorksSection />
       <QuickJoinBanner />
       <CommunitySection links={links} />
       <BenefitsSection />
@@ -90,7 +91,6 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
-      <HowItWorksSection />
     </>
   );
 }

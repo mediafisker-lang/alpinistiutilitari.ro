@@ -21,8 +21,8 @@ export function HeroSection({ stats }: { stats: HomepageStats }) {
       <div className="relative mx-auto max-w-6xl px-4 py-10 sm:px-6 sm:py-14 lg:py-16">
         <div className="grid gap-5 lg:grid-cols-[1.05fr_0.95fr] lg:items-start">
           <div className="space-y-5">
-            <span className="inline-flex rounded-lg border border-[#c79b4b] bg-[rgba(32,24,14,0.84)] px-4 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-[#f1cb79]">
-              Cortina North | Bucuresti si Ilfov
+            <span className="inline-flex rounded-lg border border-[#c79b4b] bg-[rgba(32,24,14,0.84)] px-4 py-2 text-xs font-semibold tracking-[0.08em] text-[#f1cb79]">
+              Cortina North - B-dul Pipera, Ilfov
             </span>
             <div className="space-y-4">
               <h1 className="max-w-3xl text-4xl font-extrabold tracking-tight text-[#f7e7bf] sm:text-5xl">
@@ -52,7 +52,7 @@ export function HeroSection({ stats }: { stats: HomepageStats }) {
                 <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#d8c49a]">
                   Membri inscrisi
                 </p>
-                <p className="mt-2 text-2xl font-extrabold text-[#f1cb79]">
+                <p className="mt-2 text-2xl font-extrabold text-[#e31e24]">
                   {formatCount(stats.residentsCount)}
                 </p>
               </div>

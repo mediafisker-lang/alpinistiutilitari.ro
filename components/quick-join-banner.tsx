@@ -6,9 +6,9 @@ import { Button } from "@/components/ui/button";
 import { useVoteSession } from "@/components/use-vote-session";
 
 export function QuickJoinBanner() {
-  const { isLoggedIn } = useVoteSession();
+  const { currentIp, isLoggedIn } = useVoteSession();
 
-  if (isLoggedIn) {
+  if (!currentIp || isLoggedIn) {
     return null;
   }
 
