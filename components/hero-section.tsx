@@ -16,18 +16,18 @@ export function HeroSection({ stats }: { stats: HomepageStats }) {
   const { isLoggedIn } = useVoteSession();
 
   return (
-    <section className="relative overflow-hidden bg-[linear-gradient(180deg,#0b1324_0%,#0f1a31_42%,#0a1221_100%)]">
+    <section
+      className="relative overflow-hidden bg-cover bg-center bg-no-repeat"
+      style={{
+        backgroundImage:
+          "linear-gradient(180deg, rgba(11, 19, 36, 0.78) 0%, rgba(15, 26, 49, 0.82) 42%, rgba(10, 18, 33, 0.86) 100%), url('/hero-label-bg.jpg')",
+      }}
+    >
       <div className="absolute inset-x-0 top-0 h-64 bg-[radial-gradient(circle_at_top,_rgba(56,189,248,0.2),_transparent_58%)]" />
       <div className="relative mx-auto max-w-6xl px-4 py-10 sm:px-6 sm:py-14 lg:py-16">
         <div className="grid gap-5 lg:grid-cols-[1.05fr_0.95fr] lg:items-start">
           <div className="space-y-5">
-            <span
-              className="inline-flex rounded-lg border border-white/60 bg-cover bg-center bg-no-repeat px-4 py-2 text-xs font-semibold tracking-[0.08em] text-white shadow-[0_8px_20px_rgba(15,23,42,0.35)]"
-              style={{
-                backgroundImage:
-                  "linear-gradient(180deg, rgba(15, 23, 42, 0.38) 0%, rgba(15, 23, 42, 0.56) 100%), url('/hero-label-bg.jpg')",
-              }}
-            >
+            <span className="inline-flex rounded-lg border border-white/45 bg-slate-900/45 px-4 py-2 text-xs font-semibold tracking-[0.08em] text-white shadow-[0_8px_20px_rgba(15,23,42,0.35)] backdrop-blur-[1px]">
               CORTINA NORTH - Pipera, Ilfov.
             </span>
             <div className="space-y-4">
