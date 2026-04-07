@@ -22,21 +22,21 @@ const steps = [
   },
   {
     step: "3",
-    title: "3. Urmaresti public stadiul si noutatile",
-    description:
-      "Vezi unde s-a ajuns si ce urmeaza, fara sa cauti informatia prin mai multe canale.",
-    className:
-      "border-emerald-200 bg-[linear-gradient(180deg,#edfdf5_0%,#ffffff_55%)] shadow-[0_18px_40px_rgba(16,185,129,0.12)]",
-    badgeClassName: "bg-emerald-500 text-white",
-  },
-  {
-    step: "4",
-    title: "4. Trimiti sesizari cand apare o problema",
+    title: "3. Trimiti sesizari cand apare o problema",
     description:
       "Poti lasa rapid o problema legata de bloc, scara, curatenie sau administrare.",
     className:
       "border-rose-200 bg-[linear-gradient(180deg,#fff1f2_0%,#ffffff_55%)] shadow-[0_18px_40px_rgba(225,29,72,0.10)]",
     badgeClassName: "bg-rose-500 text-white",
+  },
+  {
+    step: "4",
+    title: "4. Urmaresti public stadiul si noutatile",
+    description:
+      "Vezi unde s-a ajuns si ce urmeaza, fara sa cauti informatia prin mai multe canale.",
+    className:
+      "border-emerald-200 bg-[linear-gradient(180deg,#edfdf5_0%,#ffffff_55%)] shadow-[0_18px_40px_rgba(16,185,129,0.12)]",
+    badgeClassName: "bg-emerald-500 text-white",
   },
 ];
 
