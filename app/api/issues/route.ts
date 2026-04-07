@@ -17,6 +17,15 @@ const allowedImageTypes = new Set(["image/jpeg", "image/png", "image/webp"]);
 const maxImageSize = 5 * 1024 * 1024;
 const maxImages = 3;
 
+function buildIssueTitle(category: string, description: string) {
+  const compactDescription = description.replace(/\s+/g, " ").trim();
+  const shortDescription = compactDescription.length > 64
+    ? `${compactDescription.slice(0, 61)}...`
+    : compactDescription;
+
+  return `${category}: ${shortDescription}`;
+}
+
 export async function POST(request: Request) {
   const formData = await request.formData();
   const authEmail = String(formData.get("auth_email") ?? "")
@@ -30,9 +39,7 @@ export async function POST(request: Request) {
   const parsed = issueSchema.safeParse({
     contact_name: formData.get("contact_name"),
     contact_phone: formData.get("contact_phone"),
-    contact_email: formData.get("contact_email"),
     category: formData.get("category"),
-    title: formData.get("title"),
     description: formData.get("description"),
     website: formData.get("website"),
     submitted_at: formData.get("submitted_at"),
@@ -177,9 +184,9 @@ export async function POST(request: Request) {
   const { error } = await supabase.from("issues").insert({
     contact_name: parsed.data.contact_name,
     contact_phone: parsed.data.contact_phone || null,
-    contact_email: parsed.data.contact_email || null,
+    contact_email: null,
     category: parsed.data.category,
-    title: parsed.data.title,
+    title: buildIssueTitle(parsed.data.category, parsed.data.description),
     description: parsed.data.description,
     attachment_urls: attachmentUrls,
     status: "noua",

@@ -222,15 +222,24 @@ export function SiteHeader() {
         </div>
 
         <div className="mt-3 border-t border-slate-200 pt-3 lg:hidden">
-          <nav className="flex items-center justify-center gap-4 text-sm font-semibold text-slate-700">
-            <Link href="/#stadiu" className="transition hover:text-[#005eb8]">
+          <nav className="grid grid-cols-3 gap-2">
+            <Link
+              href="/#stadiu"
+              className="rounded-lg border border-slate-200 bg-slate-50 px-2 py-2.5 text-center text-[12px] font-semibold text-slate-700 transition hover:bg-slate-100"
+            >
               Asociatie
             </Link>
-            <Link href="/#sesizari" className="transition hover:text-[#005eb8]">
-              Sesizari
+            <Link
+              href="/#sesizari"
+              className="rounded-lg border border-slate-200 bg-slate-50 px-2 py-2.5 text-center text-[12px] font-semibold text-slate-700 transition hover:bg-slate-100"
+            >
+              Sesizari / Istoric
             </Link>
-            <Link href="/#voteaza" className="transition hover:text-[#005eb8]">
-              Voteaza
+            <Link
+              href="/#voteaza"
+              className="rounded-lg border border-slate-200 bg-slate-50 px-2 py-2.5 text-center text-[12px] font-semibold text-slate-700 transition hover:bg-slate-100"
+            >
+              Voteaza propuneri
             </Link>
           </nav>
 
@@ -239,7 +248,7 @@ export function SiteHeader() {
               HI, {loggedInName}
             </div>
           ) : (
-            <form onSubmit={handleMobileLogin} className="mt-3 grid grid-cols-2 gap-2">
+            <form onSubmit={handleMobileLogin} className="mt-2.5 grid grid-cols-2 gap-1.5">
               <Input
                 type="email"
                 value={loginStateMobile.email}
@@ -250,7 +259,7 @@ export function SiteHeader() {
                   }))
                 }
                 placeholder="USER"
-                className="h-10"
+                className="h-8 rounded-lg px-2 text-xs"
               />
               <Input
                 type="password"
@@ -262,14 +271,19 @@ export function SiteHeader() {
                   }))
                 }
                 placeholder="PASSWORD"
-                className="h-10"
+                className="h-8 rounded-lg px-2 text-xs"
               />
-              <Button type="submit" size="sm" disabled={loginLoadingMobile} className="h-10">
+              <Button
+                type="submit"
+                size="sm"
+                disabled={loginLoadingMobile}
+                className="h-8 rounded-lg px-2 text-xs"
+              >
                 {loginLoadingMobile ? "Se verifica..." : "Login"}
               </Button>
               <Link
                 href="/#inscriere"
-                className="flex h-10 items-center justify-center rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm font-semibold text-slate-700 transition hover:bg-slate-100"
+                className="flex h-8 items-center justify-center rounded-lg border border-slate-200 bg-slate-50 px-2 text-xs font-semibold text-slate-700 transition hover:bg-slate-100"
               >
                 Register
               </Link>

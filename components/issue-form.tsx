@@ -234,24 +234,27 @@ export function IssueForm() {
   }
 
   return (
-    <Card className="rounded-[2rem] p-5 sm:p-6">
+    <Card className="rounded-[1.5rem] p-4 sm:rounded-[2rem] sm:p-6">
       <CardTitle>Trimite o sesizare</CardTitle>
-      <CardDescription className="mt-3">
-        Spune pe scurt problema. Dacă lași telefon sau email, putem reveni mai ușor cu un răspuns.
+      <CardDescription className="mt-2 text-sm leading-5 sm:mt-3">
+        Spune pe scurt problema. Formular compact pentru trimitere rapidă.
       </CardDescription>
-      <form ref={formRef} action={action} className="mt-6 space-y-5">
+      <form ref={formRef} action={action} className="mt-4 space-y-3 sm:mt-6 sm:space-y-5">
         <input type="hidden" name="submitted_at" value={submittedAt} />
         <input type="text" name="website" className="hidden" tabIndex={-1} autoComplete="off" />
         <input type="hidden" name="auth_email" value={loggedInEmail} readOnly />
         <input type="hidden" name="auth_password" value={loggedInPassword} readOnly />
 
         <div>
-          <Label htmlFor="contact_name">Nume</Label>
+          <Label htmlFor="contact_name" className="mb-1.5 text-xs sm:mb-2 sm:text-sm">
+            Nume
+          </Label>
           <Input
             id="contact_name"
             name="contact_name"
             placeholder="Ex: Maria Ionescu"
             autoComplete="name"
+            className="h-10 sm:h-11"
             required
           />
           {state.errors?.contact_name && (
@@ -259,40 +262,29 @@ export function IssueForm() {
           )}
         </div>
 
-        <div className="grid gap-4 sm:grid-cols-2">
-          <div>
-            <Label htmlFor="contact_phone">Telefon</Label>
-            <Input
-              id="contact_phone"
-              name="contact_phone"
-              placeholder="Opțional"
-              autoComplete="tel"
-              inputMode="tel"
-              maxLength={20}
-            />
-            {state.errors?.contact_phone && (
-              <p className="mt-2 text-sm text-rose-600">{state.errors.contact_phone[0]}</p>
-            )}
-          </div>
-          <div>
-            <Label htmlFor="contact_email">Email</Label>
-            <Input
-              id="contact_email"
-              name="contact_email"
-              type="email"
-              placeholder="Opțional"
-              autoComplete="email"
-              inputMode="email"
-            />
-            {state.errors?.contact_email && (
-              <p className="mt-2 text-sm text-rose-600">{state.errors.contact_email[0]}</p>
-            )}
-          </div>
+        <div>
+          <Label htmlFor="contact_phone" className="mb-1.5 text-xs sm:mb-2 sm:text-sm">
+            Telefon (opțional)
+          </Label>
+          <Input
+            id="contact_phone"
+            name="contact_phone"
+            placeholder="Ex: 07xx xxx xxx"
+            autoComplete="tel"
+            inputMode="tel"
+            maxLength={20}
+            className="h-10 sm:h-11"
+          />
+          {state.errors?.contact_phone && (
+            <p className="mt-2 text-sm text-rose-600">{state.errors.contact_phone[0]}</p>
+          )}
         </div>
 
         <div>
-          <Label htmlFor="category">Categorie</Label>
-          <Select id="category" name="category" defaultValue="Curățenie" required>
+          <Label htmlFor="category" className="mb-1.5 text-xs sm:mb-2 sm:text-sm">
+            Categorie
+          </Label>
+          <Select id="category" name="category" defaultValue="Curățenie" className="h-10 sm:h-11" required>
             {categories.map((category) => (
               <option key={category} value={category}>
                 {category}
@@ -305,20 +297,15 @@ export function IssueForm() {
         </div>
 
         <div>
-          <Label htmlFor="title">Titlu</Label>
-          <Input id="title" name="title" placeholder="Ex: Acces defect la barieră" required />
-          {state.errors?.title && (
-            <p className="mt-2 text-sm text-rose-600">{state.errors.title[0]}</p>
-          )}
-        </div>
-
-        <div>
-          <Label htmlFor="description">Descriere</Label>
+          <Label htmlFor="description" className="mb-1.5 text-xs sm:mb-2 sm:text-sm">
+            Descriere
+          </Label>
           <Textarea
             id="description"
             name="description"
             placeholder="Scrie clar ce se întâmplă, unde apare problema și de când o observi."
             maxLength={1000}
+            className="min-h-24 sm:min-h-32"
             required
           />
           {state.errors?.description && (
@@ -327,7 +314,9 @@ export function IssueForm() {
         </div>
 
         <div>
-          <Label htmlFor="photos">Poze</Label>
+          <Label htmlFor="photos" className="mb-1.5 text-xs sm:mb-2 sm:text-sm">
+            Poze
+          </Label>
           <Input
             ref={fileInputRef}
             id="photos"
@@ -336,8 +325,9 @@ export function IssueForm() {
             accept="image/png,image/jpeg,image/webp"
             multiple
             onChange={handlePhotoChange}
+            className="h-10 sm:h-11"
           />
-          <p className="mt-2 text-xs text-slate-500">
+          <p className="mt-1.5 text-[11px] text-slate-500 sm:mt-2 sm:text-xs">
             Opțional. Poți atașa până la 3 poze, maximum 5 MB fiecare.
           </p>
           {previews.length ? (
@@ -373,9 +363,9 @@ export function IssueForm() {
 
         {state.message && (
           state.success ? (
-            <div className="rounded-3xl border border-emerald-200 bg-emerald-50 px-5 py-5 text-emerald-800">
-              <p className="text-lg font-semibold sm:text-xl">Sesizarea a fost trimisă</p>
-              <p className="mt-2 text-base leading-7">
+            <div className="rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-4 text-emerald-800 sm:rounded-3xl sm:px-5 sm:py-5">
+              <p className="text-base font-semibold sm:text-xl">Sesizarea a fost trimisă</p>
+              <p className="mt-1.5 text-sm leading-6 sm:mt-2 sm:text-base sm:leading-7">
                 Revenim rapid cu informații dacă se impune. Mulțumim!
               </p>
             </div>

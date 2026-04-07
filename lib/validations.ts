@@ -30,30 +30,18 @@ export const residentSchema = z.object({
   submitted_at: z.coerce.number(),
 });
 
-export const issueSchema = z
-  .object({
-    contact_name: z.string().trim().min(2, "Introdu numele."),
-    contact_email: z.string().trim().email("Email invalid.").or(z.literal("")),
-    contact_phone: z
-      .string()
-      .transform(normalizePhone)
-      .refine((value) => phoneRegex.test(value), "Telefon invalid.")
-      .or(z.literal("")),
-    category: z.string().trim().min(2, "Alege categoria."),
-    title: z.string().trim().min(4, "Introdu un titlu scurt."),
-    description: z.string().trim().min(12, "Descrierea este prea scurtă."),
-    website: z.string().max(0).optional(),
-    submitted_at: z.coerce.number(),
-  })
-  .superRefine((data, ctx) => {
-    if (!data.contact_email && !data.contact_phone) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        path: ["contact_email"],
-        message: "Lasă email sau telefon pentru răspuns.",
-      });
-    }
-  });
+export const issueSchema = z.object({
+  contact_name: z.string().trim().min(2, "Introdu numele."),
+  contact_phone: z
+    .string()
+    .transform(normalizePhone)
+    .refine((value) => phoneRegex.test(value), "Telefon invalid.")
+    .or(z.literal("")),
+  category: z.string().trim().min(2, "Alege categoria."),
+  description: z.string().trim().min(12, "Descrierea este prea scurtă."),
+  website: z.string().max(0).optional(),
+  submitted_at: z.coerce.number(),
+});
 
 export const votePasswordSetupSchema = z.object({
   email: z.string().trim().toLowerCase().email("Introdu o adresă de email validă."),
