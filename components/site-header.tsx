@@ -163,9 +163,9 @@ export function SiteHeader() {
               <Image
                 src="/logo.png"
                 alt="Cortina North"
-                width={196}
-                height={64}
-                className="h-8 w-auto object-contain sm:h-10"
+                width={240}
+                height={78}
+                className="h-10 w-auto object-contain sm:h-12"
                 priority
               />
               <div className="min-w-0">
