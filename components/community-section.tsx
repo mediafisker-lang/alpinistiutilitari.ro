@@ -127,7 +127,7 @@ export function CommunitySection({ links }: { links: CommunityLink[] }) {
   }
 
   return (
-    <section className="bg-slate-50">
+    <section id="comunitate" className="scroll-mt-24 bg-slate-50">
       <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-16">
         <SectionHeading
           eyebrow="Comunitate"

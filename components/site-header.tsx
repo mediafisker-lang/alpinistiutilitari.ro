@@ -190,6 +190,12 @@ export function SiteHeader() {
               Asociatie
             </Link>
             <Link
+              href="/#comunitate"
+              className="rounded-lg border border-[#004f99] bg-[#005eb8] px-3 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-[#004a92]"
+            >
+              Comunitate
+            </Link>
+            <Link
               href="/#sesizari"
               className="rounded-lg border border-[#004f99] bg-[#005eb8] px-3 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-[#004a92]"
             >
@@ -256,12 +262,18 @@ export function SiteHeader() {
         </div>
 
         <div className="mt-3 border-t border-slate-200 pt-3 lg:hidden">
-          <nav className="grid grid-cols-3 gap-2">
+          <nav className="grid grid-cols-2 gap-2">
             <Link
               href="/#stadiu"
               className="rounded-lg border border-[#004f99] bg-[#005eb8] px-2 py-2.5 text-center text-[12px] font-semibold text-white shadow-sm transition hover:bg-[#004a92]"
             >
               Asociatie
+            </Link>
+            <Link
+              href="/#comunitate"
+              className="rounded-lg border border-[#004f99] bg-[#005eb8] px-2 py-2.5 text-center text-[12px] font-semibold text-white shadow-sm transition hover:bg-[#004a92]"
+            >
+              Comunitate
             </Link>
             <Link
               href="/#sesizari"
