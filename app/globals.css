@@ -3,15 +3,16 @@
 @tailwind utilities;
 
 :root {
-  --background: #070606;
-  --foreground: #f5e7c8;
-  --gold-1: #f6d786;
-  --gold-2: #cf9f3d;
-  --gold-3: #8a6424;
-  --surface: rgba(22, 17, 10, 0.78);
-  --surface-muted: rgba(33, 25, 14, 0.8);
-  --shadow-gold: rgba(207, 159, 61, 0.26);
-  --shadow-deep: rgba(0, 0, 0, 0.5);
+  --background: #f4f7fb;
+  --foreground: #0f172a;
+  --surface: #ffffff;
+  --surface-muted: #f8fafc;
+  --border: #d9e2ec;
+  --text-muted: #475569;
+  --accent: #0b63ce;
+  --accent-strong: #084ea5;
+  --shadow-soft: 0 10px 28px rgba(15, 23, 42, 0.08);
+  --shadow-hover: 0 18px 34px rgba(15, 23, 42, 0.12);
 }
 
 html {
@@ -20,198 +21,70 @@ html {
 
 body {
   background:
-    radial-gradient(circle at 8% 0%, rgba(246, 215, 134, 0.2), transparent 32%),
-    radial-gradient(circle at 100% 8%, rgba(207, 159, 61, 0.2), transparent 34%),
-    linear-gradient(180deg, #050404 0%, #0a0907 38%, #0f0c08 100%);
+    radial-gradient(circle at 0% 0%, rgba(11, 99, 206, 0.08), transparent 32%),
+    radial-gradient(circle at 100% 0%, rgba(12, 74, 110, 0.08), transparent 34%),
+    linear-gradient(180deg, #f8fbff 0%, #f4f7fb 38%, #eef2f8 100%);
   color: var(--foreground);
   font-family: var(--font-body), sans-serif;
   min-height: 100vh;
 }
 
 ::selection {
-  background: rgba(207, 159, 61, 0.34);
+  background: rgba(11, 99, 206, 0.24);
 }
 
 * {
-  border-color: rgba(168, 127, 58, 0.35);
+  border-color: rgba(148, 163, 184, 0.35);
 }
 
 h1,
 h2,
 h3,
 h4 {
-  font-family: var(--font-body), sans-serif;
-}
-
-@keyframes float-shadow {
-  0%,
-  100% {
-    box-shadow:
-      0 18px 44px rgba(0, 0, 0, 0.44),
-      0 8px 18px rgba(207, 159, 61, 0.14),
-      inset 0 1px 0 rgba(255, 232, 186, 0.12);
-  }
-  50% {
-    box-shadow:
-      0 26px 58px rgba(0, 0, 0, 0.56),
-      0 12px 24px rgba(207, 159, 61, 0.2),
-      inset 0 1px 0 rgba(255, 232, 186, 0.2);
-  }
-}
-
-@keyframes halo-shift {
-  0%,
-  100% {
-    opacity: 0.48;
-    transform: translateX(-8%) scale(1);
-  }
-  50% {
-    opacity: 0.8;
-    transform: translateX(10%) scale(1.05);
-  }
-}
-
-@keyframes shimmer-pass {
-  0% {
-    transform: translateX(-180%) skewX(-18deg);
-  }
-  100% {
-    transform: translateX(220%) skewX(-18deg);
-  }
+  font-family: var(--font-heading), var(--font-body), sans-serif;
 }
 
 .surface-3d {
   position: relative;
-  overflow: hidden;
-  border: 1px solid rgba(207, 159, 61, 0.36);
-  background:
-    linear-gradient(180deg, rgba(31, 24, 14, 0.88) 0%, rgba(19, 15, 10, 0.82) 100%);
-  box-shadow:
-    0 16px 42px rgba(0, 0, 0, 0.5),
-    0 6px 20px rgba(207, 159, 61, 0.16),
-    inset 0 1px 0 rgba(255, 232, 186, 0.14);
-  animation: float-shadow 7s ease-in-out infinite;
+  border: 1px solid var(--border);
+  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+  box-shadow: var(--shadow-soft);
   transition:
-    transform 220ms ease,
-    box-shadow 220ms ease,
-    border-color 220ms ease;
-  isolation: isolate;
-}
-
-.surface-3d::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  background:
-    radial-gradient(circle at 0% 0%, rgba(246, 215, 134, 0.2), transparent 40%),
-    radial-gradient(circle at 100% 100%, rgba(131, 97, 37, 0.2), transparent 42%);
-  animation: halo-shift 8s ease-in-out infinite;
-}
-
-.surface-3d::after {
-  content: "";
-  position: absolute;
-  top: -20%;
-  bottom: -20%;
-  left: 0;
-  width: 34%;
-  background: linear-gradient(90deg, transparent, rgba(246, 215, 134, 0.42), transparent);
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 220ms ease;
+    transform 180ms ease,
+    box-shadow 180ms ease,
+    border-color 180ms ease;
 }
 
 .surface-3d:hover {
-  transform: translateY(-4px);
-  border-color: rgba(246, 215, 134, 0.55);
-  box-shadow:
-    0 28px 60px rgba(0, 0, 0, 0.58),
-    0 12px 30px rgba(207, 159, 61, 0.28),
-    inset 0 1px 0 rgba(255, 233, 194, 0.2);
-}
-
-.surface-3d:hover::after {
-  opacity: 1;
-  animation: shimmer-pass 900ms ease;
+  transform: translateY(-2px);
+  border-color: #c7d4e3;
+  box-shadow: var(--shadow-hover);
 }
 
 .field-3d {
-  position: relative;
-  border: 1px solid rgba(171, 129, 58, 0.48);
-  background:
-    linear-gradient(180deg, rgba(34, 25, 14, 0.92) 0%, rgba(24, 19, 11, 0.9) 100%);
+  border: 1px solid #c9d6e2;
+  background: #ffffff;
   box-shadow:
-    inset 0 1px 0 rgba(255, 233, 194, 0.12),
-    0 10px 24px rgba(0, 0, 0, 0.36),
-    0 4px 10px rgba(207, 159, 61, 0.1);
+    0 1px 2px rgba(15, 23, 42, 0.04),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
   transition:
-    border-color 220ms ease,
-    box-shadow 220ms ease,
-    transform 220ms ease,
-    background 220ms ease;
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
 }
 
 .field-3d:hover {
-  transform: translateY(-1px);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 233, 194, 0.22),
-    0 16px 30px rgba(0, 0, 0, 0.45),
-    0 6px 14px rgba(207, 159, 61, 0.16);
+  border-color: #aebfd2;
 }
 
 .field-3d:focus,
 .field-3d:focus-visible {
-  border-color: rgba(246, 215, 134, 0.72);
+  border-color: #0b63ce;
   box-shadow:
-    inset 0 1px 0 rgba(255, 233, 194, 0.24),
-    0 0 0 4px rgba(246, 215, 134, 0.15),
-    0 20px 34px rgba(207, 159, 61, 0.2);
+    0 0 0 3px rgba(11, 99, 206, 0.16),
+    0 6px 18px rgba(11, 99, 206, 0.12);
 }
 
 .field-3d::placeholder {
-  color: rgba(229, 206, 160, 0.62);
-}
-
-.text-slate-950,
-.text-slate-900 {
-  color: #f6ebd3 !important;
-}
-
-.text-slate-800,
-.text-slate-700,
-.text-slate-600,
-.text-slate-500 {
-  color: #d8c49a !important;
-}
-
-.bg-white {
-  background-color: rgba(20, 15, 9, 0.82) !important;
-}
-
-.bg-slate-50,
-.bg-blue-50,
-.bg-emerald-50,
-.bg-amber-50,
-.bg-rose-50 {
-  background-color: rgba(29, 22, 13, 0.82) !important;
-}
-
-.bg-\[\#f5f7fb\] {
-  background-color: rgba(12, 9, 6, 0.9) !important;
-}
-
-.border-slate-200,
-.border-slate-100,
-.border-blue-100,
-.border-blue-200,
-.border-emerald-200,
-.border-amber-200,
-.border-rose-100,
-.border-rose-200 {
-  border-color: rgba(180, 137, 64, 0.42) !important;
-}
-
-.text-\[\#005eb8\] {
-  color: #f1cb79 !important;
+  color: #7b8a9b;
 }

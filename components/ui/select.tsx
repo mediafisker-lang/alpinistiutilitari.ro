@@ -7,7 +7,7 @@ const Select = React.forwardRef<HTMLSelectElement, React.ComponentProps<"select"
     <select
       ref={ref}
       className={cn(
-        "field-3d flex h-11 w-full rounded-xl px-4 text-sm text-[#f6ebd3] outline-none",
+        "field-3d flex h-11 w-full rounded-xl px-4 text-sm text-slate-900 outline-none",
         className,
       )}
       {...props}

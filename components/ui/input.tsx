@@ -7,7 +7,7 @@ const Input = React.forwardRef<HTMLInputElement, React.ComponentProps<"input">>(
     <input
       ref={ref}
       className={cn(
-        "field-3d flex h-11 w-full rounded-xl px-4 text-sm text-[#f6ebd3] placeholder:text-[#bea987] outline-none",
+        "field-3d flex h-11 w-full rounded-xl px-4 text-sm text-slate-900 placeholder:text-slate-400 outline-none",
         className,
       )}
       {...props}

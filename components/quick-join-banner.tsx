@@ -15,10 +15,10 @@ export function QuickJoinBanner() {
 
   return (
     <section className="mx-auto max-w-6xl px-4 pt-6 sm:px-6">
-      <div className="surface-3d overflow-hidden rounded-[2rem] border border-white/40 bg-[linear-gradient(120deg,#081326_0%,#0b2a56_45%,#7b1631_100%)] px-6 py-6 text-white shadow-[0_24px_60px_rgba(8,19,38,0.28)] sm:px-8">
+      <div className="surface-3d overflow-hidden rounded-[2rem] border border-slate-200 bg-[linear-gradient(120deg,#0b63ce_0%,#0f6ad8_45%,#1d4ed8_100%)] px-6 py-6 text-white shadow-[0_24px_60px_rgba(15,23,42,0.18)] sm:px-8">
         <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
           <div className="max-w-3xl">
-            <div className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-white/90">
+            <div className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/15 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-white">
               <Sparkles className="size-3.5" />
               Acces rapid in comunitate
             </div>
