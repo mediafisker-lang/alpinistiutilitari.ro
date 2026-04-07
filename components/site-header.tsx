@@ -165,7 +165,7 @@ export function SiteHeader() {
                 alt="Cortina North"
                 width={196}
                 height={64}
-                className="h-9 w-auto object-contain sm:h-12"
+                className="h-8 w-auto object-contain sm:h-10"
                 priority
               />
               <div className="min-w-0">
@@ -182,28 +182,28 @@ export function SiteHeader() {
             </div>
           </Link>
 
-          <div className="hidden items-center gap-2 lg:flex">
+          <div className="hidden items-center gap-1.5 lg:flex">
             <Link
               href="/#stadiu"
-              className="rounded-md border border-[#d7b36a] bg-[linear-gradient(120deg,#b88a2d_0%,#f1cc78_45%,#9b7226_100%)] px-2.5 py-1.5 text-xs font-semibold text-[#201507] shadow-sm transition hover:brightness-[1.05]"
+              className="inline-flex h-8 items-center rounded-md border border-[#d7b36a] bg-[linear-gradient(120deg,#a87a29_0%,#ddb45e_45%,#8e6420_100%)] px-2.5 text-[12px] font-semibold text-[#1a1207] shadow-sm transition hover:brightness-[1.07]"
             >
               Asociatie
             </Link>
             <Link
               href="/sesizari"
-              className="rounded-md border border-[#d7b36a] bg-[linear-gradient(120deg,#b88a2d_0%,#f1cc78_45%,#9b7226_100%)] px-2.5 py-1.5 text-xs font-semibold text-[#201507] shadow-sm transition hover:brightness-[1.05]"
+              className="inline-flex h-8 items-center rounded-md border border-[#d7b36a] bg-[linear-gradient(120deg,#a87a29_0%,#ddb45e_45%,#8e6420_100%)] px-2.5 text-[12px] font-semibold text-[#1a1207] shadow-sm transition hover:brightness-[1.07]"
             >
               Sesizari / Istoric
             </Link>
             <Link
               href="/voteaza"
-              className="rounded-md border border-[#d7b36a] bg-[linear-gradient(120deg,#b88a2d_0%,#f1cc78_45%,#9b7226_100%)] px-2.5 py-1.5 text-xs font-semibold text-[#201507] shadow-sm transition hover:brightness-[1.05]"
+              className="inline-flex h-8 items-center rounded-md border border-[#d7b36a] bg-[linear-gradient(120deg,#a87a29_0%,#ddb45e_45%,#8e6420_100%)] px-2.5 text-[12px] font-semibold text-[#1a1207] shadow-sm transition hover:brightness-[1.07]"
             >
               Voteaza propuneri
             </Link>
             <Link
               href="/#comunitate"
-              className="rounded-md border border-[#d7b36a] bg-[linear-gradient(120deg,#b88a2d_0%,#f1cc78_45%,#9b7226_100%)] px-2.5 py-1.5 text-xs font-semibold text-[#201507] shadow-sm transition hover:brightness-[1.05]"
+              className="inline-flex h-8 items-center rounded-md border border-[#d7b36a] bg-[linear-gradient(120deg,#a87a29_0%,#ddb45e_45%,#8e6420_100%)] px-2.5 text-[12px] font-semibold text-[#1a1207] shadow-sm transition hover:brightness-[1.07]"
             >
               Comunitate
             </Link>
@@ -222,7 +222,10 @@ export function SiteHeader() {
                 </button>
               </div>
             ) : (
-              <form onSubmit={handleDesktopLogin} className="flex items-center gap-1.5">
+              <form
+                onSubmit={handleDesktopLogin}
+                className="flex items-center gap-1 rounded-md border border-[#6f5326] bg-[rgba(18,13,9,0.88)] px-1.5 py-1"
+              >
                 <Input
                   type="email"
                   value={loginState.email}
@@ -233,7 +236,7 @@ export function SiteHeader() {
                     }))
                   }
                   placeholder="USER"
-                  className="h-8 w-24 rounded-md px-2 text-xs"
+                  className="h-7 w-20 rounded-md px-2 text-[11px]"
                 />
                 <Input
                   type="password"
@@ -245,14 +248,14 @@ export function SiteHeader() {
                     }))
                   }
                   placeholder="PASSWORD"
-                  className="h-8 w-24 rounded-md px-2 text-xs"
+                  className="h-7 w-20 rounded-md px-2 text-[11px]"
                 />
-                <Button type="submit" size="sm" disabled={loginLoading} className="h-8 px-2.5 text-xs">
+                <Button type="submit" size="sm" disabled={loginLoading} className="h-7 px-2 text-[11px]">
                   {loginLoading ? "Se verifica..." : "Login"}
                 </Button>
                 <Link
                   href="/#inscriere"
-                  className="rounded-md border border-slate-200 bg-slate-50 px-2.5 py-1.5 text-xs font-semibold text-slate-700 transition hover:bg-slate-100"
+                  className="inline-flex h-7 items-center rounded-md border border-[#7b5b2a] bg-[rgba(30,22,12,0.92)] px-2 text-[11px] font-semibold text-[#edd7a3] transition hover:bg-[rgba(40,29,16,0.95)]"
                 >
                   Register
                 </Link>

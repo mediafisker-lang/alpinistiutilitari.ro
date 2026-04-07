@@ -15,19 +15,19 @@ export function HeroSection({ stats }: { stats: HomepageStats }) {
   const { isLoggedIn } = useVoteSession();
 
   return (
-    <section className="relative overflow-hidden bg-[linear-gradient(180deg,#edf4ff_0%,#ffffff_40%,#f5f7fb_100%)]">
-      <div className="absolute inset-x-0 top-0 h-64 bg-[radial-gradient(circle_at_top,_rgba(0,94,184,0.14),_transparent_58%)]" />
+    <section className="relative overflow-hidden bg-[linear-gradient(180deg,#0b0806_0%,#120e09_42%,#0f0b07_100%)]">
+      <div className="absolute inset-x-0 top-0 h-64 bg-[radial-gradient(circle_at_top,_rgba(241,204,120,0.22),_transparent_58%)]" />
       <div className="relative mx-auto max-w-6xl px-4 py-10 sm:px-6 sm:py-14 lg:py-16">
         <div className="grid gap-5 lg:grid-cols-[1.05fr_0.95fr] lg:items-start">
           <div className="space-y-5">
-            <span className="inline-flex rounded-lg border border-blue-200 bg-blue-50 px-4 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-[#005eb8]">
+            <span className="inline-flex rounded-lg border border-[#c79b4b] bg-[rgba(32,24,14,0.84)] px-4 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-[#f1cb79]">
               Cortina North | Bucuresti si Ilfov
             </span>
             <div className="space-y-4">
-              <h1 className="max-w-3xl text-4xl font-extrabold tracking-tight text-slate-950 sm:text-5xl">
+              <h1 className="max-w-3xl text-4xl font-extrabold tracking-tight text-[#f7e7bf] sm:text-5xl">
                 Primesti acces la grupuri, vot, sesizari si actualizari intr-un minut
               </h1>
-              <p className="max-w-2xl text-base leading-7 text-slate-600 sm:text-lg">
+              <p className="max-w-2xl text-base leading-7 text-[#d9c598] sm:text-lg">
                 Portalul comunitatii Cortina North din Bucuresti si Ilfov este gandit ca sa intri rapid in comunitate, sa vezi ce se intampla si sa actionezi imediat atunci cand apare ceva important.
               </p>
             </div>
@@ -48,38 +48,38 @@ export function HeroSection({ stats }: { stats: HomepageStats }) {
             </div>
             <div className="grid gap-3 sm:grid-cols-3">
               <div className="surface-3d rounded-2xl p-4">
-                <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
+                <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#d8c49a]">
                   Membri inscrisi
                 </p>
-                <p className="mt-2 text-2xl font-extrabold text-[#005eb8]">
+                <p className="mt-2 text-2xl font-extrabold text-[#f1cb79]">
                   {formatCount(stats.residentsCount)}
                 </p>
               </div>
               <div className="surface-3d rounded-2xl p-4">
-                <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
+                <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#d8c49a]">
                   Sesizari trimise
                 </p>
-                <p className="mt-2 text-2xl font-extrabold text-[#e31e24]">
+                <p className="mt-2 text-2xl font-extrabold text-[#ff8c6f]">
                   {formatCount(stats.issuesCount)}
                 </p>
               </div>
               <div className="surface-3d rounded-2xl p-4">
-                <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
+                <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#d8c49a]">
                   Voturi inregistrate
                 </p>
-                <p className="mt-2 text-2xl font-extrabold text-slate-900">
+                <p className="mt-2 text-2xl font-extrabold text-[#f6ebd3]">
                   {formatCount(stats.votesCount)}
                 </p>
               </div>
             </div>
           </div>
 
-          <Card className="overflow-hidden rounded-2xl border border-blue-100 p-0">
-            <div className="bg-[linear-gradient(90deg,#005eb8_0%,#2b7de9_100%)] px-6 py-4 text-white">
-              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-blue-100">
+          <Card className="overflow-hidden rounded-2xl border border-[#8a6424] p-0">
+            <div className="bg-[linear-gradient(110deg,#9f7427_0%,#f0c46e_45%,#8a6424_100%)] px-6 py-4 text-[#22170a]">
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#503913]">
                 Pachet comunitate
               </p>
-              <CardTitle className="mt-2 text-2xl font-extrabold text-white">Pe scurt</CardTitle>
+              <CardTitle className="mt-2 text-2xl font-extrabold text-[#1f1408]">Pe scurt</CardTitle>
             </div>
             <div className="p-6">
               <CardDescription className="text-sm leading-7 sm:text-base">
@@ -87,7 +87,7 @@ export function HeroSection({ stats }: { stats: HomepageStats }) {
               </CardDescription>
               <div className="mt-5 space-y-3">
                 <div className="surface-3d flex items-start gap-3 rounded-2xl bg-slate-50 p-4">
-                  <CheckCircle2 className="mt-0.5 size-5 text-[#005eb8]" />
+                  <CheckCircle2 className="mt-0.5 size-5 text-[#f1cb79]" />
                   <div>
                     <p className="font-semibold text-slate-950">Transparenta publica</p>
                     <p className="mt-1 text-sm leading-6 text-slate-600">
@@ -96,7 +96,7 @@ export function HeroSection({ stats }: { stats: HomepageStats }) {
                   </div>
                 </div>
                 <div className="surface-3d flex items-start gap-3 rounded-2xl bg-slate-50 p-4">
-                  <CheckCircle2 className="mt-0.5 size-5 text-[#005eb8]" />
+                  <CheckCircle2 className="mt-0.5 size-5 text-[#f1cb79]" />
                   <div>
                     <p className="font-semibold text-slate-950">Implicare simpla</p>
                     <p className="mt-1 text-sm leading-6 text-slate-600">
