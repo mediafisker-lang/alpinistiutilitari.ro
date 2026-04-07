@@ -1,5 +1,7 @@
+import { ProgressSection } from "@/components/progress-section";
 import { SectionHeading } from "@/components/section-heading";
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
+import { getPublicProgress } from "@/lib/data";
 import { buildMetadata } from "@/lib/seo";
 
 export const metadata = buildMetadata({
@@ -197,97 +199,102 @@ const legalSteps = [
   "depunerea dosarului de infiintare in instanta",
 ];
 
-export default function StadiuAsociatiePage() {
+export default async function StadiuAsociatiePage() {
+  const progress = await getPublicProgress();
+
   return (
-    <section className="mx-auto max-w-5xl px-4 py-16 sm:px-6">
-      <SectionHeading
-        eyebrow="Stadiu Asociatie"
-        title="Pasii facuti, pe larg"
-        description="Mai jos este prezentata cronologia detaliata a demersului si stadiul actual al procesului de constituire."
-      />
+    <>
+      <ProgressSection items={progress} />
+      <section className="mx-auto max-w-5xl px-4 py-16 sm:px-6">
+        <SectionHeading
+          eyebrow="Stadiu Asociatie"
+          title="Pasii facuti, pe larg"
+          description="Mai jos este prezentata cronologia detaliata a demersului si stadiul actual al procesului de constituire."
+        />
 
-      <div className="mt-8 space-y-6">
-        <Card>
-          <CardTitle>Cronologia demersului</CardTitle>
-          <div className="mt-6 space-y-5">
-            {timeline.map((entry) => (
-              <div key={entry.title} className="rounded-2xl bg-slate-50 p-4">
-                <h3 className="text-base font-semibold text-slate-950">{entry.title}</h3>
+        <div className="mt-8 space-y-6">
+          <Card>
+            <CardTitle>Cronologia demersului</CardTitle>
+            <div className="mt-6 space-y-5">
+              {timeline.map((entry) => (
+                <div key={entry.title} className="rounded-2xl bg-slate-50 p-4">
+                  <h3 className="text-base font-semibold text-slate-950">{entry.title}</h3>
 
-                <div className="mt-2 space-y-3 text-sm leading-6 text-slate-700">
-                  {entry.paragraphs.map((paragraph) => (
-                    <p key={paragraph}>{paragraph}</p>
-                  ))}
+                  <div className="mt-2 space-y-3 text-sm leading-6 text-slate-700">
+                    {entry.paragraphs.map((paragraph) => (
+                      <p key={paragraph}>{paragraph}</p>
+                    ))}
 
-                  {"bullets" in entry && entry.bullets ? (
-                    <ul className="space-y-2">
-                      {entry.bullets.map((bullet) => (
-                        <li key={bullet}>- {bullet}</li>
-                      ))}
-                    </ul>
-                  ) : null}
-
-                  {"highlights" in entry && entry.highlights ? (
-                    <div className="rounded-2xl bg-white p-4 text-slate-800">
-                      <div className="space-y-2">
-                        {entry.highlights.map((highlight) => (
-                          <p key={highlight}>- {highlight}</p>
+                    {"bullets" in entry && entry.bullets ? (
+                      <ul className="space-y-2">
+                        {entry.bullets.map((bullet) => (
+                          <li key={bullet}>- {bullet}</li>
                         ))}
+                      </ul>
+                    ) : null}
+
+                    {"highlights" in entry && entry.highlights ? (
+                      <div className="rounded-2xl bg-white p-4 text-slate-800">
+                        <div className="space-y-2">
+                          {entry.highlights.map((highlight) => (
+                            <p key={highlight}>- {highlight}</p>
+                          ))}
+                        </div>
                       </div>
-                    </div>
-                  ) : null}
+                    ) : null}
 
-                  {"extraParagraphs" in entry && entry.extraParagraphs
-                    ? entry.extraParagraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)
-                    : null}
+                    {"extraParagraphs" in entry && entry.extraParagraphs
+                      ? entry.extraParagraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)
+                      : null}
+                  </div>
                 </div>
-              </div>
-            ))}
-          </div>
-        </Card>
-
-        <Card>
-          <CardTitle>Unde ne aflam in prezent</CardTitle>
-          <CardDescription className="mt-4">
-            Documentatia juridica necesara constituirii asociatiei este deja redactata de firma de
-            avocatura selectata de comunitate si achitata integral prin contributia proprietarilor.
-          </CardDescription>
-          <div className="mt-4 space-y-4 text-sm leading-6 text-slate-700">
-            <p>
-              Ne aflam acum in etapa operationala, cea care face diferenta intre intentie si
-              finalizare.
-            </p>
-            <p>
-              Lucram activ la mobilizarea voluntarilor pentru strangerea semnaturilor necesare
-              infiintarii asociatiei, consolidand o baza de date deja construita de peste 620
-              proprietari care pot fi contactati.
-            </p>
-            <p>Acest proces presupune:</p>
-            <ul className="space-y-2">
-              {currentStageBullets.map((bullet) => (
-                <li key={bullet}>- {bullet}</li>
               ))}
-            </ul>
-            <p>
-              Este un efort anevoios, dar esential, unul care necesita organizare atenta si
-              coerenta, pentru a transforma munca depusa pana acum intr-un rezultat concret.
-            </p>
-            <div className="rounded-2xl bg-emerald-50 p-4">
-              <p className="font-medium text-emerald-900">
-                In paralel, continuam parcurgerea pasilor prevazuti de Legea 196/2018:
-              </p>
-              <ol className="mt-3 space-y-2 text-sm leading-6 text-emerald-950">
-                {legalSteps.map((step, index) => (
-                  <li key={step}>
-                    {index + 1}. {step}
-                  </li>
-                ))}
-              </ol>
             </div>
-            <p>Suntem, in mod real, in faza in care ceea ce a fost construit poate fi dus la capat.</p>
-          </div>
-        </Card>
-      </div>
-    </section>
+          </Card>
+
+          <Card>
+            <CardTitle>Unde ne aflam in prezent</CardTitle>
+            <CardDescription className="mt-4">
+              Documentatia juridica necesara constituirii asociatiei este deja redactata de firma de
+              avocatura selectata de comunitate si achitata integral prin contributia proprietarilor.
+            </CardDescription>
+            <div className="mt-4 space-y-4 text-sm leading-6 text-slate-700">
+              <p>
+                Ne aflam acum in etapa operationala, cea care face diferenta intre intentie si
+                finalizare.
+              </p>
+              <p>
+                Lucram activ la mobilizarea voluntarilor pentru strangerea semnaturilor necesare
+                infiintarii asociatiei, consolidand o baza de date deja construita de peste 620
+                proprietari care pot fi contactati.
+              </p>
+              <p>Acest proces presupune:</p>
+              <ul className="space-y-2">
+                {currentStageBullets.map((bullet) => (
+                  <li key={bullet}>- {bullet}</li>
+                ))}
+              </ul>
+              <p>
+                Este un efort anevoios, dar esential, unul care necesita organizare atenta si
+                coerenta, pentru a transforma munca depusa pana acum intr-un rezultat concret.
+              </p>
+              <div className="rounded-2xl bg-emerald-50 p-4">
+                <p className="font-medium text-emerald-900">
+                  In paralel, continuam parcurgerea pasilor prevazuti de Legea 196/2018:
+                </p>
+                <ol className="mt-3 space-y-2 text-sm leading-6 text-emerald-950">
+                  {legalSteps.map((step, index) => (
+                    <li key={step}>
+                      {index + 1}. {step}
+                    </li>
+                  ))}
+                </ol>
+              </div>
+              <p>Suntem, in mod real, in faza in care ceea ce a fost construit poate fi dus la capat.</p>
+            </div>
+          </Card>
+        </div>
+      </section>
+    </>
   );
 }

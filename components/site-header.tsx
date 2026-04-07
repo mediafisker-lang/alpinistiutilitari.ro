@@ -184,7 +184,7 @@ export function SiteHeader() {
 
           <div className="hidden items-center gap-1.5 lg:flex">
             <Link
-              href="/#stadiu"
+              href="/stadiu-asociatie"
               className="inline-flex h-8 items-center rounded-md border border-[#d7b36a] bg-[linear-gradient(120deg,#a87a29_0%,#ddb45e_45%,#8e6420_100%)] px-2.5 text-[12px] font-extrabold tracking-[0.01em] text-[#120b04] shadow-sm transition hover:brightness-[1.07]"
             >
               Asociatie
@@ -267,7 +267,7 @@ export function SiteHeader() {
         <div className="mt-3 border-t border-slate-200 pt-3 lg:hidden">
           <nav className="grid grid-cols-2 gap-2">
             <Link
-              href="/#stadiu"
+              href="/stadiu-asociatie"
               className="rounded-lg border border-[#d7b36a] bg-[linear-gradient(120deg,#b88a2d_0%,#f1cc78_45%,#9b7226_100%)] px-2 py-2.5 text-center text-[12px] font-extrabold tracking-[0.01em] text-[#130c05] shadow-sm transition hover:brightness-[1.05]"
             >
               Asociatie

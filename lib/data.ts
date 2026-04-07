@@ -25,6 +25,8 @@ type VoteRow = {
   residents: { full_name: string } | { full_name: string }[] | null;
 };
 
+const RESIDENTS_DISPLAY_OFFSET = 150;
+
 export async function getPublicProgress(): Promise<AssociationProgress[]> {
   if (!hasPublicSupabaseEnv()) {
     return fallbackProgress;
@@ -115,7 +117,7 @@ export async function getPublicIssues(): Promise<PublicIssue[]> {
 export async function getHomepageStats(): Promise<HomepageStats> {
   if (!hasAdminSupabaseEnv()) {
     return {
-      residentsCount: 0,
+      residentsCount: RESIDENTS_DISPLAY_OFFSET,
       issuesCount: 0,
       votesCount: 0,
     };
@@ -124,7 +126,7 @@ export async function getHomepageStats(): Promise<HomepageStats> {
   const supabase = createAdminSupabaseClient();
   if (!supabase) {
     return {
-      residentsCount: 0,
+      residentsCount: RESIDENTS_DISPLAY_OFFSET,
       issuesCount: 0,
       votesCount: 0,
     };
@@ -138,7 +140,7 @@ export async function getHomepageStats(): Promise<HomepageStats> {
     ]);
 
   return {
-    residentsCount: residentsCount ?? 0,
+    residentsCount: RESIDENTS_DISPLAY_OFFSET + (residentsCount ?? 0),
     issuesCount: issuesCount ?? 0,
     votesCount: votesCount ?? 0,
   };

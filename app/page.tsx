@@ -7,13 +7,11 @@ import { HeroSection } from "@/components/hero-section";
 import { HowItWorksSection } from "@/components/how-it-works-section";
 import { JoinConversionPanel } from "@/components/join-conversion-panel";
 import { JoinForm } from "@/components/join-form";
-import { ProgressSection } from "@/components/progress-section";
 import { QuickJoinBanner } from "@/components/quick-join-banner";
 import { SectionHeading } from "@/components/section-heading";
 import {
   getCommunityLinks,
   getHomepageStats,
-  getPublicProgress,
 } from "@/lib/data";
 import { buildMetadata, siteName, siteUrl } from "@/lib/seo";
 
@@ -30,11 +28,7 @@ export const metadata: Metadata = buildMetadata({
 });
 
 export default async function HomePage() {
-  const [progress, links, stats] = await Promise.all([
-    getPublicProgress(),
-    getCommunityLinks(),
-    getHomepageStats(),
-  ]);
+  const [links, stats] = await Promise.all([getCommunityLinks(), getHomepageStats()]);
 
   const structuredData = {
     "@context": "https://schema.org",
@@ -96,7 +90,6 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
-      <ProgressSection items={progress} />
       <HowItWorksSection />
     </>
   );

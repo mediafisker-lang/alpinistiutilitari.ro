@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { ArrowRight, CheckCircle2, ShieldCheck } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -40,11 +41,11 @@ export function HeroSection({ stats }: { stats: HomepageStats }) {
                   </Button>
                 </a>
               ) : null}
-              <a href="#stadiu">
+              <Link href="/stadiu-asociatie">
                 <Button variant="outline" size="lg" className="w-full sm:w-auto">
                   {isLoggedIn ? "Vezi noutatile si stadiul" : "Vezi stadiul actual"}
                 </Button>
-              </a>
+              </Link>
             </div>
             <div className="grid gap-3 sm:grid-cols-3">
               <div className="surface-3d rounded-2xl p-4">

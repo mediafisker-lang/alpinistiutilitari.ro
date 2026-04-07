@@ -36,7 +36,7 @@ export function SiteFooter() {
                 Meniu
               </p>
               <div className="mt-4 grid gap-3 text-sm">
-                <Link href="/#stadiu" className="transition hover:text-white">
+                <Link href="/stadiu-asociatie" className="transition hover:text-white">
                   Stadiu Asoc.
                 </Link>
                 <Link href="/#beneficii" className="transition hover:text-white">
