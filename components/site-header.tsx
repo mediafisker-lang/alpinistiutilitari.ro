@@ -182,30 +182,30 @@ export function SiteHeader() {
             </div>
           </Link>
 
-          <div className="hidden items-center gap-3 lg:flex">
+          <div className="hidden items-center gap-2 lg:flex">
             <Link
               href="/#stadiu"
-              className="rounded-lg border border-[#004f99] bg-[#005eb8] px-3 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-[#004a92]"
+              className="rounded-md border border-[#004f99] bg-[#005eb8] px-2.5 py-1.5 text-xs font-semibold text-white shadow-sm transition hover:bg-[#004a92]"
             >
               Asociatie
             </Link>
             <Link
-              href="/#comunitate"
-              className="rounded-lg border border-[#004f99] bg-[#005eb8] px-3 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-[#004a92]"
-            >
-              Comunitate
-            </Link>
-            <Link
               href="/#sesizari"
-              className="rounded-lg border border-[#004f99] bg-[#005eb8] px-3 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-[#004a92]"
+              className="rounded-md border border-[#004f99] bg-[#005eb8] px-2.5 py-1.5 text-xs font-semibold text-white shadow-sm transition hover:bg-[#004a92]"
             >
-              Sesizari
+              Sesizari / Istoric
             </Link>
             <Link
               href="/#voteaza"
-              className="rounded-lg border border-[#004f99] bg-[#005eb8] px-3 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-[#004a92]"
+              className="rounded-md border border-[#004f99] bg-[#005eb8] px-2.5 py-1.5 text-xs font-semibold text-white shadow-sm transition hover:bg-[#004a92]"
             >
-              Voteaza
+              Voteaza propuneri
+            </Link>
+            <Link
+              href="/#comunitate"
+              className="rounded-md border border-[#004f99] bg-[#005eb8] px-2.5 py-1.5 text-xs font-semibold text-white shadow-sm transition hover:bg-[#004a92]"
+            >
+              Comunitate
             </Link>
             {loggedInEmail ? (
               <div className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-2 rounded-lg border border-blue-200 bg-blue-50 px-2.5 py-1.5">
@@ -222,7 +222,7 @@ export function SiteHeader() {
                 </button>
               </div>
             ) : (
-              <form onSubmit={handleDesktopLogin} className="flex items-center gap-2">
+              <form onSubmit={handleDesktopLogin} className="flex items-center gap-1.5">
                 <Input
                   type="email"
                   value={loginState.email}
@@ -233,7 +233,7 @@ export function SiteHeader() {
                     }))
                   }
                   placeholder="USER"
-                  className="h-9 w-32 px-3 text-sm"
+                  className="h-8 w-24 rounded-md px-2 text-xs"
                 />
                 <Input
                   type="password"
@@ -245,14 +245,14 @@ export function SiteHeader() {
                     }))
                   }
                   placeholder="PASSWORD"
-                  className="h-9 w-32 px-3 text-sm"
+                  className="h-8 w-24 rounded-md px-2 text-xs"
                 />
-                <Button type="submit" size="sm" disabled={loginLoading}>
+                <Button type="submit" size="sm" disabled={loginLoading} className="h-8 px-2.5 text-xs">
                   {loginLoading ? "Se verifica..." : "Login"}
                 </Button>
                 <Link
                   href="/#inscriere"
-                  className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-100"
+                  className="rounded-md border border-slate-200 bg-slate-50 px-2.5 py-1.5 text-xs font-semibold text-slate-700 transition hover:bg-slate-100"
                 >
                   Register
                 </Link>
