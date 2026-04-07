@@ -45,7 +45,7 @@ export function HowItWorksSection() {
     <section id="cum-functioneaza" className="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-16">
       <SectionHeading
         eyebrow="Cum functioneaza"
-        title="Patru pasi simpli, fara cont si fara complicatii."
+        title="Patru pasi simpli!"
         description="Totul este gandit pentru mobil si pentru completare rapida."
       />
       <div className="mt-8 grid gap-4 lg:grid-cols-4">
