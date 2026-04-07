@@ -42,11 +42,11 @@ export function SiteFooter() {
                 <Link href="/#beneficii" className="transition hover:text-white">
                   Beneficii
                 </Link>
-                <Link href="/#sesizari" className="transition hover:text-white">
-                  Sesizari
+                <Link href="/sesizari" className="transition hover:text-white">
+                  Sesizari / Istoric
                 </Link>
-                <Link href="/#voteaza" className="transition hover:text-white">
-                  Voteaza
+                <Link href="/voteaza" className="transition hover:text-white">
+                  Voteaza propuneri
                 </Link>
                 <Link href="/#inscriere" className="transition hover:text-white">
                   Contul meu

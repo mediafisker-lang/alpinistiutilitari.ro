@@ -190,13 +190,13 @@ export function SiteHeader() {
               Asociatie
             </Link>
             <Link
-              href="/#sesizari"
+              href="/sesizari"
               className="rounded-md border border-[#004f99] bg-[#005eb8] px-2.5 py-1.5 text-xs font-semibold text-white shadow-sm transition hover:bg-[#004a92]"
             >
               Sesizari / Istoric
             </Link>
             <Link
-              href="/#voteaza"
+              href="/voteaza"
               className="rounded-md border border-[#004f99] bg-[#005eb8] px-2.5 py-1.5 text-xs font-semibold text-white shadow-sm transition hover:bg-[#004a92]"
             >
               Voteaza propuneri
@@ -276,13 +276,13 @@ export function SiteHeader() {
               Comunitate
             </Link>
             <Link
-              href="/#sesizari"
+              href="/sesizari"
               className="rounded-lg border border-[#004f99] bg-[#005eb8] px-2 py-2.5 text-center text-[12px] font-semibold text-white shadow-sm transition hover:bg-[#004a92]"
             >
               Sesizari / Istoric
             </Link>
             <Link
-              href="/#voteaza"
+              href="/voteaza"
               className="rounded-lg border border-[#004f99] bg-[#005eb8] px-2 py-2.5 text-center text-[12px] font-semibold text-white shadow-sm transition hover:bg-[#004a92]"
             >
               Voteaza propuneri

@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { ArrowRight, BadgeCheck, BellRing, MessagesSquare, Vote } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -43,16 +44,16 @@ export function JoinConversionPanel({ stats }: { stats: HomepageStats }) {
           Esti conectat cu {session?.email}. Poti merge direct catre sesizari, vot sau actualizarile publice, fara sa mai vezi formularul de inscriere.
         </CardDescription>
         <div className="mt-5 grid gap-3 sm:grid-cols-2">
-          <a href="#sesizari" className="block">
+          <Link href="/sesizari" className="block">
             <Button size="lg" className="w-full">
               Trimite o sesizare
             </Button>
-          </a>
-          <a href="#voteaza" className="block">
+          </Link>
+          <Link href="/voteaza" className="block">
             <Button variant="outline" size="lg" className="w-full">
               Mergi la vot
             </Button>
-          </a>
+          </Link>
         </div>
       </Card>
     );
