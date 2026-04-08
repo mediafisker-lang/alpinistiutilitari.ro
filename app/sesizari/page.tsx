@@ -31,30 +31,54 @@ export default async function SesizariPage() {
           description="Ai formularul de sesizari si lista cu stadiul sesizarilor publice, intr-o pagina dedicata."
           className="max-w-4xl"
         />
-        <div className="mt-6 grid gap-4 md:grid-cols-2">
-          <div className="relative h-40 overflow-hidden rounded-2xl border border-slate-200">
+        <div className="mt-6 md:hidden">
+          <div className="relative h-56 overflow-hidden rounded-2xl border border-slate-200 bg-slate-100">
             <Image
               src="/images/cortina/cortina-north-comunitate-09.webp"
               alt="Cortina North - zona comuna pentru sesizari"
               fill
-              className="object-cover"
-              sizes="(max-width: 768px) 100vw, 50vw"
+              className="object-contain"
+              sizes="100vw"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-slate-950/35 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-slate-950/15 to-transparent" />
           </div>
-          <div className="relative h-40 overflow-hidden rounded-2xl border border-slate-200">
+        </div>
+        <div className="mt-6 hidden gap-4 md:grid md:grid-cols-2">
+          <div className="relative h-48 overflow-hidden rounded-2xl border border-slate-200 bg-slate-100">
+            <Image
+              src="/images/cortina/cortina-north-comunitate-09.webp"
+              alt="Cortina North - zona comuna pentru sesizari"
+              fill
+              className="object-cover object-center"
+              sizes="(max-width: 1024px) 50vw, 33vw"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-slate-950/20 to-transparent" />
+          </div>
+          <div className="relative h-48 overflow-hidden rounded-2xl border border-slate-200 bg-slate-100">
             <Image
               src="/images/cortina/cortina-north-comunitate-10.webp"
               alt="Comunitatea Cortina North - acces si comunicare"
               fill
-              className="object-cover"
-              sizes="(max-width: 768px) 100vw, 50vw"
+              className="object-cover object-center"
+              sizes="(max-width: 1024px) 50vw, 33vw"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-slate-950/25 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-slate-950/20 to-transparent" />
           </div>
         </div>
         <div className="mt-8 grid gap-5 xl:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)]">
-          <IssueForm />
+          <div className="space-y-5">
+            <IssueForm />
+            <div className="relative h-56 overflow-hidden rounded-2xl border border-slate-200 bg-slate-100 md:hidden">
+              <Image
+                src="/images/cortina/cortina-north-comunitate-10.webp"
+                alt="Comunitatea Cortina North - imagine suport pentru formular"
+                fill
+                className="object-contain"
+                sizes="100vw"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-950/15 to-transparent" />
+            </div>
+          </div>
           <PublicIssuesList issues={issues} />
         </div>
       </div>
