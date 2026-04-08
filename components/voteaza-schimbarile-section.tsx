@@ -221,53 +221,26 @@ export function VoteazaSchimbarileSection() {
               Fiecare comentariu afiseaza numele rezidentului si data/ora publicarii.
             </p>
           </div>
-          <div className="grid gap-4 md:grid-cols-3">
-            {voteGalleryImages.map((imageSrc, index) => (
-              <div key={imageSrc} className="relative h-36 overflow-hidden rounded-2xl border border-slate-200">
-                <Image
-                  src={imageSrc}
-                  alt={`Cortina North vot si comunitate ${index + 1}`}
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 768px) 100vw, 33vw"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/30 to-transparent" />
-              </div>
-            ))}
-          </div>
         </div>
 
         <div className="mt-8 space-y-6">
-          {activeProposals.map((proposal, index) => {
+          {activeProposals.map((proposal) => {
             const currentForm = forms[proposal.id] ?? { choice: "yes" as VoteChoice, reason: "" };
             const isVotingOpen = activeProposalId === proposal.id;
-            const previewImage = voteGalleryImages[index % voteGalleryImages.length];
 
             return (
               <Card key={proposal.id} className="overflow-hidden rounded-2xl border border-slate-200 bg-white p-0">
                 <div className="border-b border-slate-200 bg-white p-4 sm:p-6">
-                  <div className="grid gap-4 md:grid-cols-[160px_minmax(0,1fr)] md:items-start">
-                    <div className="relative h-28 overflow-hidden rounded-xl border border-slate-200 md:h-32">
-                      <Image
-                        src={previewImage}
-                        alt={`Imagine propunere ${proposal.title}`}
-                        fill
-                        sizes="(max-width: 768px) 100vw, 160px"
-                        className="object-cover"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-slate-950/35 to-transparent" />
+                  <div>
+                    <div className="mb-3 inline-flex rounded-lg bg-blue-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.16em] text-[#005eb8]">
+                      Propunere activa
                     </div>
-                    <div>
-                      <div className="mb-3 inline-flex rounded-lg bg-blue-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.16em] text-[#005eb8]">
-                        Propunere activa
-                      </div>
-                      <CardTitle className="text-2xl font-extrabold tracking-tight sm:text-3xl">
-                        {proposal.title}
-                      </CardTitle>
-                      <CardDescription className="mt-3 text-sm leading-7 sm:text-base">
-                        {proposal.description}
-                      </CardDescription>
-                    </div>
+                    <CardTitle className="text-2xl font-extrabold tracking-tight sm:text-3xl">
+                      {proposal.title}
+                    </CardTitle>
+                    <CardDescription className="mt-3 text-sm leading-7 sm:text-base">
+                      {proposal.description}
+                    </CardDescription>
                   </div>
 
                   <div className="mt-4 grid max-w-xs grid-cols-2 gap-2">
@@ -461,6 +434,24 @@ export function VoteazaSchimbarileSection() {
               </CardDescription>
             </Card>
           ) : null}
+
+          <div className="grid gap-3 sm:grid-cols-3">
+            {voteGalleryImages.map((imageSrc, index) => (
+              <div
+                key={imageSrc}
+                className="relative h-40 overflow-hidden rounded-2xl border border-slate-200 bg-slate-100"
+              >
+                <Image
+                  src={imageSrc}
+                  alt={`Cortina North vot si comunitate ${index + 1}`}
+                  fill
+                  className="object-cover object-center"
+                  sizes="(max-width: 768px) 100vw, 33vw"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/30 to-transparent" />
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>

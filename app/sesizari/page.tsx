@@ -31,18 +31,6 @@ export default async function SesizariPage() {
           description="Ai formularul de sesizari si lista cu stadiul sesizarilor publice, intr-o pagina dedicata."
           className="max-w-4xl"
         />
-        <div className="mt-6 md:hidden">
-          <div className="relative h-56 overflow-hidden rounded-2xl border border-slate-200 bg-slate-100">
-            <Image
-              src="/images/cortina/cortina-north-comunitate-09.webp"
-              alt="Cortina North - zona comuna pentru sesizari"
-              fill
-              className="object-contain"
-              sizes="100vw"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-slate-950/15 to-transparent" />
-          </div>
-        </div>
         <div className="mt-6 hidden gap-4 md:grid md:grid-cols-2">
           <div className="relative h-48 overflow-hidden rounded-2xl border border-slate-200 bg-slate-100">
             <Image
@@ -68,15 +56,37 @@ export default async function SesizariPage() {
         <div className="mt-8 grid gap-5 xl:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)]">
           <div className="space-y-5">
             <IssueForm />
-            <div className="relative h-56 overflow-hidden rounded-2xl border border-slate-200 bg-slate-100 md:hidden">
-              <Image
-                src="/images/cortina/cortina-north-comunitate-10.webp"
-                alt="Comunitatea Cortina North - imagine suport pentru formular"
-                fill
-                className="object-contain"
-                sizes="100vw"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-950/15 to-transparent" />
+            <div className="overflow-hidden rounded-2xl border border-slate-200 bg-slate-100 p-1 md:hidden">
+              <div className="grid h-72 grid-cols-2 grid-rows-2 gap-1">
+                <div className="relative col-span-2 overflow-hidden rounded-xl">
+                  <Image
+                    src="/images/cortina/cortina-north-comunitate-10.webp"
+                    alt="Cortina North - perspectiva comunitate pentru sesizari"
+                    fill
+                    className="object-cover object-center"
+                    sizes="100vw"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/15 to-transparent" />
+                </div>
+                <div className="relative overflow-hidden rounded-xl">
+                  <Image
+                    src="/images/cortina/cortina-north-comunitate-09.webp"
+                    alt="Cortina North - zona rezidentiala pentru sesizari"
+                    fill
+                    className="object-cover object-center"
+                    sizes="50vw"
+                  />
+                </div>
+                <div className="relative overflow-hidden rounded-xl">
+                  <Image
+                    src="/images/cortina/cortina-north-comunitate-11.webp"
+                    alt="Cortina North - imagine suport comunitate"
+                    fill
+                    className="object-cover object-center"
+                    sizes="50vw"
+                  />
+                </div>
+              </div>
             </div>
           </div>
           <PublicIssuesList issues={issues} />

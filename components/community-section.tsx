@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { Facebook, MessageCircleMore, Users } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { SectionHeading } from "@/components/section-heading";
 import { useVoteSession } from "@/components/use-vote-session";
@@ -37,6 +37,7 @@ export function CommunitySection({ links }: { links: CommunityLink[] }) {
   const [showAuthPrompt, setShowAuthPrompt] = useState(false);
   const [showLoginForm, setShowLoginForm] = useState(false);
   const [pendingUrl, setPendingUrl] = useState("");
+  const [activeMobilePromptId, setActiveMobilePromptId] = useState<string | null>(null);
   const [loginEmail, setLoginEmail] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
   const [loginLoading, setLoginLoading] = useState(false);
@@ -46,17 +47,39 @@ export function CommunitySection({ links }: { links: CommunityLink[] }) {
     window.open(url, "_blank", "noopener,noreferrer");
   }
 
-  function handleProtectedLinkClick(url: string) {
+  function scrollToLoginArea() {
+    const loginArea = document.getElementById("portal-login");
+    if (loginArea) {
+      loginArea.scrollIntoView({ behavior: "smooth", block: "start" });
+      return;
+    }
+
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  function handleProtectedLinkClick(linkId: string, url: string) {
     if (isLoggedIn) {
       openLink(url);
       return;
     }
 
     setPendingUrl(url);
-    setShowAuthPrompt(true);
+    const isMobile = window.matchMedia("(max-width: 767px)").matches;
+    setActiveMobilePromptId(linkId);
+    setShowAuthPrompt(!isMobile);
     setShowLoginForm(false);
     setLoginError("");
   }
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      return;
+    }
+
+    setShowAuthPrompt(false);
+    setShowLoginForm(false);
+    setActiveMobilePromptId(null);
+  }, [isLoggedIn]);
 
   async function handleInlineLogin() {
     setLoginLoading(true);
@@ -142,22 +165,43 @@ export function CommunitySection({ links }: { links: CommunityLink[] }) {
                       />
                       <CardTitle className="mt-4 sm:mt-5">{link.label}</CardTitle>
                     </div>
-                    <button
+                    <Button
                       type="button"
-                      onClick={() => handleProtectedLinkClick(link.url)}
-                      className="mt-5 sm:mt-6"
+                      onClick={() => handleProtectedLinkClick(link.id, link.url)}
+                      variant="secondary"
+                      className="mt-5 w-full sm:mt-6"
                     >
-                      <Button variant="secondary" className="w-full">
-                        Deschide linkul
-                      </Button>
-                    </button>
+                      Deschide linkul
+                    </Button>
+                    {!isLoggedIn && activeMobilePromptId === link.id ? (
+                      <div className="mt-2.5 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 md:hidden">
+                        <p className="text-[11px] font-medium leading-5 text-amber-900">
+                          Nu esti logat sau inregistrat. Apasa Login sau Inregistreaza-te.
+                        </p>
+                        <div className="mt-2 flex items-center gap-2">
+                          <button
+                            type="button"
+                            onClick={scrollToLoginArea}
+                            className="rounded-md bg-[#005eb8] px-2.5 py-1 text-[11px] font-semibold text-white transition hover:bg-[#004799]"
+                          >
+                            Login
+                          </button>
+                          <Link
+                            href="/inregistrare"
+                            className="rounded-md border border-amber-300 bg-white px-2.5 py-1 text-[11px] font-semibold text-amber-950 transition hover:bg-amber-100"
+                          >
+                            Inregistreaza-te
+                          </Link>
+                        </div>
+                      </div>
+                    ) : null}
                   </Card>
                 );
               })}
             </div>
 
             {showAuthPrompt ? (
-              <Card className="mt-6 border-amber-200 bg-amber-50">
+              <Card className="mt-6 hidden border-amber-200 bg-amber-50 md:block">
                 <CardTitle className="text-amber-950">
                   Nu esti logat/inregistrat.
                 </CardTitle>
