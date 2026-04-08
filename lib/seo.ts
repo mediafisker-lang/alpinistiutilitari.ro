@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { absoluteUrl } from "@/lib/utils";
+import { absoluteUrl, getSiteUrl } from "@/lib/utils";
 
 const DEFAULT_SOCIAL_IMAGE = "/alpinisti_utilitari_1.jpg";
 const DEFAULT_SOCIAL_IMAGE_ALT =
@@ -32,8 +32,22 @@ export function buildMetadata({
   const socialImageUrl = resolveUrl(image ?? DEFAULT_SOCIAL_IMAGE);
 
   return {
+    metadataBase: new URL(getSiteUrl()),
+    applicationName: "AlpinistiUtilitari.ro",
     title,
     description,
+    keywords: [
+      "alpinism utilitar",
+      "alpinisti utilitari",
+      "lucrari la inaltime",
+      "firme alpinism utilitar",
+      "servicii la inaltime Romania",
+    ],
+    category: "business",
+    referrer: "origin-when-cross-origin",
+    authors: [{ name: "AlpinistiUtilitari.ro" }],
+    creator: "AlpinistiUtilitari.ro",
+    publisher: "AlpinistiUtilitari.ro",
     alternates: {
       canonical,
       languages: {
@@ -61,7 +75,15 @@ export function buildMetadata({
       card: "summary_large_image",
       title,
       description,
-      images: [socialImageUrl],
+      images: [
+        {
+          url: socialImageUrl,
+          alt: DEFAULT_SOCIAL_IMAGE_ALT,
+        },
+      ],
+    },
+    other: {
+      "content-language": "ro",
     },
     robots: noIndex
       ? {

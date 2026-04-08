@@ -1,0 +1,74 @@
+<svg width="1600" height="900" viewBox="0 0 1600 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="sky" x1="210" y1="76" x2="1337" y2="855" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F6FBFF"/>
+      <stop offset="0.5" stop-color="#E8F4FF"/>
+      <stop offset="1" stop-color="#D7EBFF"/>
+    </linearGradient>
+    <linearGradient id="glass" x1="960" y1="96" x2="1472" y2="805" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F8FDFF" stop-opacity="0.96"/>
+      <stop offset="1" stop-color="#D9EEFF" stop-opacity="0.86"/>
+    </linearGradient>
+    <linearGradient id="rope" x1="0" y1="0" x2="0" y2="1">
+      <stop stop-color="#2E6FD7"/>
+      <stop offset="1" stop-color="#0F4E9D"/>
+    </linearGradient>
+    <filter id="shadow" x="0" y="0" width="1600" height="900" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="24" stdDeviation="32" flood-color="#8AB4D8" flood-opacity="0.16"/>
+    </filter>
+  </defs>
+
+  <rect width="1600" height="900" fill="url(#sky)"/>
+  <circle cx="1240" cy="172" r="88" fill="#F8FCFF"/>
+  <circle cx="1290" cy="202" r="56" fill="#ECF6FF"/>
+  <circle cx="1138" cy="208" r="44" fill="#F1F8FF"/>
+
+  <g filter="url(#shadow)">
+    <rect x="858" y="92" width="540" height="720" rx="34" fill="url(#glass)" stroke="#BEDDFA" stroke-width="4"/>
+    <path d="M930 128H1326" stroke="#C7E4FF" stroke-width="2"/>
+    <path d="M930 214H1326" stroke="#C7E4FF" stroke-width="2"/>
+    <path d="M930 300H1326" stroke="#C7E4FF" stroke-width="2"/>
+    <path d="M930 386H1326" stroke="#C7E4FF" stroke-width="2"/>
+    <path d="M930 472H1326" stroke="#C7E4FF" stroke-width="2"/>
+    <path d="M930 558H1326" stroke="#C7E4FF" stroke-width="2"/>
+    <path d="M930 644H1326" stroke="#C7E4FF" stroke-width="2"/>
+    <path d="M930 730H1326" stroke="#C7E4FF" stroke-width="2"/>
+    <path d="M1018 126V780" stroke="#C7E4FF" stroke-width="2"/>
+    <path d="M1108 126V780" stroke="#C7E4FF" stroke-width="2"/>
+    <path d="M1198 126V780" stroke="#C7E4FF" stroke-width="2"/>
+    <path d="M1288 126V780" stroke="#C7E4FF" stroke-width="2"/>
+  </g>
+
+  <path d="M970 62L1020 810" stroke="url(#rope)" stroke-width="5" stroke-linecap="round"/>
+  <path d="M1214 84L1154 810" stroke="url(#rope)" stroke-width="5" stroke-linecap="round"/>
+
+  <g transform="translate(932 236)">
+    <circle cx="34" cy="28" r="21" fill="#0F172A"/>
+    <path d="M28 48C42 50 58 56 62 70L74 112C76 120 72 129 64 134L40 148C30 154 18 151 11 142L-5 121C-14 109 -10 91 3 84L28 72L18 58C14 52 19 46 28 48Z" fill="#0B3B73"/>
+    <path d="M72 110L104 162" stroke="#1E293B" stroke-width="16" stroke-linecap="round"/>
+    <path d="M21 145L2 198" stroke="#1E293B" stroke-width="16" stroke-linecap="round"/>
+    <path d="M48 146L64 204" stroke="#1E293B" stroke-width="16" stroke-linecap="round"/>
+    <path d="M32 86L9 118" stroke="#1E293B" stroke-width="12" stroke-linecap="round"/>
+    <path d="M64 88L90 120" stroke="#1E293B" stroke-width="12" stroke-linecap="round"/>
+    <rect x="12" y="100" width="52" height="30" rx="15" fill="#F59E0B"/>
+  </g>
+
+  <g transform="translate(1106 328)">
+    <circle cx="26" cy="22" r="17" fill="#111827"/>
+    <path d="M21 40C35 41 49 48 53 60L61 86C64 96 59 106 49 111L31 121C22 126 11 124 5 116L-5 103C-11 94 -8 79 1 73L20 62L12 49C9 44 13 39 21 40Z" fill="#065F46"/>
+    <path d="M56 83L86 120" stroke="#1F2937" stroke-width="12" stroke-linecap="round"/>
+    <path d="M16 116L2 159" stroke="#1F2937" stroke-width="12" stroke-linecap="round"/>
+    <path d="M38 117L48 162" stroke="#1F2937" stroke-width="12" stroke-linecap="round"/>
+    <path d="M30 71L8 93" stroke="#1F2937" stroke-width="9" stroke-linecap="round"/>
+    <path d="M51 73L73 95" stroke="#1F2937" stroke-width="9" stroke-linecap="round"/>
+    <rect x="8" y="74" width="45" height="24" rx="12" fill="#F97316"/>
+  </g>
+
+  <g opacity="0.55">
+    <path d="M186 726C314 636 446 616 554 654C654 689 740 680 822 612" stroke="#C5DDF5" stroke-width="18" stroke-linecap="round"/>
+    <path d="M114 782C222 726 338 710 433 742" stroke="#D8EAFB" stroke-width="12" stroke-linecap="round"/>
+  </g>
+
+  <text x="122" y="182" fill="#0F172A" font-family="Arial, sans-serif" font-size="54" font-weight="700">Lucrari la inaltime</text>
+  <text x="122" y="238" fill="#27527E" font-family="Arial, sans-serif" font-size="28">alpinisti utilitari echipati • interventii rapide • acoperire nationala</text>
+</svg>

@@ -13,9 +13,21 @@ export async function SiteFooter() {
   const [counties, services] = await Promise.all([getCounties(), getServices()]);
   const topCounties = counties.slice(0, 4);
   const topServices = services.slice(0, 5);
+  const partnerLinks = [
+    {
+      href: "https://www.expertcopaci.ro",
+      label: "www.expertcopaci.ro",
+      description: "Specialiști în tăieri, toaletări și intervenții pentru arbori dificili.",
+    },
+    {
+      href: "https://www.dubamarfa.ro",
+      label: "www.dubamarfa.ro",
+      description: "Transport rapid pentru materiale, moloz, echipamente și mutări punctuale.",
+    },
+  ];
 
   return (
-    <footer className="border-t border-slate-200 bg-slate-950 text-slate-200">
+    <footer className="border-t border-slate-200 bg-[linear-gradient(180deg,#07152e,#061125)] text-slate-200">
       <div className="mx-auto grid max-w-7xl gap-10 px-4 py-14 sm:px-6 lg:grid-cols-[1.2fr_0.8fr_0.9fr] lg:px-8">
         <div className="space-y-4">
           <p className="text-xs font-semibold uppercase tracking-[0.24em] text-sky-300">
@@ -46,21 +58,24 @@ export async function SiteFooter() {
           <div className="pt-4 text-xs leading-6 text-slate-400">
             Cautări locale comerciale pe județe, orașe și servicii cu pagini optimizate pentru România.
           </div>
-          <div className="rounded-xl border border-white/10 bg-white/5 p-4 text-xs leading-6 text-slate-300">
+          <div className="rounded-[1.4rem] border border-white/10 bg-white/5 p-4 text-xs leading-6 text-slate-300">
             <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-sky-300">
-              Firmă recomandată
+              Site-uri recomandate
             </p>
-            <p className="mt-2">
-              Pentru lucrări specializate de tăiere copaci recomandăm:
-            </p>
-            <a
-              href="https://www.taierecopaci.ro"
-              target="_blank"
-              rel="noopener noreferrer sponsored"
-              className="mt-2 inline-flex font-semibold text-sky-300 transition hover:text-sky-200"
-            >
-              www.taierecopaci.ro
-            </a>
+            <div className="mt-3 space-y-3">
+              {partnerLinks.map((partner) => (
+                <a
+                  key={partner.href}
+                  href={partner.href}
+                  target="_blank"
+                  rel="noopener noreferrer sponsored"
+                  className="block rounded-2xl border border-white/10 bg-white/5 px-4 py-3 transition hover:border-sky-300/40 hover:bg-white/8"
+                >
+                  <span className="block font-semibold text-sky-300">{partner.label}</span>
+                  <span className="mt-1 block text-slate-300">{partner.description}</span>
+                </a>
+              ))}
+            </div>
           </div>
           <p className="pt-4 text-slate-400">
             © {new Date().getFullYear()} AlpinistiUtilitari.ro

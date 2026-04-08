@@ -1,5 +1,4 @@
 import * as React from "react";
-
 import { cn } from "@/lib/utils";
 
 export function Card({
@@ -9,26 +8,10 @@ export function Card({
   return (
     <div
       className={cn(
-        "surface-3d rounded-2xl p-6",
+        "rounded-3xl border border-slate-200 bg-white shadow-sm shadow-slate-950/5",
         className,
       )}
       {...props}
     />
   );
-}
-
-export function CardTitle({
-  className,
-  ...props
-}: React.HTMLAttributes<HTMLHeadingElement>) {
-  return (
-    <h3 className={cn("text-lg font-semibold text-slate-900", className)} {...props} />
-  );
-}
-
-export function CardDescription({
-  className,
-  ...props
-}: React.HTMLAttributes<HTMLParagraphElement>) {
-  return <p className={cn("text-sm leading-6 text-slate-600", className)} {...props} />;
 }

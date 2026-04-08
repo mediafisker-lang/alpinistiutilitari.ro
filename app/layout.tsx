@@ -1,32 +1,48 @@
 import type { Metadata, Viewport } from "next";
-import { Fraunces, Manrope } from "next/font/google";
-
-import { SiteFooter } from "@/components/site-footer";
-import { SiteHeader } from "@/components/site-header";
-import { buildMetadata, siteName, siteUrl } from "@/lib/seo";
-
+import { Plus_Jakarta_Sans, Space_Grotesk } from "next/font/google";
 import "./globals.css";
+import { SiteHeader } from "@/components/site/header";
+import { SiteFooter } from "@/components/site/footer";
+import { WhatsAppFloat } from "@/components/site/whatsapp-float";
+import { buildMetadata, buildOrganizationJsonLd } from "@/lib/seo";
 
-const bodyFont = Manrope({
+const plusJakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
-  variable: "--font-body",
+  display: "swap",
+  variable: "--font-sans",
 });
 
-const headingFont = Fraunces({
+const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
-  variable: "--font-heading",
+  display: "swap",
+  variable: "--font-display",
 });
 
-export const metadata: Metadata = buildMetadata({});
+const baseMetadata = buildMetadata({
+  title: "Alpinisti Utilitari Romania - firme pe judete, orase si servicii",
+  description:
+    "Gasesti rapid firme de alpinism utilitar din Romania si trimiti o cerere unica pentru lucrari la inaltime, fatade, bannere sau arbori.",
+});
 
-metadata.verification = {
-  google: "BXZsJ0am0pYJK01YZWcnMT29K3XEbPfHs_JimmM_eUw",
+export const metadata: Metadata = {
+  ...baseMetadata,
+  verification: {
+    google: process.env.GOOGLE_SITE_VERIFICATION || undefined,
+    other: process.env.BING_SITE_VERIFICATION
+      ? {
+          "msvalidate.01": process.env.BING_SITE_VERIFICATION,
+        }
+      : undefined,
+  },
 };
 
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#0f172a",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#0063f7" },
+    { media: "(prefers-color-scheme: dark)", color: "#081a3a" },
+  ],
 };
 
 export default function RootLayout({
@@ -34,41 +50,25 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const globalStructuredData = {
-    "@context": "https://schema.org",
-    "@graph": [
-      {
-        "@type": "WebSite",
-        name: siteName,
-        url: siteUrl,
-        inLanguage: "ro-RO",
-        potentialAction: {
-          "@type": "SearchAction",
-          target: `${siteUrl}/descriere-cortina-north?q={search_term_string}`,
-          "query-input": "required name=search_term_string",
-        },
-      },
-      {
-        "@type": "Organization",
-        name: siteName,
-        url: siteUrl,
-        areaServed: "Bucuresti-Ilfov",
-      },
-    ],
-  };
+  const organizationJsonLd = buildOrganizationJsonLd();
 
   return (
-    <html lang="ro-RO">
-      <body
-        className={`${bodyFont.variable} ${headingFont.variable} min-h-screen antialiased`}
-      >
+    <html
+      lang="ro-RO"
+      data-scroll-behavior="smooth"
+      className={`${plusJakarta.variable} ${spaceGrotesk.variable}`}
+    >
+      <body className="min-h-screen bg-slate-50 font-sans text-slate-950 antialiased selection:bg-[#0063f7]/20 selection:text-slate-950">
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(globalStructuredData) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
         />
-        <SiteHeader />
-        <main>{children}</main>
-        <SiteFooter />
+        <div className="flex min-h-screen flex-col">
+          <SiteHeader />
+          <main className="flex-1">{children}</main>
+          <SiteFooter />
+          <WhatsAppFloat />
+        </div>
       </body>
     </html>
   );
