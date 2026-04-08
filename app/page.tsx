@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Script from "next/script";
 
 import { CommunitySection } from "@/components/community-section";
 import { HeroSection } from "@/components/hero-section";
@@ -12,13 +11,18 @@ import { buildMetadata, siteName, siteUrl } from "@/lib/seo";
 
 export const metadata: Metadata = buildMetadata({
   description:
-    "Cortina North Bucuresti Ilfov: portalul comunitatii cu actualizari, sesizari, voturi, stadiul asociatiei si acces la grupurile interne pentru rezidenti.",
+    "Cortina North Pipera, Ilfov: portal comunitar pentru sesizari, vot si informatii utile despre complex Pipera si apartamente Pipera.",
   path: "/",
   keywords: [
-    "Cortina North Bucuresti Ilfov",
-    "rezidenti Cortina North Bucuresti",
-    "portal comunitate Cortina North Bucuresti",
-    "asociatie proprietari Cortina North Bucuresti",
+    "apartamente Pipera",
+    "complex Pipera",
+    "cortina north",
+    "cotina",
+    "cortinanorth",
+    "complex de lux",
+    "complex cortina",
+    "cortina spa",
+    "cortina welleness",
   ],
 });
 
@@ -56,13 +60,41 @@ export default async function HomePage() {
           url: siteUrl,
         },
       },
+      {
+        "@type": "FAQPage",
+        mainEntity: [
+          {
+            "@type": "Question",
+            name: "Ce este Cortina North Pipera?",
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: "Cortina North este un complex rezidential din zona Pipera, cu apartamente si facilitati de lifestyle.",
+            },
+          },
+          {
+            "@type": "Question",
+            name: "Unde gasesc informatii despre sesizari, stare si vot?",
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: "Portalul comunitatii reuneste sesizari, voturi si actualizari intr-un singur loc, usor de accesat de pe mobil si desktop.",
+            },
+          },
+          {
+            "@type": "Question",
+            name: "Ce cautari alternative folosesc rezidentii?",
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: "Uneori apar cautari precum cotina, cortinanorth, complex cortina, cortina spa sau cortina welleness.",
+            },
+          },
+        ],
+      },
     ],
   };
 
   return (
     <>
-      <Script
-        id="cortina-north-structured-data"
+      <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
       />

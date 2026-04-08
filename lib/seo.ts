@@ -1,16 +1,25 @@
 import type { Metadata } from "next";
 
-export const siteUrl = "https://www.cortinanorth.ro";
+export const siteUrl = "https://cortinanorth.ro";
 export const siteName = "Cortina North";
 
 export const defaultTitle =
-  "Cortina North Bucuresti Ilfov | Comunitate, sesizari, vot si actualizari";
+  "Cortina North Pipera | Comunitate, sesizari si vot";
 
 export const defaultDescription =
-  "Portalul comunitatii Cortina North din Bucuresti si Ilfov. Gasesti actualizari, sesizari, voturi, stadiul asociatiei si acces la grupurile interne ale comunitatii.";
+  "Portalul comunitatii Cortina North Pipera, Ilfov: sesizari, vot, stadiu asociatie si acces rapid la grupuri de comunicare pentru rezidenti.";
 
 export const defaultKeywords = [
   "Cortina North",
+  "cortinanorth",
+  "cotina",
+  "complex Cortina",
+  "complex Pipera",
+  "apartamente Pipera",
+  "complex de lux",
+  "Cortina SPA",
+  "Cortina wellness",
+  "Cortina welleness",
   "Cortina North Bucuresti",
   "Cortina North Ilfov",
   "Cortina North comunitate",
@@ -47,9 +56,12 @@ export function buildMetadata({
     metadataBase: new URL(siteUrl),
     title: resolvedTitle,
     description: resolvedDescription,
-    keywords: [...defaultKeywords, ...keywords],
     alternates: {
       canonical: canonicalUrl,
+      languages: {
+        "ro-RO": canonicalUrl,
+        "x-default": canonicalUrl,
+      },
     },
     openGraph: {
       title: resolvedTitle,
@@ -58,11 +70,23 @@ export function buildMetadata({
       siteName,
       locale: "ro_RO",
       type: "website",
+      images: [
+        {
+          url: "/images/cortina/cortina-north-pipera-hero.webp",
+          alt: "Cortina North Pipera - complex rezidential",
+        },
+      ],
     },
     twitter: {
       card: "summary_large_image",
       title: resolvedTitle,
       description: resolvedDescription,
+      images: ["/images/cortina/cortina-north-pipera-hero.webp"],
+    },
+    icons: {
+      icon: [{ url: "/icon.svg", type: "image/svg+xml" }],
+      shortcut: ["/icon.svg"],
+      apple: [{ url: "/icon.svg" }],
     },
     robots: noIndex
       ? {
@@ -85,5 +109,8 @@ export function buildMetadata({
           },
         },
     category: "community",
+    other: {
+      "x-seo-keyphrases": [...defaultKeywords, ...keywords].join(", "),
+    },
   };
 }

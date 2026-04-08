@@ -39,6 +39,9 @@ export function SiteFooter() {
                 <Link href="/stadiu-asociatie" className="transition hover:text-white">
                   Stadiu Asoc.
                 </Link>
+                <Link href="/descriere-cortina-north" className="transition hover:text-white">
+                  Descriere Cortina North
+                </Link>
                 <Link href="/#beneficii" className="transition hover:text-white">
                   Beneficii
                 </Link>

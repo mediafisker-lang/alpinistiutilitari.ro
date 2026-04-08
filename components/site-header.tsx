@@ -168,7 +168,7 @@ export function SiteHeader() {
                 alt="Cortina North"
                 width={320}
                 height={104}
-                className="h-10 w-auto object-contain sm:h-14"
+                className="h-12 w-auto object-contain sm:h-14"
                 priority
               />
               <div className="min-w-0">
@@ -176,10 +176,11 @@ export function SiteHeader() {
                   <p className="truncate text-[13px] font-extrabold tracking-tight text-slate-950 sm:text-base">
                     Cortina North
                   </p>
-                  <span className="rounded-full border border-amber-400/70 bg-amber-100/85 px-1.5 py-0.5 text-[9px] font-bold text-amber-950 sm:text-[10px]">
+                  <span className="hidden rounded-full border border-amber-400/70 bg-amber-100/85 px-1.5 py-0.5 text-[9px] font-bold text-amber-950 sm:inline-flex sm:text-[10px]">
                     Portal comunitate
                   </span>
                 </div>
+                <p className="text-[11px] font-semibold text-slate-700 sm:hidden">Comunitate</p>
                 <p className="hidden text-[11px] font-semibold text-slate-700 xl:block">
                   Acces rapid la vot, sesizari si actualizari
                 </p>
@@ -274,40 +275,10 @@ export function SiteHeader() {
           </div>
         </div>
 
-        <div className="mt-2 border-t border-amber-300/60 pt-2 lg:hidden">
-          <nav
-            className="grid grid-cols-2 gap-1.5"
-            style={{ fontFamily: "\"Trebuchet MS\", Verdana, Arial, sans-serif" }}
-          >
-            <Link
-              href="/stadiu-asociatie"
-              className="rounded-lg border border-amber-500/95 bg-amber-300/90 px-2 py-2 text-center text-[13px] font-bold leading-none tracking-normal text-slate-950 shadow-sm transition hover:bg-amber-200"
-            >
-              Asociatie
-            </Link>
-            <Link
-              href="/#comunitate"
-              className="rounded-lg border border-amber-500/95 bg-amber-300/90 px-2 py-2 text-center text-[13px] font-bold leading-none tracking-normal text-slate-950 shadow-sm transition hover:bg-amber-200"
-            >
-              Comunitate
-            </Link>
-            <Link
-              href="/sesizari"
-              className="rounded-lg border border-amber-500/95 bg-amber-300/90 px-2 py-2 text-center text-[13px] font-bold leading-none tracking-normal text-slate-950 shadow-sm transition hover:bg-amber-200"
-            >
-              Sesizari / Istoric
-            </Link>
-            <Link
-              href="/voteaza"
-              className="rounded-lg border border-amber-500/95 bg-amber-300/90 px-2 py-2 text-center text-[13px] font-bold leading-none tracking-normal text-slate-950 shadow-sm transition hover:bg-amber-200"
-            >
-              Voteaza propuneri
-            </Link>
-          </nav>
-
+        <div className="mt-1.5 lg:hidden">
           {loggedInEmail ? (
             <div
-              className="mt-2 grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-1 rounded-xl border border-amber-300/90 bg-amber-100/75 px-2 py-1"
+              className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-1 rounded-xl border border-amber-300/90 bg-amber-100/75 px-2 py-1"
               style={{ fontFamily: "\"Trebuchet MS\", Verdana, Arial, sans-serif" }}
             >
               <p className="whitespace-nowrap text-[10px] font-semibold text-slate-700">
@@ -325,7 +296,7 @@ export function SiteHeader() {
           ) : (
             <form
               onSubmit={handleMobileLogin}
-              className="mt-2 grid grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto_auto] items-center gap-1"
+              className="grid grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto_auto] items-center gap-1"
               style={{ fontFamily: "\"Trebuchet MS\", Verdana, Arial, sans-serif" }}
             >
               <Input
@@ -368,6 +339,38 @@ export function SiteHeader() {
               </Link>
             </form>
           )}
+        </div>
+
+        <div className="mt-1.5 border-t border-amber-300/60 pt-1.5 lg:hidden">
+          <nav
+            className="grid grid-cols-2 gap-1.5"
+            style={{ fontFamily: "\"Trebuchet MS\", Verdana, Arial, sans-serif" }}
+          >
+            <Link
+              href="/stadiu-asociatie"
+              className="rounded-lg border border-amber-500/95 bg-amber-300/90 px-2 py-1.5 text-center text-[13px] font-bold leading-none tracking-normal text-slate-950 shadow-sm transition hover:bg-amber-200"
+            >
+              Asociatie
+            </Link>
+            <Link
+              href="/#comunitate"
+              className="rounded-lg border border-amber-500/95 bg-amber-300/90 px-2 py-1.5 text-center text-[13px] font-bold leading-none tracking-normal text-slate-950 shadow-sm transition hover:bg-amber-200"
+            >
+              Comunitate
+            </Link>
+            <Link
+              href="/sesizari"
+              className="rounded-lg border border-amber-500/95 bg-amber-300/90 px-2 py-1.5 text-center text-[13px] font-bold leading-none tracking-normal text-slate-950 shadow-sm transition hover:bg-amber-200"
+            >
+              Sesizari / Istoric
+            </Link>
+            <Link
+              href="/voteaza"
+              className="rounded-lg border border-amber-500/95 bg-amber-300/90 px-2 py-1.5 text-center text-[13px] font-bold leading-none tracking-normal text-slate-950 shadow-sm transition hover:bg-amber-200"
+            >
+              Voteaza propuneri
+            </Link>
+          </nav>
         </div>
 
         {!loggedInEmail && loginState.error ? (

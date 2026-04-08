@@ -38,6 +38,14 @@ export function HeroSection({ stats }: { stats: HomepageStats }) {
                 Interfata Cortina North Pipera - Ilfov este gandita sa intri rapid in comunitate, sa fii informat si daca consideri sa participi activ la schimbari.
               </p>
             </div>
+            <div className="flex flex-wrap gap-2 text-xs font-semibold text-sky-100">
+              <Link href="#cum-functioneaza" className="rounded-full border border-white/30 bg-white/10 px-3 py-1.5 hover:bg-white/20">
+                Cum functioneaza
+              </Link>
+              <Link href="#comunitate" className="rounded-full border border-white/30 bg-white/10 px-3 py-1.5 hover:bg-white/20">
+                Comunitate
+              </Link>
+            </div>
             <div className="flex flex-col gap-3 sm:flex-row">
               {!isLoggedIn ? (
                 <Link href="/inregistrare" className="hidden sm:block">
