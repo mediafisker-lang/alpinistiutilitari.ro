@@ -17,7 +17,6 @@ export const metadata: Metadata = buildMetadata({
     "apartamente Pipera",
     "complex Pipera",
     "cortina north",
-    "cotina",
     "cortinanorth",
     "complex de lux",
     "complex cortina",
@@ -84,7 +83,7 @@ export default async function HomePage() {
             name: "Ce cautari alternative folosesc rezidentii?",
             acceptedAnswer: {
               "@type": "Answer",
-              text: "Uneori apar cautari precum cotina, cortinanorth, complex cortina, cortina spa sau cortina welleness.",
+              text: "Uneori apar cautari precum cortinanorth, complex cortina, cortina spa sau cortina welleness.",
             },
           },
         ],

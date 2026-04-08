@@ -15,7 +15,6 @@ export const metadata: Metadata = buildMetadata({
     "apartamente Pipera",
     "complex Pipera",
     "cortina north",
-    "cotina",
     "cortinanorth",
     "complex de lux",
     "complex cortina",
@@ -46,7 +45,7 @@ const faqs = [
       "In descrierile publice sunt mentionate apartamente Pipera, spatii verzi, zona de alergare, bazin semi-olimpic, centru fitness, centru wellness si parcari.",
   },
   {
-    question: "Daca cineva cauta cotina, cortinanorth sau complex cortina, ajunge la aceeasi zona de interes?",
+    question: "Daca cineva cauta cortinanorth sau complex cortina, ajunge la aceeasi zona de interes?",
     answer:
       "Da. Aceste variante de cautare sunt asociate, in practica, cu Cortina North Pipera si informatiile despre complexul rezidential.",
   },
@@ -173,7 +172,7 @@ export default function DescriereCortinaNorthPage() {
               complex Pipera, complex Cortina, Cortina SPA sau Cortina wellness.
             </CardDescription>
             <CardDescription className="mt-3 text-sm leading-7 text-slate-700">
-              In practica, apar si variante de cautare precum cotina, cortinanorth sau cortina
+              In practica, apar si variante de cautare precum cortinanorth sau cortina
               welleness. Aceasta pagina le conecteaza semantic cu denumirea corecta: Cortina North.
             </CardDescription>
             <div className="mt-5">

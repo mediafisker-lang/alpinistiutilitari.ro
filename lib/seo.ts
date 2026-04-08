@@ -12,7 +12,6 @@ export const defaultDescription =
 export const defaultKeywords = [
   "Cortina North",
   "cortinanorth",
-  "cotina",
   "complex Cortina",
   "complex Pipera",
   "apartamente Pipera",

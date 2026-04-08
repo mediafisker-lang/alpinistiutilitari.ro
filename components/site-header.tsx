@@ -159,7 +159,7 @@ export function SiteHeader() {
       id="portal-login"
       className="sticky top-0 z-20 border-b border-amber-200/80 bg-[rgba(255,247,225,0.74)] shadow-[0_8px_24px_rgba(56,41,10,0.16)] backdrop-blur-md"
     >
-      <div className="mx-auto max-w-6xl px-3 py-1.5 sm:px-6 sm:py-2.5">
+      <div className="mx-auto max-w-6xl px-3 py-1 sm:px-6 sm:py-1.5">
         <div className="flex items-center justify-between gap-2 sm:gap-3">
           <Link href="/" className="min-w-0">
             <div className="flex items-center gap-2 sm:gap-2.5">
@@ -168,25 +168,82 @@ export function SiteHeader() {
                 alt="Cortina North"
                 width={320}
                 height={104}
-                className="h-12 w-auto object-contain sm:h-14"
+                className="h-9 w-auto object-contain sm:h-10 md:h-12"
                 priority
               />
               <div className="min-w-0">
-                <div className="flex items-center gap-1.5">
-                  <p className="truncate text-[13px] font-extrabold tracking-tight text-slate-950 sm:text-base">
-                    Cortina North
-                  </p>
-                  <span className="hidden rounded-full border border-amber-400/70 bg-amber-100/85 px-1.5 py-0.5 text-[9px] font-bold text-amber-950 sm:inline-flex sm:text-[10px]">
-                    Portal comunitate
-                  </span>
-                </div>
-                <p className="text-[11px] font-semibold text-slate-700 sm:hidden">Comunitate</p>
-                <p className="hidden text-[11px] font-semibold text-slate-700 xl:block">
-                  Acces rapid la vot, sesizari si actualizari
+                <p className="truncate text-[13px] font-extrabold tracking-tight text-slate-950 sm:text-base">
+                  Cortina North Pipera
                 </p>
               </div>
             </div>
           </Link>
+
+          <div className="hidden items-center gap-1 sm:flex lg:hidden">
+            {loggedInEmail ? (
+              <div
+                className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-1 rounded-xl border border-amber-300/90 bg-amber-100/75 px-2 py-1"
+                style={{ fontFamily: "\"Trebuchet MS\", Verdana, Arial, sans-serif" }}
+              >
+                <p className="whitespace-nowrap text-[10px] font-semibold text-slate-700">
+                  Data si ora {dateTimeLabel || "--"}
+                </p>
+                <p className="min-w-0 truncate text-xs font-semibold text-slate-900">Hello, {loggedInName}</p>
+                <button
+                  type="button"
+                  onClick={handleLogout}
+                  className="rounded-md border border-amber-400/70 bg-white/90 px-2 py-0.5 text-[10px] font-semibold text-slate-800 transition hover:bg-amber-100/90"
+                >
+                  Logout
+                </button>
+              </div>
+            ) : (
+              <form
+                onSubmit={handleMobileLogin}
+                className="flex items-center gap-1"
+                style={{ fontFamily: "\"Trebuchet MS\", Verdana, Arial, sans-serif" }}
+              >
+                <Input
+                  type="email"
+                  value={loginStateMobile.email}
+                  onChange={(event) =>
+                    setLoginStateMobile((current) => ({
+                      ...current,
+                      email: event.target.value,
+                    }))
+                  }
+                  placeholder="USER"
+                  className="h-7 w-20 rounded-lg px-2 text-[11px] font-semibold md:w-24"
+                />
+                <Input
+                  type="password"
+                  value={loginStateMobile.password}
+                  onChange={(event) =>
+                    setLoginStateMobile((current) => ({
+                      ...current,
+                      password: event.target.value,
+                    }))
+                  }
+                  placeholder="PASSWORD"
+                  className="h-7 w-20 rounded-lg px-2 text-[11px] font-semibold md:w-24"
+                />
+                <Button
+                  type="submit"
+                  size="sm"
+                  disabled={loginLoadingMobile}
+                  className="h-7 rounded-lg border border-amber-500 bg-amber-400 px-2 text-[11px] font-bold text-slate-950 hover:bg-amber-300"
+                >
+                  {loginLoadingMobile ? "..." : "Login"}
+                </Button>
+                <Link
+                  href="/inregistrare"
+                  className="flex h-7 items-center justify-center whitespace-nowrap rounded-lg border border-amber-500 bg-amber-100/90 px-2 text-[11px] font-bold text-slate-900 transition hover:bg-amber-200"
+                >
+                  Inregistreaza-te
+                </Link>
+              </form>
+            )}
+          </div>
 
           <div className="hidden items-center gap-1.5 lg:flex">
             <Link
@@ -275,7 +332,7 @@ export function SiteHeader() {
           </div>
         </div>
 
-        <div className="mt-1.5 lg:hidden">
+        <div className="mt-1 sm:hidden lg:hidden">
           {loggedInEmail ? (
             <div
               className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-1 rounded-xl border border-amber-300/90 bg-amber-100/75 px-2 py-1"
@@ -341,7 +398,7 @@ export function SiteHeader() {
           )}
         </div>
 
-        <div className="mt-1.5 border-t border-amber-300/60 pt-1.5 lg:hidden">
+        <div className="mt-1 border-t border-amber-300/60 pt-1 lg:hidden">
           <nav
             className="grid grid-cols-2 gap-1.5"
             style={{ fontFamily: "\"Trebuchet MS\", Verdana, Arial, sans-serif" }}
