@@ -69,6 +69,11 @@ const strongPositiveKeywords = [
   "interventii",
   "etansari",
   "reparatii",
+  "decopertari",
+  "decopertare",
+  "siguranta fatade",
+  "fatade degradate",
+  "desprinderi tencuiala",
   "anten",
   "plase",
   "vopsitorii",
@@ -131,6 +136,8 @@ const directPortfolioKeywords = [
   "spalare fatade",
   "curatare fatade",
   "reparatii fatade",
+  "decopertari tencuiala",
+  "punere in siguranta fatade",
   "reparatii acoperis",
   "curatare jgheaburi",
   "montaj bannere",
@@ -196,6 +203,8 @@ const corePortfolioServiceSlugs = new Set([
   "taiere-copaci",
   "toaletare-copaci",
   "indepartare-tencuiala-degradata",
+  "decopertari-tencuiala",
+  "punere-in-siguranta-fatade",
   "etansari-si-infiltratii",
   "montaj-plase-protectie",
 ]);
@@ -274,6 +283,14 @@ const serviceKeywordCatalog: Record<
   "etansari-si-infiltratii": {
     strong: ["etansari", "infiltratii", "rosturi", "fisuri"],
     weak: ["hidroizolatii", "fatade", "terase"],
+  },
+  "decopertari-tencuiala": {
+    strong: ["decopertari tencuiala", "tencuiala desprinsa", "fatade degradate", "desprinderi"],
+    weak: ["punere in siguranta", "fatade", "interventie urgenta"],
+  },
+  "punere-in-siguranta-fatade": {
+    strong: ["punere in siguranta fatade", "fatade periculoase", "elemente instabile", "fatade degradate"],
+    weak: ["decopertari", "interventii urgente", "protejare perimetru"],
   },
 };
 

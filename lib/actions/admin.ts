@@ -265,6 +265,7 @@ export async function upsertArticleAction(
 
   revalidatePath("/admin/articole");
   revalidatePath("/blog");
+  revalidatePath("/cum-functioneaza");
 }
 
 export async function upsertFaqAction(formData: FormData): Promise<void> {

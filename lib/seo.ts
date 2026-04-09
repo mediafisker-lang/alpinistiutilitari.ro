@@ -131,6 +131,9 @@ export function buildCompanyJsonLd(company: {
   address?: string | null;
   city: string;
   county: string;
+  areaServed?: string[];
+  ratingValue?: number | null;
+  ratingCount?: number | null;
 }) {
   return {
     "@context": "https://schema.org",
@@ -148,6 +151,20 @@ export function buildCompanyJsonLd(company: {
       addressRegion: company.county,
       addressCountry: "RO",
     },
+    areaServed: company.areaServed?.map((zone) => ({
+      "@type": "Place",
+      name: zone,
+    })),
+    aggregateRating:
+      typeof company.ratingValue === "number"
+        ? {
+            "@type": "AggregateRating",
+            ratingValue: company.ratingValue.toFixed(1),
+            reviewCount: company.ratingCount ?? 1,
+            bestRating: 5,
+            worstRating: 1,
+          }
+        : undefined,
   };
 }
 
@@ -189,5 +206,29 @@ export function buildFaqJsonLd(items: Array<{ question: string; answer: string }
         text: item.answer,
       },
     })),
+  };
+}
+
+export function buildServiceJsonLd(input: {
+  name: string;
+  description: string;
+  path: string;
+  areaServed: string;
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    name: input.name,
+    description: input.description,
+    url: absoluteUrl(input.path),
+    areaServed: {
+      "@type": "Place",
+      name: input.areaServed,
+    },
+    provider: {
+      "@type": "Organization",
+      name: "AlpinistiUtilitari.ro",
+      url: absoluteUrl(),
+    },
   };
 }

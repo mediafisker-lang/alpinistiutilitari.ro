@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { buildBreadcrumbJsonLd, buildCompanyJsonLd, buildMetadata } from "@/lib/seo";
+import { buildBreadcrumbJsonLd, buildCompanyJsonLd, buildFaqJsonLd, buildMetadata } from "@/lib/seo";
 import { getCompanies, getCompany, getQuickSearchOptions, getRelatedArticles, getServices } from "@/lib/data/queries";
 import { Breadcrumbs } from "@/components/site/breadcrumbs";
 import { LeadForm } from "@/components/forms/lead-form";
@@ -9,6 +9,8 @@ import { SeoLinkCloud } from "@/components/site/seo-link-cloud";
 import { CTASection } from "@/components/site/cta-section";
 import { ArticleCard } from "@/components/site/article-card";
 import { getPrimaryCompanies } from "@/lib/company-ranking";
+import { buildCompanyProfileCommercialContent } from "@/lib/content/company-profile-commercial";
+import { isPriorityLandingPath } from "@/lib/content/local-commercial";
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -22,14 +24,17 @@ export async function generateMetadata({ params }: Props) {
     return buildMetadata({
       title: "Firma indisponibila",
       description: "Profilul firmei cautate nu exista.",
+      noIndex: true,
     });
   }
 
+  const profileContent = buildCompanyProfileCommercialContent(company);
+
   return buildMetadata({
-    title: `${company.name} - ${company.city.name}, ${company.county.name}`,
-    description: company.descriptionShort,
+    title: profileContent.metaTitle,
+    description: profileContent.metaDescription,
     path: `/firme/${company.slug}`,
-    noIndex: true,
+    noIndex: !profileContent.shouldIndex,
   });
 }
 
@@ -38,6 +43,7 @@ export default async function CompanyPage({ params }: Props) {
   const [company, options, services] = await Promise.all([getCompany(slug), getQuickSearchOptions(), getServices()]);
 
   if (!company) notFound();
+  const profileContent = buildCompanyProfileCommercialContent(company);
 
   const relatedArticles = await getRelatedArticles(company.services.map((item) => item.serviceId));
   const nearbyCompanies = getPrimaryCompanies(
@@ -58,7 +64,7 @@ export default async function CompanyPage({ params }: Props) {
   ];
   const companyJsonLd = buildCompanyJsonLd({
     name: company.name,
-    description: company.descriptionShort,
+    description: profileContent.lead,
     path: `/firme/${company.slug}`,
     phone: company.phone,
     email: company.email,
@@ -66,17 +72,20 @@ export default async function CompanyPage({ params }: Props) {
     address: company.address,
     city: company.city.name,
     county: company.county.name,
+    areaServed: profileContent.coveredZones,
+    ratingValue: company.ratingValue,
+    ratingCount: company.ratingCount,
   });
   const breadcrumbJsonLd = buildBreadcrumbJsonLd(breadcrumbItems);
+  const faqJsonLd = buildFaqJsonLd(profileContent.faq);
 
-  const countyServiceLinks = company.services.map((item) => ({
-    href: `/${company.county.slug}/${item.service.slug}`,
-    label: `${item.service.name} ${company.county.name}`,
-  }));
-  const cityServiceLinks = company.services.map((item) => ({
-    href: `/${company.county.slug}/${company.city.slug}/${item.service.slug}`,
-    label: `${item.service.name} ${company.city.name}`,
-  }));
+  const countyServiceLinks = company.services.map((item) => {
+    const hasPriorityLanding = isPriorityLandingPath(company.county.slug, item.service.slug);
+    return {
+      href: hasPriorityLanding ? `/${company.county.slug}/${item.service.slug}` : `/servicii/${item.service.slug}`,
+      label: hasPriorityLanding ? `${item.service.name} ${company.county.name}` : item.service.name,
+    };
+  });
   const complementaryServiceLinks = services
     .filter((service) => !company.services.some((item) => item.serviceId === service.id))
     .slice(0, 8)
@@ -95,6 +104,7 @@ export default async function CompanyPage({ params }: Props) {
     <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(companyJsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <Breadcrumbs items={breadcrumbItems} />
 
       <section className="mt-6 grid gap-8 lg:grid-cols-[1.1fr_0.9fr]">
@@ -104,10 +114,11 @@ export default async function CompanyPage({ params }: Props) {
               <Badge>{company.verificationStatus === "verified" ? "Verificata" : "Profil activ"}</Badge>
               <Badge className="bg-emerald-600 text-white hover:bg-emerald-600">În orașul tău</Badge>
               <Badge className="bg-sky-100 text-sky-800 hover:bg-sky-100">În județul tău</Badge>
+              {profileContent.shouldIndex ? <Badge className="bg-slate-900 text-white hover:bg-slate-900">Profil SEO activ</Badge> : null}
               {company.isFeatured ? <Badge>Recomandată</Badge> : null}
             </div>
             <h1 className="text-4xl font-black tracking-tight text-slate-950">{company.name}</h1>
-            <p className="text-lg leading-8 text-slate-600">{company.descriptionShort}</p>
+            <p className="text-lg leading-8 text-slate-600">{profileContent.lead}</p>
           </div>
 
           <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
@@ -124,7 +135,7 @@ export default async function CompanyPage({ params }: Props) {
             <div className="rounded-3xl bg-slate-50 p-5">
               <p className="text-xs font-semibold uppercase tracking-[0.24em] text-sky-700">Acoperire</p>
               <p className="mt-2 text-sm font-medium text-slate-900">
-                {Math.max(company.coverage.length, 1)} {Math.max(company.coverage.length, 1) === 1 ? "zonă" : "zone"}
+                {profileContent.coveredZones.length} {profileContent.coveredZones.length === 1 ? "zonă" : "zone"}
               </p>
               <p className="mt-2 text-sm text-slate-600">Zona principală și ariile secundare unde poate interveni.</p>
             </div>
@@ -183,43 +194,59 @@ export default async function CompanyPage({ params }: Props) {
           </div>
 
           <div>
+            <h2 className="text-2xl font-bold text-slate-950">Ce lucrari preia frecvent</h2>
+            <ul className="mt-4 space-y-3 text-base leading-8 text-slate-600">
+              {profileContent.serviceHighlights.map((point) => (
+                <li key={point}>- {point}</li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
+            <h2 className="text-2xl font-bold text-slate-950">Tipuri de cladiri deservite</h2>
+            <div className="mt-4 flex flex-wrap gap-2">
+              {profileContent.buildingTypes.map((buildingType) => (
+                <span
+                  key={buildingType}
+                  className="rounded-full border border-slate-200 bg-slate-50 px-4 py-2 text-sm font-medium text-slate-700"
+                >
+                  {buildingType}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          <div>
             <h2 className="text-2xl font-bold text-slate-950">Descriere</h2>
             <p className="mt-4 whitespace-pre-line text-base leading-8 text-slate-600">
-              {company.descriptionLong}
+              {profileContent.longDescription}
             </p>
           </div>
 
-          {company.coverage.length ? (
-            <div>
-              <h2 className="text-2xl font-bold text-slate-950">Arii de acoperire</h2>
-              <div className="mt-4 flex flex-wrap gap-2">
-                {company.coverage.map((coverage) => (
-                  <a
-                    key={coverage.id}
-                    href={coverage.city ? `/${company.county.slug}/${coverage.city.slug}` : coverage.county ? `/${coverage.county.slug}` : "#"} 
-                    className="rounded-full border border-slate-200 px-4 py-2 text-sm font-medium text-slate-700"
-                  >
-                    {coverage.city?.name ?? coverage.county?.name ?? "Zonă activă"}
-                  </a>
-                ))}
-              </div>
+          <div>
+            <h2 className="text-2xl font-bold text-slate-950">Arii de acoperire</h2>
+            <div className="mt-4 flex flex-wrap gap-2">
+              {profileContent.coveredZones.map((zone) => (
+                <span
+                  key={zone}
+                  className="rounded-full border border-slate-200 px-4 py-2 text-sm font-medium text-slate-700"
+                >
+                  {zone}
+                </span>
+              ))}
             </div>
-          ) : null}
+          </div>
 
-          <FAQBlock
-            items={[
-              {
-                question: `Ce tipuri de lucrări poate prelua ${company.name}?`,
-                answer:
-                  "Profilul public afișează serviciile asociate și zona principală de intervenție. Pentru clarificări, trimite o cerere prin formularul intern.",
-              },
-              {
-                question: "Cererea ajunge direct la firmă?",
-                answer:
-                  "Nu. Cererea este înregistrată intern, apoi este analizată manual pentru a reveni cu soluția potrivită și executanții relevanți.",
-              },
-            ]}
-          />
+          <div>
+            <h2 className="text-2xl font-bold text-slate-950">Semnale de incredere</h2>
+            <ul className="mt-4 space-y-3 text-base leading-8 text-slate-600">
+              {profileContent.trustSignals.map((signal) => (
+                <li key={signal}>- {signal}</li>
+              ))}
+            </ul>
+          </div>
+
+          <FAQBlock items={profileContent.faq} />
         </div>
 
         <LeadForm
@@ -244,9 +271,9 @@ export default async function CompanyPage({ params }: Props) {
           links={countyServiceLinks}
         />
         <SeoLinkCloud
-          title={`Servicii în ${company.city.name}`}
-          description="Leagă profilul firmei de pagina locală a orașului pentru căutări de proximitate."
-          links={cityServiceLinks}
+          title="Pagini locale recomandate"
+          description="Legaturi comerciale directe catre zonele cu intentie mare de cumpărare."
+          links={profileContent.localLinks}
         />
         <SeoLinkCloud
           title="Alte servicii din platformă"
@@ -315,11 +342,11 @@ export default async function CompanyPage({ params }: Props) {
 
       <div className="mt-10">
         <CTASection
-          eyebrow="Ai deja o firmă în minte?"
-          title="Trimite cererea direct din platformă și revenim manual cu pașii următori."
-          description="Cererea este salvată intern și analizată înainte de a fi corelată cu executanții disponibili. Asta reduce zgomotul și crește șansa unui răspuns util."
-          primaryAction={{ href: "/cere-oferta", label: "Trimite cererea" }}
-          secondaryAction={{ href: `/${company.county.slug}`, label: `Vezi și alte firme din ${company.county.name}` }}
+          eyebrow="Cere oferta direct din profil"
+          title={`Ai o lucrare in ${company.city.name}? Trimite cererea pentru ${company.name}.`}
+          description="Include in formular tipul lucrarii, zona si termenul dorit. Cererea se analizeaza intern, apoi este directionata catre executantii potriviti."
+          primaryAction={{ href: `/cere-oferta?company=${company.slug}`, label: "Cere oferta acum" }}
+          secondaryAction={{ href: `/${company.county.slug}`, label: `Vezi firme din ${company.county.name}` }}
         />
       </div>
     </div>

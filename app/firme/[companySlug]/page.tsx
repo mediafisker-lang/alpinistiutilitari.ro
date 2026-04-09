@@ -1,4 +1,5 @@
 import CompanyPage from "@/app/firma/[slug]/page";
+import { buildCompanyProfileCommercialContent } from "@/lib/content/company-profile-commercial";
 import { getCompany } from "@/lib/data/queries";
 import { buildMetadata } from "@/lib/seo";
 
@@ -18,10 +19,13 @@ export async function generateMetadata({ params }: Props) {
     });
   }
 
+  const profileContent = buildCompanyProfileCommercialContent(company);
+
   return buildMetadata({
-    title: `${company.name} - ${company.city.name}, ${company.county.name}`,
-    description: company.descriptionShort,
+    title: profileContent.metaTitle,
+    description: profileContent.metaDescription,
     path: `/firme/${company.slug}`,
+    noIndex: !profileContent.shouldIndex,
   });
 }
 

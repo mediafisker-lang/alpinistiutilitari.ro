@@ -69,6 +69,26 @@ export const serviceCatalog: ServiceSeed[] = [
     icon: "brick-wall",
   },
   {
+    name: "Decopertari tencuiala",
+    slug: "decopertari-tencuiala",
+    category: "Fatade",
+    shortDescription:
+      "Decopertari controlate de tencuiala desprinsa pentru fatade cu risc, realizate cu alpinisti utilitari.",
+    longDescription:
+      "Serviciul de decopertari tencuiala este folosit pentru indepartarea zonelor instabile de pe fatade, punerea in siguranta a perimetrului si pregatirea reparatiilor ulterioare.",
+    icon: "brick-wall",
+  },
+  {
+    name: "Punere in siguranta fatade",
+    slug: "punere-in-siguranta-fatade",
+    category: "Fatade",
+    shortDescription:
+      "Punere in siguranta pentru fatade degradate: indepartare elemente instabile si masuri urgente de protectie.",
+    longDescription:
+      "Punerea in siguranta a fatadelor include evaluarea riscului, indepartarea zonelor periculoase, fixari provizorii si interventii urgente pana la reparatia completa.",
+    icon: "shield-alert",
+  },
+  {
     name: "Etansari si infiltratii",
     slug: "etansari-si-infiltratii",
     category: "Fatade",

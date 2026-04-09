@@ -147,6 +147,44 @@ const services: Service[] = [
     createdAt: now,
     updatedAt: now,
   },
+  {
+    id: "service-4",
+    name: "Decopertari tencuiala",
+    slug: "decopertari-tencuiala",
+    category: "Fatade",
+    shortName: "Decopertari tencuiala",
+    shortDescription:
+      "Decopertari controlate de tencuiala desprinsa pentru fatade cu risc, realizate cu alpinisti utilitari.",
+    longDescription:
+      "Serviciul de decopertari tencuiala este folosit pentru indepartarea zonelor instabile de pe fatade, punerea in siguranta a perimetrului si pregatirea reparatiilor ulterioare.",
+    seoTitle: "Decopertari tencuiala in Romania",
+    seoDescription:
+      "Servicii de decopertari tencuiala pe fatade degradate, cu alpinisti utilitari si masuri de siguranta.",
+    seoIntro: null,
+    icon: "brick-wall",
+    isActive: true,
+    createdAt: now,
+    updatedAt: now,
+  },
+  {
+    id: "service-5",
+    name: "Punere in siguranta fatade",
+    slug: "punere-in-siguranta-fatade",
+    category: "Fatade",
+    shortName: "Punere in siguranta fatade",
+    shortDescription:
+      "Punere in siguranta pentru fatade degradate: indepartare elemente instabile si masuri urgente de protectie.",
+    longDescription:
+      "Punerea in siguranta a fatadelor include evaluarea riscului, indepartarea zonelor periculoase, fixari provizorii si interventii urgente pana la reparatia completa.",
+    seoTitle: "Punere in siguranta fatade in Romania",
+    seoDescription:
+      "Interventii urgente pentru fatade degradate, cu alpiniști utilitari si securizare perimetru.",
+    seoIntro: null,
+    icon: "shield-alert",
+    isActive: true,
+    createdAt: now,
+    updatedAt: now,
+  },
 ];
 
 const fallbackCountyBucuresti = counties.find((item) => item.slug === "bucuresti")!;
@@ -232,7 +270,7 @@ const demoCompanies: DemoCompany[] = [
     updatedAt: now,
     county: fallbackCountyBucuresti,
     city: fallbackCityBucuresti,
-    services: [services[0], services[1], services[2]],
+    services: [services[0], services[1], services[2], services[3], services[4]],
   }),
   companyBase({
     id: "company-2",
@@ -276,7 +314,7 @@ const demoCompanies: DemoCompany[] = [
     updatedAt: now,
     county: fallbackCountyBrasov,
     city: fallbackCityBrasov,
-    services: [services[0], services[2]],
+    services: [services[0], services[2], services[3], services[4]],
   }),
   companyBase({
     id: "company-3",

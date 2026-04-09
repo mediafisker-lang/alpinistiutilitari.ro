@@ -12,6 +12,13 @@ import { CTASection } from "@/components/site/cta-section";
 import { ArticleCard } from "@/components/site/article-card";
 import { buildCountyFaqs, buildCountyIntro } from "@/lib/content/local-seo";
 import { getPrimaryCompanies } from "@/lib/company-ranking";
+import {
+  getCountyCommercialFaq,
+  getCountyCommercialSections,
+  getCountyLocalitySlugs,
+  getCountySeoOverride,
+  getCountyServiceSlugs,
+} from "@/lib/content/local-commercial";
 
 type Props = {
   params: Promise<{ countySlug: string }>;
@@ -44,16 +51,62 @@ export default async function CountyPage({ params }: Props) {
 
   if (!county) notFound();
 
+  const countyOverride = getCountySeoOverride(county.slug);
+  const priorityServiceSlugs = getCountyServiceSlugs(county.slug);
+  const priorityLocalitySlugs = getCountyLocalitySlugs(county.slug);
+  const countyCommercialSections = getCountyCommercialSections(county.slug);
   const localServices = services.slice(0, 6);
-  const serviceLinks = localServices.map((service) => ({
-    href: `/${county.slug}/${service.slug}`,
-    label: `${service.name} în ${county.name}`,
-  }));
+  const priorityServiceLinks =
+    priorityServiceSlugs.length
+      ? priorityServiceSlugs.map((serviceSlug) => {
+          const matchedService = options.services.find((service) => service.slug === serviceSlug);
+          const fallbackLabel = serviceSlug.replaceAll("-", " ");
+          return {
+            href: `/${county.slug}/${serviceSlug}`,
+            label: `${matchedService?.name ?? fallbackLabel} în ${county.name}`,
+          };
+        })
+      : [];
+  const serviceLinks = (priorityServiceLinks.length
+    ? priorityServiceLinks
+    : localServices.map((service) => ({
+        href: `/${county.slug}/${service.slug}`,
+        label: `${service.name} în ${county.name}`,
+      })));
   const cityLinks = county.cities.slice(0, 8).map((city) => ({
     href: `/${county.slug}/${city.slug}`,
     label: city.name,
   }));
-  const faqItems = buildCountyFaqs(county);
+  const countyAeoFaq = [
+    {
+      question: "Cât durează răspunsul la cerere?",
+      answer:
+        "Cererea este evaluată intern imediat după trimitere. Pentru lucrări urgente menționezi prioritatea și intervalul dorit, iar răspunsul inițial vine de regulă rapid.",
+    },
+    {
+      question: "Ce tipuri de clădiri deserviți?",
+      answer:
+        "Platforma acoperă cereri pentru blocuri, birouri, spații comerciale, hale, clădiri tehnice și proprietăți rezidențiale cu acces dificil.",
+    },
+    {
+      question: "Lucrați și în localitățile din jur?",
+      answer:
+        county.slug === "ilfov"
+          ? "Da. Se preiau cereri și pentru Voluntari, Otopeni, Tunari, Chiajna, Popești-Leordeni, Buftea, Snagov sau Afumați."
+          : "Da. Cererile pot fi preluate și în localitățile din jurul zonei principale, în funcție de tipul lucrării și disponibilitatea echipelor.",
+    },
+    {
+      question: "Pot cere ofertă pentru mai multe lucrări?",
+      answer:
+        "Da. În aceeași cerere poți include lucrări multiple, iar solicitarea este structurată intern pentru o ofertare corectă.",
+    },
+    {
+      question: "Ce include o intervenție de alpinism utilitar?",
+      answer:
+        "Evaluare acces și risc, plan de intervenție, execuție la înălțime în condiții de siguranță și recomandări pentru etapele următoare.",
+    },
+  ];
+  const faqItems = [...buildCountyFaqs(county), ...getCountyCommercialFaq(county.slug), ...countyAeoFaq];
   const countyIntro = buildCountyIntro(county);
   const primaryCompanies = getPrimaryCompanies(county.companies, 10);
   const additionalCompanies = county.companies.filter(
@@ -95,10 +148,11 @@ export default async function CountyPage({ params }: Props) {
       <section className="mt-6 grid gap-8 lg:grid-cols-[1.2fr_0.8fr]">
         <div>
           <h1 className="text-4xl font-black tracking-tight text-slate-950">
-            Firme de alpinism utilitar in {county.name}
+            {countyOverride?.h1 ?? `Firme de alpinism utilitar in ${county.name}`}
           </h1>
           <p className="mt-4 text-lg leading-8 text-slate-600">
-            {county.intro ??
+            {countyOverride?.intro ??
+              county.intro ??
               `Aici gasesti rapid firme din ${county.name} pentru lucrari la inaltime, reparatii, bannere, geamuri si alte interventii speciale.`}
           </p>
           <p className="mt-4 text-base leading-8 text-slate-600">{countyIntro}</p>
@@ -138,6 +192,21 @@ export default async function CountyPage({ params }: Props) {
           </div>
         </div>
       </section>
+
+      {countyCommercialSections.length ? (
+        <section className="mt-10 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+          {countyCommercialSections.map((section) => (
+            <div key={section.title} className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm shadow-slate-950/5">
+              <h2 className="text-base font-bold text-slate-950">{section.title}</h2>
+              <ul className="mt-3 space-y-2 text-sm leading-7 text-slate-600">
+                {section.points.map((point) => (
+                  <li key={point}>• {point}</li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </section>
+      ) : null}
 
       <section className="mt-10">
         <div className="mb-6 flex items-end justify-between gap-4">
@@ -254,7 +323,14 @@ export default async function CountyPage({ params }: Props) {
         <SeoLinkCloud
           eyebrow="Orașe"
           title={`Orașe importante din ${county.name}`}
-          links={cityLinks}
+          links={
+            priorityLocalitySlugs.length
+              ? priorityLocalitySlugs.map((slug) => ({
+                  href: `/${slug}/spalare-geamuri-la-inaltime`,
+                  label: slug.replaceAll("-", " "),
+                }))
+              : cityLinks
+          }
         />
       </section>
 

@@ -40,20 +40,82 @@ export function buildCityFaqs(city: CityDetail): FaqItem[] {
 }
 
 export function buildServiceFaqs(service: ServiceDetail): FaqItem[] {
-  return service.faqs.length
-    ? service.faqs.map((item) => ({ question: item.question, answer: item.answer }))
-    : [
-        {
-          question: `Când ai nevoie de ${service.name.toLowerCase()}?`,
-          answer:
-            "Atunci când lucrarea trebuie executată la înălțime, în spații greu accesibile sau când soluțiile clasice precum schela și nacela nu sunt eficiente ori rapide.",
-        },
-        {
-          question: "Cum aleg serviciul corect înainte să trimit cererea?",
-          answer:
-            "Alege serviciul care se potrivește cel mai bine lucrării. Dacă nu ești sigur, descrie problema cât mai clar și administratorul o clasifică intern înainte de ofertare.",
-        },
-      ];
+  if (service.faqs.length) {
+    return service.faqs.map((item) => ({ question: item.question, answer: item.answer }));
+  }
+
+  if (service.slug === "decopertari-tencuiala") {
+    return [
+      {
+        question: "Cat dureaza raspunsul la cerere?",
+        answer:
+          "Raspunsul initial vine de obicei rapid dupa verificarea cererii. Pentru cazuri cu risc de cadere a tencuielii, mentioneaza urgenta direct in formular.",
+      },
+      {
+        question: "Ce tipuri de cladiri deserviti pentru decopertari tencuiala?",
+        answer:
+          "Sunt preluate cereri pentru blocuri vechi, cladiri administrative, scoli, imobile comerciale si fatade cu trafic pietonal intens.",
+      },
+      {
+        question: "Pot cere oferta si pentru punere in siguranta a fatadei?",
+        answer:
+          "Da. In aceeasi cerere poti include decopertare tencuiala, punere in siguranta, reparatii locale si interventii urgente pe fatade degradate.",
+      },
+      {
+        question: "Ce include o interventie de decopertare tencuiala?",
+        answer:
+          "Evaluarea riscului, delimitarea zonei, indepartarea controlata a materialului instabil si recomandari pentru etapa urmatoare de reparatie.",
+      },
+      {
+        question: "Lucrati si in localitatile din jurul orasului principal?",
+        answer:
+          "Da, cererile sunt analizate pentru zona selectata si localitatile apropiate, in functie de disponibilitatea firmelor si urgenta interventiei.",
+      },
+    ];
+  }
+
+  if (service.slug === "punere-in-siguranta-fatade") {
+    return [
+      {
+        question: "Cand este necesara punerea in siguranta a unei fatade?",
+        answer:
+          "Cand exista elemente desprinse, fisuri active sau risc pentru trecatori, masini ori accesul in cladire. In astfel de cazuri, interventia trebuie planificata rapid.",
+      },
+      {
+        question: "Ce tipuri de cladiri pot primi interventii de urgenta?",
+        answer:
+          "Platforma acopera cereri pentru blocuri, cladiri de birouri, institutii publice, centre comerciale si imobile mixte cu fatade degradate.",
+      },
+      {
+        question: "Ce include concret serviciul de punere in siguranta fatade?",
+        answer:
+          "Constatare initiala, masuri de protectie, indepartare elemente instabile, fixari provizorii si recomandari tehnice pana la reparatia completa.",
+      },
+      {
+        question: "Pot include si alte lucrari in aceeasi cerere?",
+        answer:
+          "Da. Poti cere simultan decopertari tencuiala, reparatii fatade, etansari sau alte interventii la inaltime pentru acelasi imobil.",
+      },
+      {
+        question: "Cum aleg rapid o firma potrivita pentru interventie?",
+        answer:
+          "Descrie clar riscul, adauga poze si mentioneaza zona. Cererea este apoi structurata intern pentru selectie si ofertare cat mai relevanta.",
+      },
+    ];
+  }
+
+  return [
+    {
+      question: `Când ai nevoie de ${service.name.toLowerCase()}?`,
+      answer:
+        "Atunci când lucrarea trebuie executată la înălțime, în spații greu accesibile sau când soluțiile clasice precum schela și nacela nu sunt eficiente ori rapide.",
+    },
+    {
+      question: "Cum aleg serviciul corect înainte să trimit cererea?",
+      answer:
+        "Alege serviciul care se potrivește cel mai bine lucrării. Dacă nu ești sigur, descrie problema cât mai clar și administratorul o clasifică intern înainte de ofertare.",
+    },
+  ];
 }
 
 export function buildCountyIntro(county: CountyDetail) {
@@ -65,6 +127,46 @@ export function buildCityIntro(city: CityDetail) {
 }
 
 export function buildServiceCommercialBlocks(service: ServiceDetail) {
+  if (service.slug === "decopertari-tencuiala") {
+    return [
+      {
+        title: "Cand este urgenta decopertarea",
+        content:
+          "Cand apar desprinderi active, fisuri adanci sau material instabil pe fatada, interventia trebuie programata rapid pentru reducerea riscului.",
+      },
+      {
+        title: "Tipuri de cladiri deservite",
+        content:
+          "Blocuri vechi, imobile administrative, scoli, cladiri comerciale si alte fatade unde exista trafic pietonal in zona de risc.",
+      },
+      {
+        title: "Ce urmeaza dupa decopertare",
+        content:
+          "Dupa indepartarea zonelor instabile poti continua cu punere in siguranta fatade, reparatii locale si lucrari de refacere controlata.",
+      },
+    ];
+  }
+
+  if (service.slug === "punere-in-siguranta-fatade") {
+    return [
+      {
+        title: "Ce inseamna punere in siguranta",
+        content:
+          "Serviciul acopera eliminarea elementelor cu risc, masuri provizorii de protectie si stabilizarea fatadei pana la reabilitarea completa.",
+      },
+      {
+        title: "Cand se solicita cel mai des",
+        content:
+          "Dupa episoade meteo severe, la cladiri cu degradari avansate sau cand administratorul observa risc pentru pietoni, trafic sau accesul in imobil.",
+      },
+      {
+        title: "Cum trimiti o cerere completa",
+        content:
+          "Include adresa, poze cu zona afectata, nivelurile implicate si gradul de urgenta. Astfel cererea poate fi clasificata si ofertata mai eficient.",
+      },
+    ];
+  }
+
   return [
     {
       title: "Când este util acest serviciu",

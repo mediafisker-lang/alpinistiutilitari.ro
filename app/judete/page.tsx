@@ -24,6 +24,10 @@ export default async function CountiesPage() {
           Paginile de judet sunt gandite SEO-first si ajuta clientii sa ajunga mai
           repede la firme locale sau regionale.
         </p>
+        <p className="text-sm leading-7 text-slate-500">
+          Portalul ramane national, cu toate judetele active in arhitectura; Bucuresti si Ilfov
+          sunt tratate prioritar in faza curenta de optimizare comerciala.
+        </p>
       </div>
       <div className="mt-10 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
           {counties.map((county) => (

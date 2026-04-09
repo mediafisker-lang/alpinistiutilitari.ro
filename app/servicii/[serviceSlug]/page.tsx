@@ -30,7 +30,7 @@ export async function generateMetadata({ params }: Props) {
   }
 
   return buildMetadata({
-    title: `${service.name} - firme din Romania`,
+    title: service.seoTitle ?? `${service.name} - firme din Romania`,
     description: service.seoDescription ?? service.shortDescription,
     path: `/servicii/${service.slug}`,
   });
@@ -53,11 +53,34 @@ export default async function ServicePage({ params, searchParams }: Props) {
   const articles = service.articles.map((item) => item.article);
   const faqItems = buildServiceFaqs(service);
   const commercialBlocks = buildServiceCommercialBlocks(service);
-  const countyLinks = [...new Map(
+  const dynamicCountyLinks = [...new Map(
     companies.map((company) => [
       company.county.slug,
       { href: `/${company.county.slug}/${service.slug}`, label: `${service.name} în ${company.county.name}` },
     ]),
+  ).values()];
+  const isFacadeRiskService =
+    service.slug === "decopertari-tencuiala" || service.slug === "punere-in-siguranta-fatade";
+  const strategicCountyLinks =
+    service.slug === "decopertari-tencuiala"
+      ? [
+          { href: `/bucuresti/decopertari-tencuiala`, label: "Decopertari tencuiala in Bucuresti" },
+          { href: `/ilfov/decopertari-tencuiala`, label: "Decopertari tencuiala in Ilfov" },
+        ]
+      : service.slug === "punere-in-siguranta-fatade"
+        ? [
+            {
+              href: `/bucuresti/punere-in-siguranta-fatade`,
+              label: "Punere in siguranta fatade in Bucuresti",
+            },
+            {
+              href: `/ilfov/punere-in-siguranta-fatade`,
+              label: "Punere in siguranta fatade in Ilfov",
+            },
+          ]
+        : [];
+  const countyLinks = [...new Map(
+    [...strategicCountyLinks, ...dynamicCountyLinks].map((item) => [item.href, item]),
   ).values()].slice(0, 8);
   const breadcrumbItems = [
     { label: "Acasa", href: "/" },
@@ -134,6 +157,58 @@ export default async function ServicePage({ params, searchParams }: Props) {
           links={countyLinks}
         />
       </section>
+
+      {isFacadeRiskService ? (
+        <section className="mt-10 rounded-[2rem] border border-amber-200 bg-amber-50 p-6">
+          <h2 className="text-2xl font-bold text-slate-950">Interventii conexe pentru fatade periculoase</h2>
+          <p className="mt-3 text-sm leading-7 text-slate-700">
+            Pentru proiectele unde degradarea fatadei implica si faze de demolare controlata,
+            poti combina cererea de alpinism utilitar cu servicii conexe de pe platforma partenera.
+          </p>
+          <div className="mt-4 flex flex-wrap gap-2 text-sm">
+            <Link
+              href={
+                service.slug === "punere-in-siguranta-fatade"
+                  ? "/bucuresti/punere-in-siguranta-fatade"
+                  : "/bucuresti/decopertari-tencuiala"
+              }
+              className="rounded-full border border-slate-300 bg-white px-4 py-2 font-medium text-slate-700 transition hover:border-sky-300 hover:text-sky-700"
+            >
+              {service.slug === "punere-in-siguranta-fatade"
+                ? "punere in siguranta fatade in Bucuresti"
+                : "decopertari tencuiala in Bucuresti"}
+            </Link>
+            <Link
+              href={
+                service.slug === "punere-in-siguranta-fatade"
+                  ? "/ilfov/punere-in-siguranta-fatade"
+                  : "/ilfov/decopertari-tencuiala"
+              }
+              className="rounded-full border border-slate-300 bg-white px-4 py-2 font-medium text-slate-700 transition hover:border-sky-300 hover:text-sky-700"
+            >
+              {service.slug === "punere-in-siguranta-fatade"
+                ? "punere in siguranta fatade in Ilfov"
+                : "decopertari tencuiala in Ilfov"}
+            </Link>
+            <a
+              href="https://demolare.ro"
+              target="_blank"
+              rel="noopener noreferrer sponsored"
+              className="rounded-full border border-slate-300 bg-white px-4 py-2 font-medium text-slate-700 transition hover:border-sky-300 hover:text-sky-700"
+            >
+              servicii de demolare controlata pe demolare.ro
+            </a>
+            <a
+              href="https://demolare.ro"
+              target="_blank"
+              rel="noopener noreferrer sponsored"
+              className="rounded-full border border-slate-300 bg-white px-4 py-2 font-medium text-slate-700 transition hover:border-sky-300 hover:text-sky-700"
+            >
+              evaluare pentru fatade degradate pe demolare.ro
+            </a>
+          </div>
+        </section>
+      ) : null}
 
       <section className="mt-10">
         <div className="mb-6 flex items-end justify-between gap-4">

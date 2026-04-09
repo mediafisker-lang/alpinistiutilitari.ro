@@ -110,7 +110,7 @@ export default async function CompaniesPage({ searchParams }: CompaniesPageProps
             </p>
           ) : (
             <p className="text-sm text-slate-500">
-              Acoperire nationala, pagini locale indexabile si selectie rapida pentru lucrari la inaltime.
+              Acoperire nationala completa, cu prioritizare SEO/AEO in Bucuresti si Ilfov in aceasta etapa.
             </p>
           )}
         </div>

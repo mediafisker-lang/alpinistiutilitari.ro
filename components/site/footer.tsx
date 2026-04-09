@@ -4,6 +4,7 @@ import { getCounties, getServices } from "@/lib/data/queries";
 const footerLinks = [
   { href: "/judete", label: "Judete" },
   { href: "/cere-oferta", label: "Cere oferta" },
+  { href: "/cum-functioneaza", label: "Cum sa" },
   { href: "/firme", label: "Firme" },
   { href: "/despre-noi", label: "Despre platforma" },
   { href: "/blog", label: "Articole" },

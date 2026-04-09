@@ -40,6 +40,54 @@ const companyInclude = {
   services: { include: { service: true } },
 } satisfies Prisma.CompanyInclude;
 
+const syntheticLocalities: Record<
+  string,
+  { name: string; countySlug: string; intro: string }
+> = {
+  "sector-1": {
+    name: "Sector 1",
+    countySlug: "bucuresti",
+    intro:
+      "Sector 1 include cladiri office, hoteluri, clinici si ansambluri premium unde lucrarile la inaltime sunt solicitate frecvent.",
+  },
+  "sector-2": {
+    name: "Sector 2",
+    countySlug: "bucuresti",
+    intro:
+      "Sector 2 are mix rezidential-comercial, cu cereri constante pentru geamuri la inaltime, fatade si interventii punctuale.",
+  },
+  "sector-3": {
+    name: "Sector 3",
+    countySlug: "bucuresti",
+    intro:
+      "Sector 3 concentreaza blocuri noi, showroom-uri si zone cu trafic ridicat unde lucrarile la inaltime apar constant.",
+  },
+  "sector-4": {
+    name: "Sector 4",
+    countySlug: "bucuresti",
+    intro:
+      "Sector 4 are ansambluri rezidentiale dense si cladiri comerciale care necesita mentenanta periodica la inaltime.",
+  },
+  "sector-5": {
+    name: "Sector 5",
+    countySlug: "bucuresti",
+    intro:
+      "Sector 5 include imobile mixte, institutii si sedii operationale unde cererile pentru interventii la inaltime sunt recurente.",
+  },
+  "sector-6": {
+    name: "Sector 6",
+    countySlug: "bucuresti",
+    intro:
+      "Sector 6 are dezvoltare rezidentiala si retail extins, cu multe solicitari pentru geamuri la inaltime si lucrari pe fatade.",
+  },
+  tunari: {
+    name: "Tunari",
+    countySlug: "ilfov",
+    intro:
+      "Tunari este o localitate in dezvoltare unde apar frecvent lucrari la inaltime pentru vile, ansambluri noi si cladiri comerciale.",
+  },
+};
+
 async function attachCountyCompanyCounts<
   T extends {
     id: string;
@@ -105,6 +153,43 @@ function dedupeCompanies<T extends { id: string }>(companies: T[]) {
     }
   }
   return [...unique.values()];
+}
+
+function getFallbackCityBySlug(citySlug: string) {
+  const fallbackCounties = getFallbackCounties();
+
+  for (const county of fallbackCounties) {
+    const city = (county.cities ?? []).find((item) => item.slug === citySlug);
+    if (city) {
+      return {
+        id: city.id,
+        name: city.name,
+        slug: city.slug,
+        countyId: city.countyId,
+        county: {
+          id: county.id,
+          name: county.name,
+          slug: county.slug,
+        },
+      };
+    }
+  }
+
+  return null;
+}
+
+function normalizeFallbackService(serviceSlug: string) {
+  const fallbackService = getFallbackService(serviceSlug);
+  if (!fallbackService) return null;
+
+  return {
+    id: fallbackService.id,
+    name: fallbackService.name,
+    slug: fallbackService.slug,
+    category: fallbackService.category,
+    shortName: fallbackService.shortName,
+    updatedAt: fallbackService.updatedAt,
+  };
 }
 
 function getCompanyLocalityBoost(
@@ -281,7 +366,15 @@ export async function getQuickSearchOptions(): Promise<QuickSearchOptions> {
       ),
     ].sort((left, right) => left.name.localeCompare(right.name, "ro"));
 
-    return { counties: mergedCounties, cities: mergedCities, services };
+    const fallbackServices = getFallbackServices();
+    const mergedServices = [
+      ...services,
+      ...fallbackServices
+        .filter((fallbackService) => !services.some((service) => service.slug === fallbackService.slug))
+        .map((service) => ({ id: service.id, name: service.name, slug: service.slug })),
+    ].sort((left, right) => left.name.localeCompare(right.name, "ro"));
+
+    return { counties: mergedCounties, cities: mergedCities, services: mergedServices };
   } catch {
     const counties = getFallbackCounties();
     const services = getFallbackServices();
@@ -446,23 +539,130 @@ export async function getCity(countySlug: string, citySlug: string): Promise<Cit
         _count: { select: { companies: true, leadRequests: true } },
       },
     });
-    if (!city) return null;
+    if (!city) {
+      return getSyntheticCity(countySlug, citySlug);
+    }
     return {
       ...city,
       companies: sortCompaniesForSeo(filterCompaniesWithUtilityPortfolio(city.companies)),
     };
   } catch {
-    return getFallbackCity(countySlug, citySlug) as CityDetail | null;
+    const fallback = getFallbackCity(countySlug, citySlug) as CityDetail | null;
+    if (fallback) return fallback;
+    return getSyntheticCity(countySlug, citySlug);
   }
+}
+
+export async function getCityBySlug(citySlug: string): Promise<CityDetail | null> {
+  try {
+    const city = await prisma.city.findUnique({
+      where: { slug: citySlug },
+      select: {
+        slug: true,
+        county: { select: { slug: true } },
+      },
+    });
+
+    if (city?.county?.slug) {
+      return getCity(city.county.slug, citySlug);
+    }
+  } catch {
+    // fallback below
+  }
+
+  const fallbackCounties = getFallbackCounties();
+  for (const county of fallbackCounties) {
+    const found = (county.cities ?? []).find((city) => city.slug === citySlug);
+    if (found) {
+      return getFallbackCity(county.slug, citySlug) as CityDetail | null;
+    }
+  }
+
+  const synthetic = syntheticLocalities[citySlug];
+  if (synthetic) {
+    return getCity(synthetic.countySlug, citySlug);
+  }
+
+  return null;
+}
+
+async function getSyntheticCity(countySlug: string, citySlug: string): Promise<CityDetail | null> {
+  const synthetic = syntheticLocalities[citySlug];
+  if (!synthetic || synthetic.countySlug !== countySlug) return null;
+
+  const [countyDb, companies] = await Promise.all([
+    prisma.county.findUnique({ where: { slug: countySlug } }).catch(() => null),
+    prisma.company
+      .findMany({
+        where: {
+          isPublished: true,
+          isActive: true,
+          verificationStatus: { not: "hidden" },
+          OR: [
+            { city: { slug: citySlug } },
+            { coverage: { some: { city: { slug: citySlug } } } },
+            { county: { slug: countySlug } },
+            { coverage: { some: { county: { slug: countySlug } } } },
+          ],
+        },
+        include: companyInclude,
+        orderBy: [{ isFeatured: "desc" }, { name: "asc" }],
+      })
+      .catch(() => []),
+  ]);
+
+  const fallbackCounty = countyDb ? null : (getFallbackCounty(countySlug) as CountyDetail | null);
+  const county = countyDb ?? fallbackCounty;
+  if (!county) return null;
+
+  const sortedCompanies = sortCompaniesForSeo(
+    filterCompaniesWithUtilityPortfolio(dedupeCompanies(companies)),
+  );
+
+  const now = new Date();
+
+  return {
+    id: `synthetic-city-${citySlug}`,
+    countyId: county.id,
+    name: synthetic.name,
+    slug: citySlug,
+    intro: synthetic.intro,
+    introText: synthetic.intro,
+    seoTitle: `Alpinism utilitar in ${synthetic.name}, ${county.name}`,
+    seoDescription:
+      `Gasesti firme pentru lucrari la inaltime in ${synthetic.name}, ${county.name}. ` +
+      "Compari servicii locale si trimiti rapid cererea pentru executanti potriviti.",
+    population: null,
+    isActive: true,
+    createdAt: now,
+    updatedAt: now,
+    county: county as CityDetail["county"],
+    companies: sortedCompanies,
+    faqs: [],
+    _count: {
+      companies: sortedCompanies.length,
+      leadRequests: 0,
+    },
+  } as CityDetail;
 }
 
 export async function getServices(): Promise<ServiceWithStats[]> {
   try {
-    return await prisma.service.findMany({
+    const services = await prisma.service.findMany({
       where: { isActive: true },
       include: { _count: { select: { companies: true, leadRequests: true } } },
       orderBy: { name: "asc" },
     });
+
+    const fallbackServices = getFallbackServices();
+    const mergedServices = [
+      ...services,
+      ...fallbackServices.filter(
+        (fallbackService) => !services.some((service) => service.slug === fallbackService.slug),
+      ),
+    ].sort((left, right) => left.name.localeCompare(right.name, "ro"));
+
+    return mergedServices as ServiceWithStats[];
   } catch {
     return getFallbackServices() as ServiceWithStats[];
   }
@@ -490,7 +690,9 @@ export async function getService(slug: string): Promise<ServiceDetail | null> {
         faqs: true,
       },
     });
-    if (!service) return null;
+    if (!service) {
+      return getFallbackService(slug) as ServiceDetail | null;
+    }
     return {
       ...service,
       companies: sortCompaniesForSeo(
@@ -565,11 +767,25 @@ export async function getRelatedArticles(serviceIds: string[], excludeSlug?: str
 }
 
 export async function resolveLocalLanding(locationSlug: string, serviceSlug: string) {
-  const [county, city, service] = await Promise.all([
+  const [countyDb, cityDb, serviceDb] = await Promise.all([
     prisma.county.findUnique({ where: { slug: locationSlug }, include: { cities: true } }).catch(() => null),
     prisma.city.findUnique({ where: { slug: locationSlug }, include: { county: true } }).catch(() => null),
     prisma.service.findUnique({ where: { slug: serviceSlug } }).catch(() => null),
   ]);
+
+  const fallbackCity = cityDb ? null : getFallbackCityBySlug(locationSlug);
+  const county =
+    countyDb ??
+    (fallbackCity
+      ? {
+          id: fallbackCity.county.id,
+          name: fallbackCity.county.name,
+          slug: fallbackCity.county.slug,
+          cities: [],
+        }
+      : null);
+  const city = cityDb ?? fallbackCity;
+  const service = serviceDb ?? normalizeFallbackService(serviceSlug);
 
   if (!service) return null;
 
@@ -580,22 +796,26 @@ export async function resolveLocalLanding(locationSlug: string, serviceSlug: str
         isActive: true,
         verificationStatus: { not: "hidden" },
         OR: [
-          { cityId: city.id },
-          { coverage: { some: { cityId: city.id } } },
-          { countyId: city.countyId },
-          { coverage: { some: { countyId: city.countyId } } },
+          { city: { slug: city.slug } },
+          { coverage: { some: { city: { slug: city.slug } } } },
+          { county: { slug: city.county.slug } },
+          { coverage: { some: { county: { slug: city.county.slug } } } },
         ],
       },
       include: companyInclude,
       orderBy: [{ isFeatured: "desc" }, { ratingValue: "desc" }, { name: "asc" }],
     });
+    const countyIdForBoost =
+      candidates.find((company) => company.county.slug === city.county.slug)?.countyId ?? city.countyId;
+    const cityIdForBoost =
+      candidates.find((company) => company.city.slug === city.slug)?.cityId ?? city.id;
     const companies = rankLocalServiceCompanies(
       filterCompaniesWithUtilityPortfolio(dedupeCompanies(candidates)),
       service,
       {
-      countyId: city.countyId,
-      cityId: city.id,
-      minInferredScore: 44,
+        countyId: countyIdForBoost,
+        cityId: cityIdForBoost,
+        minInferredScore: 44,
       },
     );
 
@@ -608,17 +828,19 @@ export async function resolveLocalLanding(locationSlug: string, serviceSlug: str
         isPublished: true,
         isActive: true,
         verificationStatus: { not: "hidden" },
-        OR: [{ countyId: county.id }, { coverage: { some: { countyId: county.id } } }],
+        OR: [{ county: { slug: county.slug } }, { coverage: { some: { county: { slug: county.slug } } } }],
       },
       include: companyInclude,
       orderBy: [{ isFeatured: "desc" }, { ratingValue: "desc" }, { name: "asc" }],
     });
+    const countyIdForBoost =
+      candidates.find((company) => company.county.slug === county.slug)?.countyId ?? county.id;
     const companies = rankLocalServiceCompanies(
       filterCompaniesWithUtilityPortfolio(dedupeCompanies(candidates)),
       service,
       {
-      countyId: county.id,
-      minInferredScore: 46,
+        countyId: countyIdForBoost,
+        minInferredScore: 46,
       },
     );
 
