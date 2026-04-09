@@ -7,6 +7,7 @@ const footerLinks = [
   { href: "/firme", label: "Firme" },
   { href: "/despre-noi", label: "Despre platforma" },
   { href: "/blog", label: "Articole" },
+  { href: "/admin-cereri", label: "ADMIN" },
 ];
 
 export async function SiteFooter() {
