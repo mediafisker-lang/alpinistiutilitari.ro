@@ -281,9 +281,7 @@ export function RomaniaMap({ counties }: RomaniaMapProps) {
 
               return (
                 <a key={county.id} href={`/${county.slug}`} className="group">
-                  <title>
-                    {county.name} - {count} firme{topCities ? ` - ${topCities}` : ""}
-                  </title>
+                  <title>{`${county.name} - ${count} firme${topCities ? ` - ${topCities}` : ""}`}</title>
                   <g
                     className="transition duration-200 ease-out group-hover:scale-[1.035] group-active:scale-[0.992]"
                     style={{ transformBox: "fill-box", transformOrigin: "center" }}
