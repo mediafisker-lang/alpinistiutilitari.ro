@@ -114,7 +114,7 @@ export default async function HomePage() {
             <div className="space-y-6 animate-rise-in">
               <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.22em] text-white/85">
                 <Sparkles className="size-4" />
-                Platformă modernizată pentru lead-uri locale
+                PLATFORMA NATIONALA DE ALPINISM UTILITAR
               </div>
 
               <div className="space-y-4">
@@ -145,6 +145,39 @@ export default async function HomePage() {
                 >
                   Vezi firmele listate
                 </Link>
+              </div>
+
+              <div className="rounded-[2rem] border border-white/16 bg-white/10 p-5 text-white shadow-[0_20px_44px_rgba(2,12,27,0.2)] backdrop-blur-xl sm:p-6">
+                <p className="text-sm font-black uppercase tracking-[0.18em] text-sky-100/86">
+                  Alpinism Utilitar România
+                </p>
+                <h2 className="mt-3 text-2xl font-black leading-tight text-white sm:text-3xl">
+                  Cere oferte rapide de la firme verificate!
+                </h2>
+                <div className="mt-4 space-y-3 text-sm leading-7 text-white/84 sm:text-base">
+                  <p>
+                    Ai nevoie de lucrări la înălțime? Spălare geamuri, montaj bannere,
+                    reparații fațade, intervenții pe acoperișuri sau copaci?
+                  </p>
+                  <p>
+                    Pe <span className="font-bold text-white">www.alpinistiutilitari.ro</span> trimiți o
+                    singură cerere și primești oferte de la mai multe firme de alpinism utilitar din
+                    județul tău sau din toată țara, în aproximativ 15 minute.
+                  </p>
+                  <p>
+                    Compari prețurile, experiența și recenziile, apoi alegi cea mai bună echipă.
+                  </p>
+                  <p className="font-semibold text-white">Simplu, rapid și gratuit pentru tine!</p>
+                </div>
+                <div className="mt-5">
+                  <a
+                    href="#cerere"
+                    className="inline-flex items-center justify-center rounded-full bg-white px-6 py-3.5 text-sm font-black uppercase tracking-[0.08em] text-slate-950 transition hover:bg-slate-100"
+                  >
+                    Cere ofertă acum
+                    <ArrowRight className="ml-2 size-4" />
+                  </a>
+                </div>
               </div>
 
               <div className="grid gap-3 sm:grid-cols-3">

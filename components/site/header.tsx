@@ -5,13 +5,11 @@ import { Button } from "@/components/ui/button";
 import { MobileNav } from "@/components/site/mobile-nav";
 
 const links = [
-  { href: "/", label: "Acasa" },
-  { href: "/servicii", label: "Servicii" },
-  { href: "/blog", label: "Articole" },
-  { href: "/firme", label: "Firme" },
-  { href: "/judete", label: "Judete" },
-  { href: "/despre-noi", label: "Despre" },
-  { href: "/cere-oferta", label: "Cere oferta" },
+  { href: "/servicii", label: "SERVICII" },
+  { href: "/cum-functioneaza", label: "CUM SA" },
+  { href: "/firme", label: "FIRME" },
+  { href: "/judete", label: "JUDETE" },
+  { href: "/despre-noi", label: "DESPRE" },
 ];
 
 export function SiteHeader() {
@@ -32,37 +30,41 @@ export function SiteHeader() {
 
       <div className="border-b border-white/60 bg-white/86 shadow-[0_16px_44px_rgba(15,23,42,0.08)] backdrop-blur-xl">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-4 sm:px-6 lg:px-8">
-          <div className="flex min-w-0 items-center gap-4">
+          <div className="flex min-w-0 items-center gap-3 xl:gap-4">
             <Link href="/" className="flex min-w-0 items-center gap-3">
               <div className="flex size-12 items-center justify-center rounded-2xl border border-white/80 bg-white shadow-[0_18px_34px_rgba(0,99,247,0.16)] backdrop-blur">
-              <Image
-                src="/logo-alpinistiutilitari.svg"
-                alt="Alpinisti Utilitari"
-                width={48}
-                height={48}
-                className="size-12 rounded-2xl"
-                priority
-              />
-            </div>
+                <Image
+                  src="/logo-alpinistiutilitari.svg"
+                  alt="Alpinisti Utilitari"
+                  width={48}
+                  height={48}
+                  className="size-12 rounded-2xl"
+                  priority
+                />
+              </div>
               <div className="min-w-0">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-[#0063f7]">
-                  Platformă națională
+                <p className="whitespace-nowrap text-[11px] font-semibold uppercase tracking-[0.2em] text-[#0063f7]">
+                  PLATFORMA NATIONALA
                 </p>
                 <p className="truncate text-lg font-black text-slate-950">AlpinistiUtilitari.ro</p>
               </div>
             </Link>
 
-            <div className="hidden rounded-full border border-[#0063f7]/12 bg-[#0063f7]/6 px-3 py-2 text-xs font-semibold text-[#0063f7] lg:block">
-              O singură cerere, mai multe oferte locale
-            </div>
+            <Link
+              href="/"
+              className="hidden rounded-[1.25rem] border border-[#0063f7]/14 bg-[#0063f7]/6 px-4 py-3 text-xs font-bold uppercase leading-5 text-[#0063f7] transition hover:border-[#0063f7]/28 hover:bg-[#0063f7]/10 lg:block"
+            >
+              <span className="block whitespace-nowrap">Lansezi o cerere,</span>
+              <span className="block whitespace-nowrap">primești mai multe oferte locale!</span>
+            </Link>
           </div>
 
-          <nav className="hidden items-center gap-6 xl:flex">
+          <nav className="hidden items-center gap-4 lg:flex xl:gap-5">
             {links.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
-                className="text-sm font-medium text-slate-700 transition hover:text-[#0063f7]"
+                className="text-sm font-bold tracking-[0.08em] text-slate-700 transition hover:text-[#0063f7]"
               >
                 {link.label}
               </Link>
@@ -72,7 +74,7 @@ export function SiteHeader() {
           <div className="hidden items-center gap-3 lg:flex">
             <Link href="/cere-oferta">
               <Button className="shadow-[0_18px_34px_rgba(0,99,247,0.26)]">
-                Cere ofertă lucrare
+                CERE OFERTA!
                 <ArrowRight className="ml-2 size-4" />
               </Button>
             </Link>
