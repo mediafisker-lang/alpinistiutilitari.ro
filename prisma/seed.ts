@@ -436,6 +436,11 @@ async function main() {
     }),
   ]);
 
+  const availableServiceSlugs = new Set(services.map((service) => service.slug));
+  const articleSeedsWithKnownService = serviceArticleSeeds.filter((article) =>
+    availableServiceSlugs.has(article.serviceSlug),
+  );
+
   await Promise.all([
     prisma.article.create({
       data: {
@@ -491,7 +496,7 @@ async function main() {
         },
       },
     }),
-    ...serviceArticleSeeds.map((article) =>
+    ...articleSeedsWithKnownService.map((article) =>
       prisma.article.create({
         data: {
           title: article.title,
