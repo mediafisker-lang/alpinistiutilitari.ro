@@ -155,17 +155,6 @@ export function LeadForm({
         className={isCompact ? "min-h-28 rounded-2xl" : undefined}
       />
 
-      <div className="space-y-2">
-        <label className={isCompact ? "text-xs font-semibold uppercase tracking-[0.18em] text-slate-500" : "text-sm font-medium text-slate-700"}>Imagini relevante</label>
-        <Input
-          type="file"
-          name="images"
-          multiple
-          accept="image/*"
-          className={isCompact ? "h-11 rounded-xl py-2" : undefined}
-        />
-      </div>
-
       <Button disabled={pending} className={isCompact ? "h-11 w-full rounded-xl" : "w-full"}>
         {pending ? "Se inregistreaza..." : "Trimite cererea"}
       </Button>

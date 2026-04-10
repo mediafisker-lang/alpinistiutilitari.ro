@@ -13,10 +13,7 @@ export const leadRequestSchema = z.object({
   address: z.string().trim().min(6, "Introdu adresa lucrării."),
   serviceId: z.string().optional(),
   serviceText: z.string().trim().optional(),
-  description: z
-    .string()
-    .trim()
-    .min(30, "Descrierea trebuie să aibă cel puțin 30 de caractere."),
+  description: z.string().trim().min(1, "Completează mesajul."),
   urgency: z.enum(["normal", "urgent"]).default("normal"),
   gdprAccepted: z.literal("on").optional().default("on"),
   sourcePage: z.string().optional(),
