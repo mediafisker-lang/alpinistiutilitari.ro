@@ -9,6 +9,16 @@ export type ServiceSeed = {
 
 export const serviceCatalog: ServiceSeed[] = [
   {
+    name: "Alpinism utilitar",
+    slug: "alpinism-utilitar",
+    category: "Lucrari la inaltime",
+    shortDescription:
+      "Interventii generale la inaltime pentru fatade, acoperisuri, structuri tehnice si urgente comerciale.",
+    longDescription:
+      "Serviciul de alpinism utilitar acopera lucrari la inaltime in zone greu accesibile, fara schela clasica, pentru cladiri rezidentiale, comerciale si industriale.",
+    icon: "mountain",
+  },
+  {
     name: "Spalare geamuri la inaltime",
     slug: "spalare-geamuri-la-inaltime",
     category: "Geamuri",

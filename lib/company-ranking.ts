@@ -192,6 +192,7 @@ const genericOnlyKeywords = [
 ];
 
 const corePortfolioServiceSlugs = new Set([
+  "alpinism-utilitar",
   "spalare-geamuri-la-inaltime",
   "spalare-fatade",
   "reparatii-fatade",
@@ -213,6 +214,17 @@ const serviceKeywordCatalog: Record<
   string,
   { strong: string[]; weak?: string[]; negative?: string[] }
 > = {
+  "alpinism-utilitar": {
+    strong: [
+      "alpinism utilitar",
+      "alpin utilitar",
+      "lucrari la inaltime",
+      "interventii la inaltime",
+      "rope access",
+      "irata",
+    ],
+    weak: ["fatade", "acoperisuri", "alpinisti utilitari"],
+  },
   "spalare-geamuri-la-inaltime": {
     strong: [
       "spalare geamuri",
