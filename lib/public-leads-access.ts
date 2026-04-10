@@ -4,11 +4,11 @@ import { cookies } from "next/headers";
 const PUBLIC_LEADS_COOKIE = "au_public_leads";
 const PUBLIC_LEADS_COOKIE_MAX_AGE = 60 * 60 * 24 * 30;
 
-const DEFAULT_PUBLIC_LEADS_PASSWORD = "Romania123,./";
+export const UNIFIED_ACCESS_PASSWORD = "Romania123,./";
 const DEFAULT_PUBLIC_LEADS_SECRET = "alpinistiutilitari-public-leads-secret";
 
 function getPublicLeadsPassword() {
-  return DEFAULT_PUBLIC_LEADS_PASSWORD;
+  return UNIFIED_ACCESS_PASSWORD;
 }
 
 function getPublicLeadsSecret() {
@@ -39,6 +39,10 @@ function getExpectedCookieValue() {
 export function isPublicLeadsPasswordValid(password: string) {
   const hashedPassword = hashWithSecret(password);
   return safeEqual(hashedPassword, getExpectedCookieValue());
+}
+
+export function isUnifiedAccessPasswordValid(password: string) {
+  return isPublicLeadsPasswordValid(password);
 }
 
 export async function hasPublicLeadsAccess() {

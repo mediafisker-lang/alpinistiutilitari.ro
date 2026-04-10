@@ -32,22 +32,10 @@ export default async function AdminLoginPage({ searchParams }: LoginPageProps) {
           Autentificare administrare
         </h1>
         <p className="mt-3 text-sm leading-7 text-slate-600">
-          Accesul este rezervat operatorilor care procesează cererile și conținutul intern.
+          Accesul în admin se face cu parola unică.
         </p>
 
         <form action={adminLoginAction} className="mt-8 space-y-4">
-          <div className="space-y-2">
-            <label htmlFor="email" className="text-sm font-medium text-slate-700">
-              Email
-            </label>
-            <input
-              id="email"
-              name="email"
-              type="email"
-              className="h-12 w-full rounded-2xl border border-slate-200 px-4 text-sm outline-none focus:border-sky-300"
-              required
-            />
-          </div>
           <div className="space-y-2">
             <label htmlFor="password" className="text-sm font-medium text-slate-700">
               Parolă

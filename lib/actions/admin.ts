@@ -4,10 +4,11 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/db";
 import { slugify } from "@/lib/utils";
-import { verifyPassword } from "@/lib/auth/password";
+import { hashPassword } from "@/lib/auth/password";
 import { clearAdminSession, createAdminSession } from "@/lib/auth/session";
 import { requireAdmin } from "@/lib/auth/require-admin";
 import { runPlacesImport } from "@/lib/integrations/google-places-import";
+import { isUnifiedAccessPasswordValid } from "@/lib/public-leads-access";
 import {
   adminLoginSchema,
   articleSchema,
@@ -28,7 +29,6 @@ export type AdminActionState = {
 
 export async function adminLoginAction(formData: FormData): Promise<void> {
   const parsed = adminLoginSchema.safeParse({
-    email: formData.get("email")?.toString(),
     password: formData.get("password")?.toString(),
   });
 
@@ -36,13 +36,21 @@ export async function adminLoginAction(formData: FormData): Promise<void> {
     redirect(`/admin/login?error=${encodeURIComponent(parsed.error.issues[0]?.message ?? "Date invalide")}`);
   }
 
-  const admin = await prisma.adminUser.findUnique({
-    where: { email: parsed.data.email.toLowerCase() },
-  });
-
-  if (!admin || !verifyPassword(parsed.data.password, admin.passwordHash)) {
-    redirect("/admin/login?error=Emailul%20sau%20parola%20nu%20sunt%20corecte.");
+  if (!isUnifiedAccessPasswordValid(parsed.data.password)) {
+    redirect("/admin/login?error=Parola%20nu%20este%20corecta.");
   }
+
+  const admin =
+    (await prisma.adminUser.findFirst({
+      orderBy: [{ role: "asc" }, { createdAt: "asc" }],
+    })) ??
+    (await prisma.adminUser.create({
+      data: {
+        email: "admin@alpinistiutilitari.ro",
+        passwordHash: hashPassword(parsed.data.password),
+        role: "admin",
+      },
+    }));
 
   await clearAdminSession();
   await createAdminSession(admin.id);

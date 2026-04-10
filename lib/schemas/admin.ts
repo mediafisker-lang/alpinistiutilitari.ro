@@ -1,7 +1,6 @@
 import { z } from "zod";
 
 export const adminLoginSchema = z.object({
-  email: z.email("Introdu adresa de email."),
   password: z.string().min(8, "Parola trebuie să aibă cel puțin 8 caractere."),
 });
 
