@@ -10,7 +10,7 @@ export const leadRequestSchema = z.object({
   countyText: z.string().trim().optional(),
   cityId: z.string().optional(),
   cityText: z.string().trim().optional(),
-  address: z.string().trim().min(6, "Introdu adresa lucrării."),
+  address: z.string().trim().optional(),
   serviceId: z.string().optional(),
   serviceText: z.string().trim().optional(),
   description: z.string().trim().min(1, "Completează mesajul."),

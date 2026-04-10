@@ -40,6 +40,37 @@ const companyInclude = {
   services: { include: { service: true } },
 } satisfies Prisma.CompanyInclude;
 
+const companyPortfolioSelect = {
+  id: true,
+  name: true,
+  slug: true,
+  descriptionShort: true,
+  descriptionLong: true,
+  sourceType: true,
+  isFeatured: true,
+  isVerified: true,
+  ratingValue: true,
+  ratingCount: true,
+  website: true,
+  phone: true,
+  countyId: true,
+  cityId: true,
+  coverage: { select: { countyId: true, cityId: true } },
+  services: {
+    select: {
+      service: {
+        select: {
+          id: true,
+          name: true,
+          slug: true,
+          category: true,
+          shortName: true,
+        },
+      },
+    },
+  },
+} satisfies Prisma.CompanySelect;
+
 const syntheticLocalities: Record<
   string,
   { name: string; countySlug: string; intro: string }
@@ -107,7 +138,7 @@ async function attachCountyCompanyCounts<
         { coverage: { some: { countyId: { in: [...countyIds] } } } },
       ],
     },
-    include: companyInclude,
+    select: companyPortfolioSelect,
   });
   const eligibleCompanies = filterCompaniesWithUtilityPortfolio(companies);
 

@@ -6,7 +6,7 @@ import { LeadForm } from "@/components/forms/lead-form";
 export const metadata = buildMetadata({
   title: "Cere ofertă pentru alpinism utilitar în România",
   description:
-    "Trimite o cerere internă pentru lucrări la înălțime, după județ, oraș și tip de lucrare. Revenim cu soluția potrivită după analiza internă.",
+    "Trimite rapid cererea ta pentru alpinism utilitar după județ, iar noi o direcționăm către firmele potrivite pentru ofertare.",
   path: "/cere-oferta",
 });
 
@@ -25,10 +25,6 @@ export default async function OfferPage({ searchParams }: OfferPageProps) {
     label: `${company.name} · ${company.city?.name ?? "Localitate neprecizată"}, ${company.county?.name ?? "Județ neprecizat"}`,
   }));
   const countyOptions = options.counties.map((county) => ({ id: county.id, label: county.name }));
-  const serviceOptions = options.services.map((service) => ({
-    id: service.id,
-    label: service.name,
-  }));
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
@@ -39,7 +35,6 @@ export default async function OfferPage({ searchParams }: OfferPageProps) {
           selectableCompanies={companySelections}
           selectedCompanyIds={preselectedCompany ? [preselectedCompany.id] : []}
           counties={countyOptions}
-          services={serviceOptions}
         />
 
         <div className="rounded-[2rem] border border-slate-200 bg-white p-8 shadow-sm shadow-slate-950/5">

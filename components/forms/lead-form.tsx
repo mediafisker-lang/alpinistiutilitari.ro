@@ -80,6 +80,8 @@ export function LeadForm({
       <input type="hidden" name="urgency" value="normal" />
       <input type="hidden" name="cityId" value={cityId ?? ""} />
       <input type="hidden" name="cityText" value={cityName ?? ""} />
+      <input type="hidden" name="address" value="Nespecificata in formular" />
+      <input type="hidden" name="serviceId" value={serviceId ?? ""} />
       <input type="hidden" name="serviceText" value={defaultServiceText} />
 
       {selectedCompanyIds.map((selectedId) => (
@@ -120,32 +122,6 @@ export function LeadForm({
           ))}
         </select>
         <input type="hidden" name="countyText" value={countyName ?? ""} />
-      </div>
-
-      <Input
-        name="address"
-        placeholder="Adresa aproximativa"
-        required
-        className={isCompact ? "h-11 rounded-xl" : undefined}
-      />
-
-      <div className="space-y-2">
-        <label className={isCompact ? "text-xs font-semibold uppercase tracking-[0.18em] text-slate-500" : "text-sm font-medium text-slate-700"}>Tip lucrare</label>
-        <select
-          name="serviceId"
-          defaultValue={serviceId ?? ""}
-          className={[
-            "w-full border border-slate-200 bg-white px-4 text-sm outline-none focus:border-sky-300",
-            isCompact ? "h-11 rounded-xl" : "h-12 rounded-2xl",
-          ].join(" ")}
-        >
-          <option value="">Selecteaza serviciu</option>
-          {services.map((service) => (
-            <option key={service.id ?? service.label} value={service.id}>
-              {service.label}
-            </option>
-          ))}
-        </select>
       </div>
 
       <Textarea

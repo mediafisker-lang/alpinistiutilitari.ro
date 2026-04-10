@@ -21,7 +21,7 @@ const spaceGrotesk = Space_Grotesk({
 const baseMetadata = buildMetadata({
   title: "Alpinisti Utilitari Romania - firme pe judete, orase si servicii",
   description:
-    "Gasesti rapid firme de alpinism utilitar din Romania si trimiti o cerere unica pentru lucrari la inaltime, fatade, bannere sau arbori.",
+    "Trimiti o cerere pentru servicii de alpinism direct catre firmele din judetul tau si primesti rapid oferte relevante.",
 });
 
 export const metadata: Metadata = {

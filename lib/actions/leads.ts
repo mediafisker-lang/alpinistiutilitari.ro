@@ -1,8 +1,5 @@
 "use server";
 
-import { mkdir, writeFile } from "node:fs/promises";
-import { join } from "node:path";
-import { randomUUID } from "node:crypto";
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/db";
 import { leadRequestSchema } from "@/lib/schemas/lead";
@@ -12,34 +9,6 @@ export type LeadFormState = {
   message?: string;
   redirectTo?: string;
 };
-
-async function saveLeadImages(files: File[]) {
-  if (!files.length) {
-    return [];
-  }
-
-  const uploadDir = join(process.cwd(), "public", "uploads", "lead-requests");
-  await mkdir(uploadDir, { recursive: true });
-
-  const saved = await Promise.all(
-    files
-      .filter((file) => file.size > 0)
-      .map(async (file) => {
-        const extension = file.name.split(".").pop() ?? "jpg";
-        const fileName = `${randomUUID()}.${extension}`;
-        const fullPath = join(uploadDir, fileName);
-        const buffer = Buffer.from(await file.arrayBuffer());
-        await writeFile(fullPath, buffer);
-
-        return {
-          fileUrl: `/uploads/lead-requests/${fileName}`,
-          fileName: file.name,
-        };
-      }),
-  );
-
-  return saved;
-}
 
 export async function submitLeadAction(
   _prevState: LeadFormState,
@@ -75,20 +44,6 @@ export async function submitLeadAction(
   }
 
   try {
-    const imageFiles = formData
-      .getAll("images")
-      .filter((item): item is File => item instanceof File && item.size > 0);
-
-    let images: Awaited<ReturnType<typeof saveLeadImages>> = [];
-    if (imageFiles.length) {
-      try {
-        images = await saveLeadImages(imageFiles);
-      } catch (error) {
-        console.error("Lead image upload failed, continuing without images:", error);
-        images = [];
-      }
-    }
-
     const [county, city, service] = await Promise.all([
       parsed.data.countyId
         ? prisma.county.findUnique({ where: { id: parsed.data.countyId } })
@@ -104,11 +59,12 @@ export async function submitLeadAction(
     const countyText = parsed.data.countyText?.trim() || county?.name;
     const cityText = parsed.data.cityText?.trim() || city?.name;
     const serviceText = parsed.data.serviceText?.trim() || service?.name;
+    const addressText = parsed.data.address?.trim() || "Nespecificata in formular";
 
-    if (!countyText || !serviceText) {
+    if (!countyText) {
       return {
         success: false,
-        message: "Te rugam sa selectezi judetul si tipul lucrarii.",
+        message: "Te rugam sa selectezi judetul.",
       };
     }
 
@@ -130,16 +86,13 @@ export async function submitLeadAction(
         countyText,
         cityId: parsed.data.cityId || undefined,
         cityText,
-        address: parsed.data.address,
+        address: addressText,
         serviceId: parsed.data.serviceId || undefined,
         serviceText,
         urgency: parsed.data.urgency,
         description: parsed.data.description,
         gdprAccepted: true,
         sourcePage: parsed.data.sourcePage || undefined,
-        images: {
-          create: images,
-        },
         events: {
           create: {
             type: "created",

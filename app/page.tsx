@@ -124,7 +124,7 @@ export default async function HomePage() {
                   Interfață nouă, clară și rapidă
                 </p>
                 <h1 className="font-display max-w-4xl text-4xl font-black tracking-tight text-white sm:text-5xl lg:text-6xl">
-                  Găsești rapid firme de alpinism utilitar și trimiți o singură cerere relevantă.
+                  Trimiți o cerere pentru servicii de alpinism direct către toate firmele din județul tău pentru ofertă!
                 </h1>
                 <p className="max-w-3xl text-base leading-8 text-sky-50/88 sm:text-lg">
                   Pagina principală este acum gândită mai aproape de logica unui marketplace
