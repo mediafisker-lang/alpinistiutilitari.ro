@@ -14,6 +14,10 @@ export type LeadFormState = {
 };
 
 async function saveLeadImages(files: File[]) {
+  if (!files.length) {
+    return [];
+  }
+
   const uploadDir = join(process.cwd(), "public", "uploads", "lead-requests");
   await mkdir(uploadDir, { recursive: true });
 
@@ -75,7 +79,15 @@ export async function submitLeadAction(
       .getAll("images")
       .filter((item): item is File => item instanceof File && item.size > 0);
 
-    const images = await saveLeadImages(imageFiles);
+    let images: Awaited<ReturnType<typeof saveLeadImages>> = [];
+    if (imageFiles.length) {
+      try {
+        images = await saveLeadImages(imageFiles);
+      } catch (error) {
+        console.error("Lead image upload failed, continuing without images:", error);
+        images = [];
+      }
+    }
 
     const [county, city, service] = await Promise.all([
       parsed.data.countyId
@@ -157,7 +169,8 @@ export async function submitLeadAction(
         "Cererea ta a fost inregistrata. Revenim dupa analiza interna cu firmele potrivite.",
       redirectTo: `/multumim?id=${lead.id}`,
     };
-  } catch {
+  } catch (error) {
+    console.error("Lead submit failed:", error);
     return {
       success: false,
       message:
