@@ -16,10 +16,6 @@ export async function submitLeadAction(
 ): Promise<LeadFormState> {
   const parsed = leadRequestSchema.safeParse({
     companyId: formData.get("companyId")?.toString(),
-    selectedCompanyIds: formData
-      .getAll("selectedCompanyIds")
-      .map((value) => value.toString())
-      .filter(Boolean),
     fullName: formData.get("fullName")?.toString(),
     phone: formData.get("phone")?.toString(),
     email: formData.get("email")?.toString(),
@@ -68,14 +64,6 @@ export async function submitLeadAction(
       };
     }
 
-    const selectedCompanyIds = [
-      ...new Set(
-        [parsed.data.companyId, ...parsed.data.selectedCompanyIds].filter(
-          (value): value is string => Boolean(value),
-        ),
-      ),
-    ];
-
     const lead = await prisma.leadRequest.create({
       data: {
         companyId: parsed.data.companyId || undefined,
@@ -93,23 +81,6 @@ export async function submitLeadAction(
         description: parsed.data.description,
         gdprAccepted: true,
         sourcePage: parsed.data.sourcePage || undefined,
-        events: {
-          create: {
-            type: "created",
-            payloadJson: {
-              sourcePage: parsed.data.sourcePage || null,
-              urgency: parsed.data.urgency,
-              selectedCompanyIds,
-            },
-          },
-        },
-        selections: selectedCompanyIds.length
-          ? {
-              create: selectedCompanyIds.map((companyId) => ({
-                companyId,
-              })),
-            }
-          : undefined,
       },
     });
 

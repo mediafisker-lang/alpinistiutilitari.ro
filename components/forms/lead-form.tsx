@@ -84,21 +84,6 @@ export function LeadForm({
       <input type="hidden" name="serviceId" value={serviceId ?? ""} />
       <input type="hidden" name="serviceText" value={defaultServiceText} />
 
-      {selectedCompanyIds.map((selectedId) => (
-        <input key={selectedId} type="hidden" name="selectedCompanyIds" value={selectedId} />
-      ))}
-
-      {!selectedCompanyIds.length && selectableCompanies.length
-        ? selectableCompanies.slice(0, 10).map((company) => (
-            <input
-              key={company.id ?? company.label}
-              type="hidden"
-              name="selectedCompanyIds"
-              value={company.id}
-            />
-          ))
-        : null}
-
       <div className="grid gap-4 sm:grid-cols-2">
         <Input name="fullName" placeholder="Nume" required className={isCompact ? "h-11 rounded-xl" : undefined} />
         <Input name="phone" placeholder="Telefon" required className={isCompact ? "h-11 rounded-xl" : undefined} />
@@ -131,7 +116,11 @@ export function LeadForm({
         className={isCompact ? "min-h-28 rounded-2xl" : undefined}
       />
 
-      <Button disabled={pending} className={isCompact ? "h-11 w-full rounded-xl" : "w-full"}>
+      <Button
+        data-offer-cta="true"
+        disabled={pending}
+        className={isCompact ? "h-11 w-full rounded-xl" : "w-full"}
+      >
         {pending ? "Se inregistreaza..." : "Trimite cererea"}
       </Button>
 

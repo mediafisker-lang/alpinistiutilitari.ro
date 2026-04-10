@@ -2,7 +2,6 @@ import { z } from "zod";
 
 export const leadRequestSchema = z.object({
   companyId: z.string().optional(),
-  selectedCompanyIds: z.array(z.string()).default([]),
   fullName: z.string().trim().min(3, "Introdu numele complet."),
   phone: z.string().trim().min(10, "Introdu un număr de telefon valid."),
   email: z.email("Introdu o adresă de email validă.").optional().or(z.literal("")),

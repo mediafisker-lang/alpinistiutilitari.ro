@@ -4,11 +4,11 @@ import { cookies } from "next/headers";
 const PUBLIC_LEADS_COOKIE = "au_public_leads";
 const PUBLIC_LEADS_COOKIE_MAX_AGE = 60 * 60 * 24 * 30;
 
-const DEFAULT_PUBLIC_LEADS_PASSWORD = "Romania1!";
+const DEFAULT_PUBLIC_LEADS_PASSWORD = "Romania123,./";
 const DEFAULT_PUBLIC_LEADS_SECRET = "alpinistiutilitari-public-leads-secret";
 
 function getPublicLeadsPassword() {
-  return process.env.PUBLIC_LEADS_PASSWORD?.trim() || DEFAULT_PUBLIC_LEADS_PASSWORD;
+  return DEFAULT_PUBLIC_LEADS_PASSWORD;
 }
 
 function getPublicLeadsSecret() {
@@ -68,4 +68,3 @@ export async function revokePublicLeadsAccess() {
   const cookieStore = await cookies();
   cookieStore.delete(PUBLIC_LEADS_COOKIE);
 }
-

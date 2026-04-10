@@ -38,6 +38,15 @@ a {
   text-decoration: none;
 }
 
+a[href*="/cere-oferta"],
+a[href*="/cere-oferta"] * {
+  cursor: pointer;
+}
+
+button[data-offer-cta="true"] {
+  cursor: pointer;
+}
+
 .font-display {
   font-family: var(--font-display), var(--font-sans), sans-serif;
 }
@@ -63,6 +72,27 @@ a {
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@keyframes offer-cta-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.04);
+  }
+}
+
+@media (hover: hover) {
+  a[href*="/cere-oferta"]:hover,
+  a[href*="/cere-oferta"]:hover > * {
+    animation: offer-cta-pulse 0.9s ease-in-out infinite;
+  }
+
+  button[data-offer-cta="true"]:hover {
+    animation: offer-cta-pulse 0.9s ease-in-out infinite;
   }
 }
 
