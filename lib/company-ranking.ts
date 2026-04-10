@@ -24,6 +24,7 @@ type RankedCoverage = {
 type RankedCompany = {
   id: string;
   name: string;
+  slug?: string | null;
   descriptionShort?: string | null;
   descriptionLong?: string | null;
   sourceType?: string | null;
@@ -123,6 +124,48 @@ const negativeKeywords = [
   "transport",
   "service auto",
   "auto",
+  "adventure",
+  "escalada",
+  "climbing",
+  "paintball",
+  "airsoft",
+  "aquapark",
+  "recycling",
+  "solar",
+  "fotovoltaic",
+  "curatenie",
+  "cleaning",
+  "spalatorie",
+  "curatatorie",
+  "covoare",
+  "detailing",
+  "haine",
+  "spalatorie covoare",
+  "curatatorie haine",
+  "laundry",
+  "detailing auto",
+  "spalatorie auto",
+  "car wash",
+  "vulcanizare",
+  "tractari",
+  "rent a car",
+];
+
+const strictIdentityKeywords = [
+  "alpinism utilitar",
+  "alpin utilitar",
+  "alpinisti utilitari",
+  "alpinist utilitar",
+  "alpinism industrial",
+  "rope access",
+  "rope acces",
+  "irata",
+  "abseil",
+  "acces pe coarda",
+  "vertical access",
+  "vertical acces",
+  "alpin",
+  "utilitar",
 ];
 
 const directPortfolioKeywords = [
@@ -317,17 +360,44 @@ function countMatches(text: string, keywords: string[]) {
   return keywords.reduce((total, keyword) => total + (text.includes(keyword) ? 1 : 0), 0);
 }
 
-function buildCompanyText(company: RankedCompany) {
+function isUnverifiedGooglePlace(company: RankedCompany) {
+  return company.sourceType === "google_places" && !company.isVerified;
+}
+
+function buildCompanyIdentityText(company: RankedCompany) {
   return normalize(
     [
       company.name,
-      company.descriptionShort,
-      company.descriptionLong,
+      company.slug,
+      company.website,
       ...(company.services ?? []).flatMap((item) =>
         item.service
           ? [item.service.name, item.service.slug, item.service.category, item.service.shortName]
           : [],
       ),
+    ].join(" "),
+  );
+}
+
+function buildCompanyBrandText(company: RankedCompany) {
+  return normalize([company.name, company.slug, company.website].filter(Boolean).join(" "));
+}
+
+function buildCompanyPortfolioText(company: RankedCompany) {
+  if (isUnverifiedGooglePlace(company)) {
+    // Avoid self-reinforcing inferred service/description signals for raw imports.
+    return buildCompanyBrandText(company);
+  }
+
+  return buildCompanyIdentityText(company);
+}
+
+function buildCompanyText(company: RankedCompany) {
+  return normalize(
+    [
+      buildCompanyIdentityText(company),
+      company.descriptionShort,
+      company.descriptionLong,
     ].join(" "),
   );
 }
@@ -401,7 +471,7 @@ export function getCompanySeoScore(company: RankedCompany) {
 export function getCompanyServiceMatchScore(company: RankedCompany, service?: RankedServiceTarget | null) {
   if (!service) return 0;
 
-  const text = buildCompanyText(company);
+  const text = buildCompanyPortfolioText(company);
 
   const serviceKeywords = getServiceKeywordSet(service);
   const hasExplicitServiceMatch = (company.services ?? []).some(
@@ -429,7 +499,8 @@ export function getCompanyServiceMatchScore(company: RankedCompany, service?: Ra
 }
 
 export function getUtilityPortfolioScore(company: RankedCompany) {
-  const text = buildCompanyText(company);
+  const text = buildCompanyPortfolioText(company);
+  const brandText = buildCompanyBrandText(company);
   const serviceSlugs = new Set(
     (company.services ?? []).flatMap((item) => (item.service?.slug ? [item.service.slug] : [])),
   );
@@ -437,6 +508,7 @@ export function getUtilityPortfolioScore(company: RankedCompany) {
   let score = 0;
   score += countMatches(text, directPortfolioKeywords) * 55;
   score += countMatches(text, altitudeContextKeywords) * 16;
+  score += countMatches(brandText, strictIdentityKeywords) * 72;
   score -= countMatches(text, negativeKeywords) * 40;
   score -= countMatches(text, genericOnlyKeywords) * 10;
 
@@ -450,7 +522,11 @@ export function getUtilityPortfolioScore(company: RankedCompany) {
 }
 
 export function hasUtilityPortfolio(company: RankedCompany) {
-  const text = buildCompanyText(company);
+  const text = buildCompanyPortfolioText(company);
+  const brandText = buildCompanyBrandText(company);
+  const identityMatches = countMatches(brandText, strictIdentityKeywords);
+  const brandDirectMatches = countMatches(brandText, directPortfolioKeywords);
+  const brandAltitudeMatches = countMatches(brandText, altitudeContextKeywords);
   const directMatches = countMatches(text, directPortfolioKeywords);
   const altitudeMatches = countMatches(text, altitudeContextKeywords);
   const negativeMatches = countMatches(text, negativeKeywords);
@@ -462,11 +538,27 @@ export function hasUtilityPortfolio(company: RankedCompany) {
   const hasCoreService = [...serviceSlugs].some((slug) => corePortfolioServiceSlugs.has(slug));
 
   if ((company.ratingValue ?? 0) < 4) return false;
+
+  if (isUnverifiedGooglePlace(company)) {
+    if (negativeMatches >= 1 && brandDirectMatches === 0) return false;
+    if (negativeMatches >= 2) return false;
+    if (identityMatches >= 1 && portfolioScore >= 56) return true;
+    if (brandDirectMatches >= 1 && negativeMatches === 0 && portfolioScore >= 56) return true;
+    if (hasCoreService && brandAltitudeMatches >= 1 && negativeMatches === 0 && portfolioScore >= 64) return true;
+    if (hasCoreService && negativeMatches === 0 && (company.ratingCount ?? 0) >= 20 && portfolioScore >= 72)
+      return true;
+    if (hasCoreService && negativeMatches === 0 && portfolioScore >= 88) return true;
+    return false;
+  }
+
+  if (negativeMatches >= 1 && identityMatches === 0 && directMatches <= 1) return false;
   if (negativeMatches >= 2) return false;
-  if (directMatches >= 1 && portfolioScore >= 65) return true;
-  if (directMatches >= 2) return true;
-  if (hasCoreService && altitudeMatches >= 2 && genericMatches <= 2 && portfolioScore >= 72) return true;
-  if (altitudeMatches >= 4 && genericMatches <= 2 && portfolioScore >= 86) return true;
+  if (identityMatches >= 1 && directMatches >= 1 && portfolioScore >= 72) return true;
+  if (identityMatches >= 1 && hasCoreService && altitudeMatches >= 1 && portfolioScore >= 64) return true;
+  if (hasCoreService && directMatches >= 2 && altitudeMatches >= 2 && genericMatches <= 2 && portfolioScore >= 76)
+    return true;
+  if (directMatches >= 2 && altitudeMatches >= 3 && genericMatches <= 2 && portfolioScore >= 88) return true;
+  if (directMatches >= 1 && hasCoreService && negativeMatches === 0 && portfolioScore >= 98) return true;
 
   return false;
 }

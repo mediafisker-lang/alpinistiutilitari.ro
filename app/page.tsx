@@ -21,6 +21,8 @@ import { SeoLinkCloud } from "@/components/site/seo-link-cloud";
 import { LeadForm } from "@/components/forms/lead-form";
 import { Button } from "@/components/ui/button";
 
+export const dynamic = "force-dynamic";
+
 export const metadata = buildMetadata({
   title: "Firme de alpinism utilitar in Romania",
   description:

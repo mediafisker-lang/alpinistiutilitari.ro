@@ -3,6 +3,8 @@ import { getCounties } from "@/lib/data/queries";
 import { Breadcrumbs } from "@/components/site/breadcrumbs";
 import { CountyCard } from "@/components/site/county-card";
 
+export const dynamic = "force-dynamic";
+
 export const metadata = buildMetadata({
   title: "Judete - alpinism utilitar Romania",
   description:

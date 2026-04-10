@@ -64,7 +64,29 @@ const importNegativeKeywords = [
   "farmacie",
   "service auto",
   "termopane",
+  "spalatorie",
+  "curatatorie",
+  "covoare",
+  "detailing",
+  "haine",
+  "spalatorie covoare",
+  "curatatorie haine",
+  "laundry",
+  "detailing auto",
+  "car wash",
+  "vulcanizare",
+  "tractari",
 ];
+
+const serviceSignalCatalog: Record<string, string[]> = {
+  "alpinism-utilitar": ["alpinism utilitar", "alpin utilitar", "alpinisti utilitari", "rope access", "irata"],
+  "spalare-geamuri-la-inaltime": ["spalare geamuri", "geamuri la inaltime", "curatare geamuri"],
+  "spalare-fatade": ["spalare fatade", "curatare fatade"],
+  "reparatii-fatade": ["reparatii fatade", "fatade degradate", "tencuiala desprinsa"],
+  "interventii-urgente-la-inaltime": ["interventii urgente", "urgent", "avarie la inaltime", "24/7"],
+  "taiere-copaci": ["taiere copaci", "toaletare copaci", "arborist", "doborare controlata"],
+  "toaletare-copaci": ["toaletare copaci", "toaletare arbori", "arborist"],
+};
 
 function normalize(value?: string | null) {
   return (value ?? "")
@@ -176,7 +198,7 @@ async function resolveCountyAndCity(
 async function mapServices(
   prisma: PrismaClient,
   details: Awaited<ReturnType<typeof getPlaceDetails>>,
-  query: string,
+  _query: string,
 ) {
   const mappings = await prisma.googlePlaceCategoryMap.findMany({
     include: { service: true },
@@ -189,23 +211,19 @@ async function mapServices(
     matched.set(mapping.serviceId, { id: mapping.service.id, name: mapping.service.name });
   });
 
-  const text = `${details.displayName?.text ?? ""} ${query}`.toLowerCase();
+  const text = normalize(
+    [
+      details.displayName?.text,
+      details.formattedAddress,
+      details.websiteUri,
+    ].join(" "),
+  );
   const services = await prisma.service.findMany();
   for (const service of services) {
-    const keywords = [
-      service.name,
-      service.shortName ?? "",
-      service.category ?? "",
-      ...(service.slug.split("-") ?? []),
-    ]
-      .join(" ")
-      .toLowerCase();
+    const catalogSignals = serviceSignalCatalog[service.slug] ?? [];
+    const hasCatalogSignal = catalogSignals.some((signal) => text.includes(signal));
 
-    if (
-      text.includes("alpin") ||
-      text.includes("inaltime") ||
-      keywords.split(" ").some((token) => token && text.includes(token))
-    ) {
+    if (hasCatalogSignal) {
       matched.set(service.id, { id: service.id, name: service.name });
     }
   }
@@ -215,15 +233,15 @@ async function mapServices(
 
 function hasImportPortfolioSignals(
   details: Awaited<ReturnType<typeof getPlaceDetails>>,
-  query: string,
+  _query: string,
   services: { id: string; name: string }[],
 ) {
   const text = normalize(
     [
       details.displayName?.text,
       details.formattedAddress,
-      query,
-      ...services.map((service) => service.name),
+      details.websiteUri,
+      ...(details.types ?? []),
     ].join(" "),
   );
 
