@@ -28,11 +28,11 @@ export function SiteHeader() {
         </div>
       </div>
 
-      <div className="border-b border-white/60 bg-white/86 shadow-[0_16px_44px_rgba(15,23,42,0.08)] backdrop-blur-xl">
+      <div className="border-b border-white/60 bg-white/94 shadow-[0_16px_44px_rgba(15,23,42,0.08)] md:backdrop-blur-xl">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-4 sm:px-6 lg:px-8">
           <div className="flex min-w-0 items-center gap-3 xl:gap-4">
             <Link href="/" className="flex min-w-0 items-center gap-3">
-              <div className="flex size-12 items-center justify-center rounded-2xl border border-white/80 bg-white shadow-[0_18px_34px_rgba(0,99,247,0.16)] backdrop-blur">
+              <div className="flex size-12 items-center justify-center rounded-2xl border border-white/80 bg-white shadow-[0_18px_34px_rgba(0,99,247,0.16)] md:backdrop-blur">
                 <Image
                   src="/logo-alpinistiutilitari.svg"
                   alt="Alpinisti Utilitari"

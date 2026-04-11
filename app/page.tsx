@@ -96,8 +96,8 @@ export default async function HomePage() {
       <section className="mx-auto max-w-7xl px-4 py-5 sm:px-6 lg:px-8 lg:py-8">
         <div className="relative overflow-hidden rounded-[2.6rem] border border-white/70 bg-[linear-gradient(135deg,rgba(4,23,52,0.98),rgba(0,87,219,0.96)_52%,rgba(0,99,247,0.94)_72%,rgba(227,30,36,0.90)_100%)] px-5 py-6 text-white shadow-[0_34px_90px_rgba(8,26,58,0.24)] sm:px-7 sm:py-8 lg:px-8 lg:py-10">
           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.18),transparent_26%),radial-gradient(circle_at_bottom_right,rgba(255,255,255,0.16),transparent_22%)]" />
-          <div className="pointer-events-none absolute -left-16 top-16 h-52 w-52 rounded-full bg-white/10 blur-3xl" />
-          <div className="pointer-events-none absolute bottom-0 right-0 h-64 w-64 rounded-full bg-[#e31e24]/30 blur-3xl" />
+          <div className="pointer-events-none absolute -left-16 top-16 hidden h-52 w-52 rounded-full bg-white/10 blur-3xl sm:block" />
+          <div className="pointer-events-none absolute bottom-0 right-0 hidden h-64 w-64 rounded-full bg-[#e31e24]/30 blur-3xl sm:block" />
           <div
             aria-hidden="true"
             className="pointer-events-none absolute inset-y-0 right-0 hidden w-[42%] overflow-hidden lg:block"
@@ -107,13 +107,13 @@ export default async function HomePage() {
               src="/hero-alpinisti-photo.jpg"
               alt="Echipă de alpinism utilitar la lucru pe fațadă"
               fill
-              priority
+              sizes="(min-width: 1024px) 42vw, 0px"
               className="object-cover object-[82%_center] opacity-30 mix-blend-screen"
             />
           </div>
 
           <div className="relative grid gap-8 lg:grid-cols-[1.08fr_0.92fr]">
-            <div className="space-y-6 animate-rise-in">
+            <div className="space-y-6">
               <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.22em] text-white/85">
                 <Sparkles className="size-4" />
                 PLATFORMA NATIONALA DE ALPINISM UTILITAR
@@ -149,7 +149,7 @@ export default async function HomePage() {
                 </Link>
               </div>
 
-              <div className="rounded-[2rem] border border-white/16 bg-white/10 p-5 text-white shadow-[0_20px_44px_rgba(2,12,27,0.2)] backdrop-blur-xl sm:p-6">
+              <div className="rounded-[2rem] border border-white/16 bg-white/10 p-5 text-white shadow-[0_20px_44px_rgba(2,12,27,0.2)] sm:p-6 sm:backdrop-blur-xl">
                 <p className="text-sm font-black uppercase tracking-[0.18em] text-sky-100/86">
                   Alpinism Utilitar România
                 </p>
@@ -190,7 +190,7 @@ export default async function HomePage() {
                 ].map((item) => (
                   <div
                     key={item.label}
-                    className="rounded-[1.6rem] border border-white/16 bg-white/10 px-4 py-4 backdrop-blur"
+                    className="rounded-[1.6rem] border border-white/16 bg-white/10 px-4 py-4 md:backdrop-blur"
                   >
                     <p className="text-2xl font-black text-white">{item.value}</p>
                     <p className="mt-1 text-sm text-white/78">{item.label}</p>
@@ -199,16 +199,13 @@ export default async function HomePage() {
               </div>
 
               <div className="grid gap-3 sm:grid-cols-3">
-                {heroHighlights.map((item, index) => {
+                {heroHighlights.map((item) => {
                   const Icon = item.icon;
 
                   return (
                     <div
                       key={item.title}
-                      className={[
-                        "rounded-[1.7rem] border border-white/14 bg-white/8 p-4 backdrop-blur",
-                        index > 0 ? "animate-rise-in animate-delay-1" : "",
-                      ].join(" ")}
+                      className="rounded-[1.7rem] border border-white/14 bg-white/8 p-4 md:backdrop-blur"
                     >
                       <div className="flex size-10 items-center justify-center rounded-2xl bg-white/14 text-white">
                         <Icon className="size-5" />
@@ -222,7 +219,7 @@ export default async function HomePage() {
 
               <nav
                 aria-label="Navigare în pagină"
-                className="flex flex-wrap gap-2 rounded-[1.7rem] border border-white/14 bg-white/8 p-3 backdrop-blur animate-rise-in animate-delay-2"
+                className="flex flex-wrap gap-2 rounded-[1.7rem] border border-white/14 bg-white/8 p-3 md:backdrop-blur"
               >
                 {quickAnchors.map((anchor) => (
                   <a
@@ -236,8 +233,8 @@ export default async function HomePage() {
               </nav>
             </div>
 
-            <div className="space-y-4 animate-rise-in animate-delay-1">
-              <div className="rounded-[2.1rem] border border-white/16 bg-white/10 p-2 shadow-[0_24px_60px_rgba(2,12,27,0.24)] backdrop-blur-xl">
+            <div className="space-y-4">
+              <div className="rounded-[2.1rem] border border-white/16 bg-white/10 p-2 shadow-[0_24px_60px_rgba(2,12,27,0.24)] md:backdrop-blur-xl">
                 <LeadForm
                   variant="compact"
                   sourcePage="/"
@@ -257,7 +254,7 @@ export default async function HomePage() {
               </div>
 
               <div className="grid gap-4 sm:grid-cols-2">
-                <div className="rounded-[1.8rem] border border-white/14 bg-white/10 p-5 backdrop-blur">
+                <div className="rounded-[1.8rem] border border-white/14 bg-white/10 p-5 md:backdrop-blur">
                   <p className="text-xs font-semibold uppercase tracking-[0.22em] text-sky-100/88">
                     Cereri populare
                   </p>
@@ -274,7 +271,7 @@ export default async function HomePage() {
                   </div>
                 </div>
 
-                <div className="rounded-[1.8rem] border border-white/14 bg-white/10 p-5 backdrop-blur">
+                <div className="rounded-[1.8rem] border border-white/14 bg-white/10 p-5 md:backdrop-blur">
                   <p className="text-xs font-semibold uppercase tracking-[0.22em] text-sky-100/88">
                     Județe căutate
                   </p>
@@ -292,7 +289,7 @@ export default async function HomePage() {
                 </div>
               </div>
 
-              <div className="rounded-[1.9rem] border border-white/14 bg-white/10 p-5 text-white/82 backdrop-blur">
+              <div className="rounded-[1.9rem] border border-white/14 bg-white/10 p-5 text-white/82 md:backdrop-blur">
                 <p className="text-xs font-semibold uppercase tracking-[0.22em] text-sky-100/88">
                   Flux simplificat
                 </p>

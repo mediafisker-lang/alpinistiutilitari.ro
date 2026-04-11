@@ -96,6 +96,14 @@ button[data-offer-cta="true"] {
   }
 }
 
+@media (max-width: 768px) {
+  .animate-rise-in,
+  .animate-delay-1,
+  .animate-delay-2 {
+    animation: none;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
