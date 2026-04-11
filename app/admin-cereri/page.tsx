@@ -90,6 +90,8 @@ export default async function AdminCereriPage({ searchParams }: AdminCereriPageP
       fullName: true,
       phone: true,
       description: true,
+      countyId: true,
+      countyText: true,
     },
     orderBy: { createdAt: "desc" },
   });
@@ -168,10 +170,11 @@ export default async function AdminCereriPage({ searchParams }: AdminCereriPageP
       <form action={deleteSelectedPublicLeadsAction} className="mt-6 space-y-4">
         <input type="hidden" name="date" value={selectedDate} />
 
-        <div className="flex items-center justify-between gap-3">
+        <div className="flex flex-wrap items-center justify-between gap-3">
           <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">
             Selectează cererile pe care vrei să le ștergi
           </p>
+          <p className="text-xs font-semibold text-slate-500">Tip: J = județ, N = național</p>
           <button
             type="submit"
             className="h-10 rounded-xl border border-rose-200 bg-rose-50 px-4 text-sm font-semibold text-rose-700 transition hover:border-rose-300 hover:bg-rose-100"
@@ -187,6 +190,7 @@ export default async function AdminCereriPage({ searchParams }: AdminCereriPageP
                 <th className="px-4 py-4 font-medium">Selectează</th>
                 <th className="px-4 py-4 font-medium">Data și ora</th>
                 <th className="px-4 py-4 font-medium">Nume</th>
+                <th className="px-4 py-4 font-medium">Tip</th>
                 <th className="px-4 py-4 font-medium">Mesaj</th>
                 <th className="px-4 py-4 font-medium">Telefon</th>
               </tr>
@@ -205,13 +209,24 @@ export default async function AdminCereriPage({ searchParams }: AdminCereriPageP
                     </td>
                     <td className="px-4 py-4 text-slate-700">{formatDate(lead.createdAt)}</td>
                     <td className="px-4 py-4 font-semibold text-slate-900">{lead.fullName}</td>
+                    <td className="px-4 py-4 text-slate-700">
+                      {lead.countyText === "National" || !lead.countyId ? (
+                        <span className="inline-flex min-w-6 items-center justify-center rounded-full bg-indigo-100 px-2 py-1 text-xs font-bold text-indigo-700">
+                          N
+                        </span>
+                      ) : (
+                        <span className="inline-flex min-w-6 items-center justify-center rounded-full bg-emerald-100 px-2 py-1 text-xs font-bold text-emerald-700">
+                          J
+                        </span>
+                      )}
+                    </td>
                     <td className="px-4 py-4 text-slate-700">{lead.description}</td>
                     <td className="px-4 py-4 text-slate-700">{lead.phone}</td>
                   </tr>
                 ))
               ) : (
                 <tr>
-                  <td colSpan={5} className="px-4 py-10 text-center text-sm text-slate-500">
+                  <td colSpan={6} className="px-4 py-10 text-center text-sm text-slate-500">
                     Nu există cereri înregistrate încă.
                   </td>
                 </tr>

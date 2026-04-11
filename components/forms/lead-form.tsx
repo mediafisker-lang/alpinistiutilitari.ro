@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useEffect, useMemo, useRef } from "react";
+import { useActionState, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { submitLeadAction, type LeadFormState } from "@/lib/actions/leads";
 import { Button } from "@/components/ui/button";
@@ -31,8 +31,6 @@ type LeadFormProps = {
 
 export function LeadForm({
   companyId,
-  selectableCompanies = [],
-  selectedCompanyIds = [],
   serviceId,
   countyId,
   countyName,
@@ -56,8 +54,15 @@ export function LeadForm({
   const defaultServiceText = useMemo(() => {
     return services.find((item) => item.id === serviceId)?.label ?? "";
   }, [serviceId, services]);
+  const [distributionScope, setDistributionScope] = useState<"judet" | "national">("judet");
+  const [selectedCountyId, setSelectedCountyId] = useState(countyId ?? "");
 
   const isCompact = variant === "compact";
+  const isNational = distributionScope === "national";
+
+  const selectedCountyLabel = useMemo(() => {
+    return counties.find((item) => item.id === selectedCountyId)?.label ?? "";
+  }, [counties, selectedCountyId]);
 
   return (
     <form
@@ -83,6 +88,8 @@ export function LeadForm({
       <input type="hidden" name="address" value="Nespecificata in formular" />
       <input type="hidden" name="serviceId" value={serviceId ?? ""} />
       <input type="hidden" name="serviceText" value={defaultServiceText} />
+      <input type="hidden" name="distributionScope" value={distributionScope} />
+      <input type="hidden" name="countyText" value={isNational ? "National" : selectedCountyLabel || countyName || ""} />
 
       <div className="grid gap-4 sm:grid-cols-2">
         <Input name="fullName" placeholder="Nume" required className={isCompact ? "h-11 rounded-xl" : undefined} />
@@ -90,23 +97,71 @@ export function LeadForm({
       </div>
 
       <div className="space-y-2">
+        <p className={isCompact ? "text-xs font-semibold uppercase tracking-[0.18em] text-slate-500" : "text-sm font-medium text-slate-700"}>
+          Unde trimit cererea
+        </p>
+        <div className="grid grid-cols-2 gap-2">
+          <label className={[
+            "flex cursor-pointer items-center justify-center rounded-xl border px-3 py-2 text-sm font-semibold transition",
+            distributionScope === "judet"
+              ? "border-sky-300 bg-sky-50 text-sky-800"
+              : "border-slate-200 bg-white text-slate-700 hover:border-slate-300",
+          ].join(" ")}>
+            <input
+              type="radio"
+              name="distributionScopeChoice"
+              value="judet"
+              checked={distributionScope === "judet"}
+              onChange={() => setDistributionScope("judet")}
+              className="sr-only"
+            />
+            Trimitere în județ
+          </label>
+          <label className={[
+            "flex cursor-pointer items-center justify-center rounded-xl border px-3 py-2 text-sm font-semibold transition",
+            distributionScope === "national"
+              ? "border-sky-300 bg-sky-50 text-sky-800"
+              : "border-slate-200 bg-white text-slate-700 hover:border-slate-300",
+          ].join(" ")}>
+            <input
+              type="radio"
+              name="distributionScopeChoice"
+              value="national"
+              checked={distributionScope === "national"}
+              onChange={() => {
+                setDistributionScope("national");
+                setSelectedCountyId("");
+              }}
+              className="sr-only"
+            />
+            Trimitere în țară
+          </label>
+        </div>
+      </div>
+
+      <div className="space-y-2">
         <label className={isCompact ? "text-xs font-semibold uppercase tracking-[0.18em] text-slate-500" : "text-sm font-medium text-slate-700"}>Judet</label>
         <select
           name="countyId"
-          defaultValue={countyId ?? ""}
+          value={selectedCountyId}
+          onChange={(event) => setSelectedCountyId(event.target.value)}
+          disabled={isNational}
+          required={!isNational}
           className={[
-            "w-full border border-slate-200 bg-white px-4 text-sm outline-none focus:border-sky-300",
+            "w-full border border-slate-200 bg-white px-4 text-sm text-slate-900 outline-none focus:border-sky-300 disabled:cursor-not-allowed disabled:bg-slate-100 disabled:text-slate-400",
             isCompact ? "h-11 rounded-xl" : "h-12 rounded-2xl",
           ].join(" ")}
         >
-          <option value="">Selecteaza judet</option>
+          <option value="" className="text-slate-900">Selecteaza judet</option>
           {counties.map((county) => (
-            <option key={county.id ?? county.label} value={county.id}>
+            <option key={county.id ?? county.label} value={county.id} className="text-slate-900">
               {county.label}
             </option>
           ))}
         </select>
-        <input type="hidden" name="countyText" value={countyName ?? ""} />
+        {isNational ? (
+          <p className="text-xs text-slate-500">În modul „Trimitere în țară”, cererea merge la nivel național.</p>
+        ) : null}
       </div>
 
       <Textarea

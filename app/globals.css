@@ -38,6 +38,11 @@ a {
   text-decoration: none;
 }
 
+select,
+option {
+  color: #0f172a;
+}
+
 a[href*="/cere-oferta"],
 a[href*="/cere-oferta"] * {
   cursor: pointer;

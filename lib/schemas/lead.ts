@@ -12,6 +12,7 @@ export const leadRequestSchema = z.object({
   address: z.string().trim().optional(),
   serviceId: z.string().optional(),
   serviceText: z.string().trim().optional(),
+  distributionScope: z.enum(["judet", "national"]).default("judet"),
   description: z.string().trim().min(1, "Completează mesajul."),
   urgency: z.enum(["normal", "urgent"]).default("normal"),
   gdprAccepted: z.literal("on").optional().default("on"),

@@ -2,7 +2,6 @@ import Image from "next/image";
 import Link from "next/link";
 import {
   ArrowRight,
-  ArrowUpRight,
   Building2,
   CheckCircle2,
   Clock3,
@@ -78,19 +77,6 @@ export default async function HomePage() {
     { href: "#cerere", label: "Cerere" },
   ];
 
-  const supportSites = [
-    {
-      href: "https://www.expertcopaci.ro",
-      label: "expertcopaci.ro",
-      description: "Toaletări și tăieri de copaci în zone dificile.",
-    },
-    {
-      href: "https://www.dubamarfa.ro",
-      label: "dubamarfa.ro",
-      description: "Transport rapid pentru materiale, moloz și echipamente.",
-    },
-  ];
-
   return (
     <div className="pb-16">
       <section className="mx-auto max-w-7xl px-4 py-5 sm:px-6 lg:px-8 lg:py-8">
@@ -124,12 +110,10 @@ export default async function HomePage() {
                   Interfață nouă, clară și rapidă
                 </p>
                 <h1 className="font-display max-w-4xl text-4xl font-black tracking-tight text-white sm:text-5xl lg:text-6xl">
-                  Trimiți o cerere pentru servicii de alpinism direct către toate firmele din județul tău pentru ofertă!
+                  Trimite cererea ta direct către firmele din judet sau tara!
                 </h1>
                 <p className="max-w-3xl text-base leading-8 text-sky-50/88 sm:text-lg">
-                  Pagina principală este acum gândită mai aproape de logica unui marketplace
-                  modern: ofertă clară din primul ecran, navigare rapidă pe servicii și județe,
-                  plus un flux simplu de cerere pentru mobil și desktop.
+                  Pagina oficiala AlpinistiROmania, firmele inscrise primesc cererea ta si iti raspund direct!
                 </p>
               </div>
 
@@ -316,77 +300,6 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
-        <div className="grid gap-6 lg:grid-cols-[1.08fr_0.92fr]">
-          <div className="rounded-[2rem] border border-slate-200/80 bg-white p-6 shadow-sm shadow-slate-950/5 sm:p-8">
-            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#0063f7]">
-              Gândit pentru mobil și desktop
-            </p>
-            <h2 className="font-display mt-3 text-3xl font-black tracking-tight text-slate-950 sm:text-4xl">
-              Informația importantă e acum la primul scroll: cerere, servicii, acoperire și firme.
-            </h2>
-            <p className="mt-4 max-w-3xl text-base leading-8 text-slate-600">
-              Am reorganizat homepage-ul în jurul intenției de cumpărare: utilizatorul vede rapid
-              ce poate cere, unde găsește executanți și cum trimite o solicitare completă.
-            </p>
-            <div className="mt-6 grid gap-4 sm:grid-cols-3">
-              {[
-                {
-                  title: "Structură mai clară",
-                  text: "Secțiuni ancorate și CTA-uri vizibile din primul ecran.",
-                },
-                {
-                  title: "SEO mai solid",
-                  text: "Ancore interne, metadate complete și imagini sociale dedicate.",
-                },
-                {
-                  title: "Navigare mai bună",
-                  text: "Meniu mobil real și evidențiere rapidă pentru acțiunile importante.",
-                },
-              ].map((item) => (
-                <div
-                  key={item.title}
-                  className="rounded-[1.6rem] border border-slate-200 bg-slate-50/90 p-4"
-                >
-                  <p className="text-sm font-semibold text-slate-950">{item.title}</p>
-                  <p className="mt-2 text-sm leading-6 text-slate-600">{item.text}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="rounded-[2rem] border border-slate-200/80 bg-[linear-gradient(135deg,#ffffff,#f5f9ff)] p-6 shadow-sm shadow-slate-950/5 sm:p-8">
-            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#e31e24]">
-              Recomandări utile
-            </p>
-            <h2 className="mt-3 text-2xl font-bold text-slate-950">
-              Resurse conexe care completează lucrările la înălțime.
-            </h2>
-            <div className="mt-5 space-y-3">
-              {supportSites.map((site) => (
-                <a
-                  key={site.href}
-                  href={site.href}
-                  target="_blank"
-                  rel="noopener noreferrer sponsored"
-                  className="flex items-start justify-between gap-4 rounded-[1.6rem] border border-slate-200 bg-white px-5 py-4 transition hover:border-[#0063f7]/30 hover:shadow-lg hover:shadow-[#0063f7]/8"
-                >
-                  <div>
-                    <p className="text-sm font-bold text-slate-950">{site.label}</p>
-                    <p className="mt-1 text-sm leading-6 text-slate-600">{site.description}</p>
-                  </div>
-                  <ArrowUpRight className="mt-1 size-4 shrink-0 text-[#0063f7]" />
-                </a>
-              ))}
-            </div>
-            <p className="mt-5 text-sm leading-7 text-slate-600">
-              Linkurile sunt integrate concis, ca recomandări contextuale pentru utilizatorii care
-              au nevoie și de servicii complementare.
-            </p>
-          </div>
-        </div>
-      </section>
-
       <section id="judete" className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
         <div className="grid gap-6 lg:grid-cols-[1.02fr_0.98fr]">
           <div className="rounded-[2rem] border border-slate-200/80 bg-white p-6 shadow-sm shadow-slate-950/5 sm:p-8">
@@ -410,7 +323,7 @@ export default async function HomePage() {
               </p>
               <div className="mt-5 space-y-3">
                 {[
-                  "Alegi tipul lucrării și județul direct din formular sau din paginile locale.",
+                  "Alegi trimitere în județ sau trimitere în toată țara direct din formular.",
                   "Vezi servicii, firme recomandate și conținut util fără să părăsești homepage-ul.",
                   "Trimiți cererea completă, iar selecția executanților se face intern și local.",
                 ].map((item, index) => (
@@ -420,24 +333,6 @@ export default async function HomePage() {
                     </div>
                     <p className="text-sm leading-7 text-slate-600">{item}</p>
                   </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="rounded-[2rem] bg-[linear-gradient(135deg,#07152e,#0a3c9e_65%,#0063f7)] p-6 text-white shadow-lg shadow-[#0063f7]/12 sm:p-8">
-              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-sky-100/84">
-                Ce contează pentru conversie
-              </p>
-              <div className="mt-5 space-y-3 text-sm leading-7 text-white/88">
-                {[
-                  "Cererea principală rămâne mereu aproape de partea de sus a paginii.",
-                  "Meniul mobil deschide rapid toate secțiunile și acțiunea principală.",
-                  "Designul folosește accente de albastru și roșu, inspirate din logica vizuală eMAG.",
-                ].map((item) => (
-                  <p key={item} className="flex items-start gap-3">
-                    <CheckCircle2 className="mt-0.5 size-5 shrink-0 text-sky-200" />
-                    <span>{item}</span>
-                  </p>
                 ))}
               </div>
             </div>

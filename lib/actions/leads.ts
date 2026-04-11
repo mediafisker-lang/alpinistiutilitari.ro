@@ -26,6 +26,7 @@ export async function submitLeadAction(
     address: formData.get("address")?.toString(),
     serviceId: formData.get("serviceId")?.toString(),
     serviceText: formData.get("serviceText")?.toString(),
+    distributionScope: formData.get("distributionScope")?.toString(),
     description: formData.get("description")?.toString(),
     urgency: formData.get("urgency")?.toString(),
     gdprAccepted: formData.get("gdprAccepted")?.toString() ?? "on",
@@ -56,8 +57,9 @@ export async function submitLeadAction(
     const cityText = parsed.data.cityText?.trim() || city?.name;
     const serviceText = parsed.data.serviceText?.trim() || service?.name;
     const addressText = parsed.data.address?.trim() || "Nespecificata in formular";
+    const isNational = parsed.data.distributionScope === "national";
 
-    if (!countyText) {
+    if (!isNational && !countyText) {
       return {
         success: false,
         message: "Te rugam sa selectezi judetul.",
@@ -70,10 +72,10 @@ export async function submitLeadAction(
         fullName: parsed.data.fullName,
         phone: parsed.data.phone,
         email: parsed.data.email || undefined,
-        countyId: parsed.data.countyId || undefined,
-        countyText,
-        cityId: parsed.data.cityId || undefined,
-        cityText,
+        countyId: isNational ? undefined : parsed.data.countyId || undefined,
+        countyText: isNational ? "National" : countyText,
+        cityId: isNational ? undefined : parsed.data.cityId || undefined,
+        cityText: isNational ? "Toata tara" : cityText,
         address: addressText,
         serviceId: parsed.data.serviceId || undefined,
         serviceText,
