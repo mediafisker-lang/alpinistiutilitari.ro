@@ -1,96 +1,137 @@
 import type { Metadata } from "next";
-import { absoluteUrl, getSiteUrl } from "@/lib/utils";
 
-const DEFAULT_SOCIAL_IMAGE = "/alpinisti_utilitari_1.jpg";
-const DEFAULT_SOCIAL_IMAGE_ALT =
-  "AlpinistiUtilitari.ro - platforma de firme pentru lucrari la inaltime";
+export const siteUrl = "https://cortinanorth.ro";
+export const siteName = "Cortina North";
 
-function resolveUrl(value: string) {
-  if (/^https?:\/\//i.test(value)) {
-    return value;
-  }
+export const defaultTitle =
+  "Cortina North Pipera | Comunitate, sesizari si vot";
 
-  return absoluteUrl(value);
+export const defaultDescription =
+  "Portalul comunitatii Cortina North Pipera, Ilfov: sesizari, vot, stadiu asociatie si acces rapid la grupuri de comunicare pentru rezidenti.";
+
+export const defaultKeywords = [
+  "Cortina North",
+  "cortinanorth",
+  "complex Cortina",
+  "complex Pipera",
+  "apartamente Pipera",
+  "complex de lux",
+  "Cortina SPA",
+  "Cortina wellness",
+  "Cortina welleness",
+  "Cortina North Bucuresti",
+  "Cortina North Ilfov",
+  "Cortina North comunitate",
+  "Cortina North asociatie",
+  "asociatie proprietari Cortina North",
+  "sesizari Cortina North",
+  "vot Cortina North",
+  "stadiu asociatie Cortina North",
+  "comunitate rezidenti Bucuresti",
+  "comunitate rezidenti Ilfov",
+  "portal rezidenti Cortina North",
+  "grup WhatsApp Cortina North",
+  "grup Facebook Cortina North",
+];
+
+const defaultSocialImage = "/images/cortina/cortina-north-pipera-hero.webp";
+
+function toAbsoluteUrl(path = "/") {
+  return new URL(path, siteUrl).toString();
 }
 
-type MetadataInput = {
-  title: string;
-  description: string;
-  path?: string;
-  noIndex?: boolean;
-  image?: string;
-};
+function resolveImageUrl(image?: string) {
+  if (!image) {
+    return defaultSocialImage;
+  }
+
+  if (/^https?:\/\//i.test(image)) {
+    return image;
+  }
+
+  return toAbsoluteUrl(image.startsWith("/") ? image : `/${image}`);
+}
 
 export function buildMetadata({
   title,
   description,
-  path = "",
+  path = "/",
+  keywords = [],
   noIndex = false,
   image,
-}: MetadataInput): Metadata {
-  const canonical = absoluteUrl(path);
-  const socialImageUrl = resolveUrl(image ?? DEFAULT_SOCIAL_IMAGE);
+}: {
+  title?: string;
+  description?: string;
+  path?: string;
+  keywords?: string[];
+  noIndex?: boolean;
+  image?: string;
+}): Metadata {
+  const resolvedTitle = title ? `${title} | ${siteName}` : defaultTitle;
+  const resolvedDescription = description ?? defaultDescription;
+  const canonicalUrl = toAbsoluteUrl(path);
+  const socialImage = resolveImageUrl(image);
 
   return {
-    metadataBase: new URL(getSiteUrl()),
-    applicationName: "AlpinistiUtilitari.ro",
-    title,
-    description,
-    keywords: [
-      "alpinism utilitar",
-      "alpinisti utilitari",
-      "lucrari la inaltime",
-      "firme alpinism utilitar",
-      "servicii la inaltime Romania",
-    ],
-    category: "business",
-    referrer: "origin-when-cross-origin",
-    authors: [{ name: "AlpinistiUtilitari.ro" }],
-    creator: "AlpinistiUtilitari.ro",
-    publisher: "AlpinistiUtilitari.ro",
+    metadataBase: new URL(siteUrl),
+    title: resolvedTitle,
+    description: resolvedDescription,
     alternates: {
-      canonical,
+      canonical: canonicalUrl,
       languages: {
-        "ro-RO": canonical,
-        "x-default": canonical,
+        "ro-RO": canonicalUrl,
+        "x-default": canonicalUrl,
       },
     },
     openGraph: {
-      title,
-      description,
-      url: canonical,
-      type: "website",
-      siteName: "AlpinistiUtilitari.ro",
+      title: resolvedTitle,
+      description: resolvedDescription,
+      url: canonicalUrl,
+      siteName,
       locale: "ro_RO",
+      type: "website",
       images: [
         {
-          url: socialImageUrl,
-          width: 1200,
-          height: 630,
-          alt: DEFAULT_SOCIAL_IMAGE_ALT,
+          url: socialImage,
+          alt: "Imagine reprezentativa",
         },
       ],
     },
     twitter: {
       card: "summary_large_image",
-      title,
-      description,
-      images: [
-        {
-          url: socialImageUrl,
-          alt: DEFAULT_SOCIAL_IMAGE_ALT,
-        },
-      ],
+      title: resolvedTitle,
+      description: resolvedDescription,
+      images: [socialImage],
     },
-    other: {
-      "content-language": "ro",
+    icons: {
+      icon: [{ url: "/icon.svg", type: "image/svg+xml" }],
+      shortcut: ["/icon.svg"],
+      apple: [{ url: "/icon.svg" }],
     },
     robots: noIndex
       ? {
           index: false,
           follow: false,
+          googleBot: {
+            index: false,
+            follow: false,
+          },
         }
-      : undefined,
+      : {
+          index: true,
+          follow: true,
+          googleBot: {
+            index: true,
+            follow: true,
+            "max-image-preview": "large",
+            "max-snippet": -1,
+            "max-video-preview": -1,
+          },
+        },
+    category: "community",
+    other: {
+      "x-seo-keyphrases": [...defaultKeywords, ...keywords].join(", "),
+    },
   };
 }
 
@@ -98,27 +139,24 @@ export function buildOrganizationJsonLd() {
   return {
     "@context": "https://schema.org",
     "@type": "Organization",
-    name: "AlpinistiUtilitari.ro",
-    url: absoluteUrl(),
-    description:
-      "Platforma nationala pentru cautare rapida de firme de alpinism utilitar in Romania.",
+    name: siteName,
+    url: siteUrl,
+    description: defaultDescription,
     areaServed: "Romania",
   };
 }
 
-export function buildBreadcrumbJsonLd(
-  items: Array<{ label: string; href?: string }>,
-) {
-    return {
-      "@context": "https://schema.org",
-      "@type": "BreadcrumbList",
-      itemListElement: items.map((item, index) => ({
-        "@type": "ListItem",
-        position: index + 1,
-        name: item.label,
-        item: item.href ? absoluteUrl(item.href) : undefined,
-      })),
-    };
+export function buildBreadcrumbJsonLd(items: Array<{ label: string; href?: string }>) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: items.map((item, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: item.label,
+      item: item.href ? toAbsoluteUrl(item.href) : undefined,
+    })),
+  };
 }
 
 export function buildCompanyJsonLd(company: {
@@ -140,7 +178,7 @@ export function buildCompanyJsonLd(company: {
     "@type": "LocalBusiness",
     name: company.name,
     description: company.description,
-    url: absoluteUrl(company.path),
+    url: toAbsoluteUrl(company.path),
     telephone: company.phone ?? undefined,
     email: company.email ?? undefined,
     sameAs: company.website ?? undefined,
@@ -181,15 +219,15 @@ export function buildArticleJsonLd(article: {
     headline: article.title,
     description: article.description,
     datePublished: new Date(article.publishedAt).toISOString(),
-    url: absoluteUrl(article.path),
-    image: article.image ? [absoluteUrl(article.image)] : undefined,
+    url: toAbsoluteUrl(article.path),
+    image: article.image ? [resolveImageUrl(article.image)] : undefined,
     author: {
       "@type": "Organization",
-      name: "AlpinistiUtilitari.ro",
+      name: siteName,
     },
     publisher: {
       "@type": "Organization",
-      name: "AlpinistiUtilitari.ro",
+      name: siteName,
     },
   };
 }
@@ -220,15 +258,15 @@ export function buildServiceJsonLd(input: {
     "@type": "Service",
     name: input.name,
     description: input.description,
-    url: absoluteUrl(input.path),
+    url: toAbsoluteUrl(input.path),
     areaServed: {
       "@type": "Place",
       name: input.areaServed,
     },
     provider: {
       "@type": "Organization",
-      name: "AlpinistiUtilitari.ro",
-      url: absoluteUrl(),
+      name: siteName,
+      url: siteUrl,
     },
   };
 }
