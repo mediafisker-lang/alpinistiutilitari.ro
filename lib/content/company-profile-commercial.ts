@@ -319,7 +319,7 @@ function buildFaq(company: CompanyDetail, zones: string[], serviceNames: string[
     {
       question: "Cat dureaza raspunsul la cerere?",
       answer:
-        "Raspunsul initial este de obicei rapid dupa validarea interna a cererii, mai ales daca ai inclus poze, zona si nivelul de urgenta.",
+        "Răspunsul inițial este de obicei rapid după completarea cererii cu zona și nivelul de urgență. Pozele pot fi trimise separat prin butonul WhatsApp de suport.",
     },
   ];
 }

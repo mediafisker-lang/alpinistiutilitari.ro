@@ -183,7 +183,7 @@ export default async function CityPage({ params }: Props) {
         <CTASection
           eyebrow="Cerere locală"
           title={`Ai o lucrare în ${city.name}? Trimite-o și o analizăm manual.`}
-          description={`Pentru ${city.name} și împrejurimi poți încărca poze, adresa lucrării și nivelul de urgență. Cererea intră în platformă și este evaluată înainte de contactarea executanților.`}
+          description={`Pentru ${city.name} și împrejurimi completezi în formular adresa lucrării și nivelul de urgență, iar pozele le poți trimite prin butonul WhatsApp de suport. Cererea intră apoi în platformă pentru firmele interesate.`}
           primaryHref="/cere-oferta"
           primaryLabel="Trimite cerere"
           secondaryHref={`/${city.county.slug}`}

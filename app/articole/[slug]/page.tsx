@@ -1,5 +1,7 @@
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import { buildArticleJsonLd, buildBreadcrumbJsonLd, buildMetadata } from "@/lib/seo";
+import { getArticleCoverUrl } from "@/lib/article-cover";
 import { getArticle } from "@/lib/data/queries";
 import { Breadcrumbs } from "@/components/site/breadcrumbs";
 
@@ -22,7 +24,7 @@ export async function generateMetadata({ params }: Props) {
     title: article.seoTitle ?? article.title,
     description: article.seoDescription ?? article.excerpt,
     path: `/blog/${article.slug}`,
-    image: article.coverImageUrl ?? undefined,
+    image: getArticleCoverUrl(article.slug),
   });
 }
 
@@ -42,7 +44,7 @@ export default async function ArticlePage({ params }: Props) {
     description: article.excerpt,
     path: `/blog/${article.slug}`,
     publishedAt: article.publishedAt,
-    image: article.coverImageUrl ?? undefined,
+    image: getArticleCoverUrl(article.slug),
   });
   const breadcrumbJsonLd = buildBreadcrumbJsonLd(breadcrumbItems);
   const contentBlocks = article.content.split("\n\n").filter(Boolean);
@@ -53,12 +55,18 @@ export default async function ArticlePage({ params }: Props) {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
       <Breadcrumbs items={breadcrumbItems} />
       <div className="mt-6 rounded-[2rem] border border-slate-200 bg-white p-8 shadow-sm shadow-slate-950/5">
-        {article.coverImageUrl ? (
-          <div className="overflow-hidden rounded-[1.75rem] border border-slate-200 bg-slate-50">
-            <img src={article.coverImageUrl} alt={article.title} className="h-auto w-full object-cover" />
-          </div>
-        ) : null}
-        <h1 className="mt-3 text-4xl font-black tracking-tight text-slate-950">
+        <div className="aspect-[16/9] overflow-hidden rounded-[1.75rem] border border-slate-200 bg-slate-50">
+          <Image
+            src={getArticleCoverUrl(article.slug)}
+            alt={article.title}
+            className="h-full w-full object-cover"
+            width="1200"
+            height="675"
+            sizes="(max-width: 1024px) 100vw, 960px"
+            priority
+          />
+        </div>
+        <h1 className="mt-6 break-words text-3xl font-black leading-tight tracking-tight text-slate-950 sm:text-4xl">
           {article.title}
         </h1>
         <p className="mt-4 text-lg leading-8 text-slate-600">{article.excerpt}</p>

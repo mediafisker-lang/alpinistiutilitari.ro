@@ -17,7 +17,7 @@ export default async function HowItWorksPage() {
     {
       title: "Completezi formularul",
       description:
-        "Alegi județul și tipul lucrării, adaugi detalii utile și poze dacă ai.",
+        "Alegi județul și tipul lucrării, adaugi detaliile utile, iar pozele le poți trimite prin butonul WhatsApp de suport.",
     },
     {
       title: "Cererea intră în platformă",
@@ -65,7 +65,7 @@ export default async function HowItWorksPage() {
             Articole utile
           </p>
           <h2 className="mt-2 text-3xl font-black tracking-tight text-slate-950">
-            Toate ghidurile din blog, într-un singur loc
+            Mici ghiduri pentru ultimele servicii contractate prin interfață
           </h2>
           <p className="mt-3 text-base leading-7 text-slate-600">
             Aici ai toate articolele publicate, ca să poți pregăti corect cererea și să compari mai

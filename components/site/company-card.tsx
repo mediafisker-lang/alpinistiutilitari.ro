@@ -81,7 +81,7 @@ export function CompanyCard({ company, localBadge, areaBadge }: CompanyCardProps
         {company.phone ? (
           <p className="flex items-center gap-2">
             <Phone className="size-4 text-sky-700" />
-            {company.phone}
+            Disponibil
           </p>
         ) : null}
         {company.website ? (

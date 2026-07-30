@@ -45,7 +45,9 @@ export function proxy(request: NextRequest) {
     return NextResponse.redirect(destination, 301);
   }
 
-  if (request.nextUrl.pathname.startsWith("/admin") && request.nextUrl.pathname !== "/admin/login") {
+  const isLegacyAdminRoute =
+    request.nextUrl.pathname === "/admin" || request.nextUrl.pathname.startsWith("/admin/");
+  if (isLegacyAdminRoute && request.nextUrl.pathname !== "/admin/login") {
     const token = request.cookies.get("au_admin_session")?.value;
     if (!token) {
       return NextResponse.redirect(new URL("/admin/login", request.url));

@@ -330,7 +330,7 @@ const countySeoOverrides: Record<string, CountySeoOverride> = {
         title: "Cum trimiti cererea corect",
         points: [
           "Descrii lucrarea, adresa aproximativa si termenul dorit.",
-          "Adaugi poze clare cu zona de interventie.",
+          "Trimiți poze clare cu zona de intervenție prin butonul WhatsApp de suport.",
           "Mentionezi daca ai nevoie de mai multe servicii in aceeasi lucrare.",
         ],
       },
@@ -1137,7 +1137,7 @@ export function getLocalLandingContent(context: LocalLandingContext): LandingCon
         points: [
           "Selectezi zona si tipul lucrarii.",
           "Descrii problema, adresa aproximativa si termenul dorit.",
-          "Atasezi poze relevante pentru evaluare mai rapida.",
+          "Trimiți poze relevante prin butonul WhatsApp de suport pentru o evaluare mai rapidă.",
         ],
       },
     ],

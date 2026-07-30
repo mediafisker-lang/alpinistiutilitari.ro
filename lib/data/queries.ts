@@ -1,4 +1,5 @@
 import { Prisma } from "@prisma/client";
+import { unstable_cache } from "next/cache";
 import { prisma } from "@/lib/db";
 import {
   filterCompaniesWithUtilityPortfolio,
@@ -289,7 +290,7 @@ function rankLocalServiceCompanies(
     .map((item) => item.company);
 }
 
-export async function getHomepageData(): Promise<HomepageData> {
+async function getHomepageDataUncached(): Promise<HomepageData> {
   try {
     const [featuredCompaniesRaw, counties, services, articles, statsRaw] = await Promise.all([
       prisma.company.findMany({
@@ -362,7 +363,13 @@ export async function getHomepageData(): Promise<HomepageData> {
   }
 }
 
-export async function getQuickSearchOptions(): Promise<QuickSearchOptions> {
+export const getHomepageData = unstable_cache(
+  getHomepageDataUncached,
+  ["public-homepage-data"],
+  { revalidate: 300, tags: ["public-homepage-data"] },
+);
+
+async function getQuickSearchOptionsUncached(): Promise<QuickSearchOptions> {
   try {
     const [counties, cities, services] = await Promise.all([
       prisma.county.findMany({ where: { isActive: true }, select: { id: true, name: true, slug: true }, orderBy: { name: "asc" } }),
@@ -422,6 +429,12 @@ export async function getQuickSearchOptions(): Promise<QuickSearchOptions> {
     };
   }
 }
+
+export const getQuickSearchOptions = unstable_cache(
+  getQuickSearchOptionsUncached,
+  ["public-quick-search-options"],
+  { revalidate: 900, tags: ["public-directory-options"] },
+);
 
 export async function getCompanies(filters?: {
   q?: string;
@@ -494,7 +507,103 @@ export async function getCompanies(filters?: {
   }
 }
 
-export async function getCounties(): Promise<CountyWithStats[]> {
+async function getCompaniesPageUncached(
+  filters: {
+    q?: string;
+    countySlug?: string;
+    citySlug?: string;
+    serviceSlug?: string;
+  } = {},
+  page = 1,
+  pageSize = 12,
+): Promise<{ companies: CompanyCardData[]; total: number; page: number; totalPages: number }> {
+  try {
+    const q = filters.q?.trim();
+    const where: Prisma.CompanyWhereInput = {
+      isPublished: true,
+      isActive: true,
+      verificationStatus: { not: "hidden" },
+      OR:
+        filters.countySlug || filters.citySlug
+          ? [
+              filters.citySlug ? { city: { slug: filters.citySlug } } : undefined,
+              filters.citySlug
+                ? { coverage: { some: { city: { slug: filters.citySlug } } } }
+                : undefined,
+              filters.countySlug ? { county: { slug: filters.countySlug } } : undefined,
+              filters.countySlug
+                ? { coverage: { some: { county: { slug: filters.countySlug } } } }
+                : undefined,
+            ].filter(Boolean) as Prisma.CompanyWhereInput[]
+          : undefined,
+      services: filters.serviceSlug
+        ? { some: { service: { slug: filters.serviceSlug } } }
+        : undefined,
+      AND: q
+        ? [
+            {
+              OR: [
+                { name: { contains: q, mode: "insensitive" } },
+                { descriptionShort: { contains: q, mode: "insensitive" } },
+                { descriptionLong: { contains: q, mode: "insensitive" } },
+                { county: { name: { contains: q, mode: "insensitive" } } },
+                { city: { name: { contains: q, mode: "insensitive" } } },
+                { services: { some: { service: { name: { contains: q, mode: "insensitive" } } } } },
+              ],
+            },
+          ]
+        : undefined,
+    };
+
+    const candidates = await prisma.company.findMany({
+      where,
+      select: companyPortfolioSelect,
+    });
+    const rankedCandidates = sortCompaniesForSeo(filterCompaniesWithUtilityPortfolio(candidates));
+    const total = rankedCandidates.length;
+    const totalPages = Math.max(1, Math.ceil(total / pageSize));
+    const safePage = Math.min(Math.max(1, page), totalPages);
+    const pageIds = rankedCandidates
+      .slice((safePage - 1) * pageSize, safePage * pageSize)
+      .map((company) => company.id);
+
+    if (!pageIds.length) {
+      return { companies: [], total, page: safePage, totalPages };
+    }
+
+    const pageCompanies = await prisma.company.findMany({
+      where: { id: { in: pageIds } },
+      include: companyInclude,
+    });
+    const companyById = new Map(pageCompanies.map((company) => [company.id, company]));
+    const companies = pageIds
+      .map((id) => companyById.get(id))
+      .filter((company): company is NonNullable<typeof company> => Boolean(company));
+
+    return { companies, total, page: safePage, totalPages };
+  } catch {
+    const companies = sortCompaniesForSeo(
+      filterCompaniesWithUtilityPortfolio(getFallbackCompanies() as CompanyCardData[]),
+    );
+    const total = companies.length;
+    const totalPages = Math.max(1, Math.ceil(total / pageSize));
+    const safePage = Math.min(Math.max(1, page), totalPages);
+    return {
+      companies: companies.slice((safePage - 1) * pageSize, safePage * pageSize),
+      total,
+      page: safePage,
+      totalPages,
+    };
+  }
+}
+
+export const getCompaniesPage = unstable_cache(
+  getCompaniesPageUncached,
+  ["public-companies-page"],
+  { revalidate: 300, tags: ["public-companies-directory"] },
+);
+
+async function getCountiesUncached(): Promise<CountyWithStats[]> {
   try {
     const counties = await prisma.county.findMany({
       where: { isActive: true },
@@ -518,6 +627,12 @@ export async function getCounties(): Promise<CountyWithStats[]> {
     return getFallbackCounties() as CountyWithStats[];
   }
 }
+
+export const getCounties = unstable_cache(
+  getCountiesUncached,
+  ["public-counties-directory"],
+  { revalidate: 300, tags: ["public-directory-options"] },
+);
 
 export async function getCounty(slug: string): Promise<CountyDetail | null> {
   try {
@@ -676,7 +791,7 @@ async function getSyntheticCity(countySlug: string, citySlug: string): Promise<C
   } as CityDetail;
 }
 
-export async function getServices(): Promise<ServiceWithStats[]> {
+async function getServicesUncached(): Promise<ServiceWithStats[]> {
   try {
     const services = await prisma.service.findMany({
       where: { isActive: true },
@@ -697,6 +812,12 @@ export async function getServices(): Promise<ServiceWithStats[]> {
     return getFallbackServices() as ServiceWithStats[];
   }
 }
+
+export const getServices = unstable_cache(
+  getServicesUncached,
+  ["public-services-directory"],
+  { revalidate: 900, tags: ["public-directory-options"] },
+);
 
 export async function getService(slug: string): Promise<ServiceDetail | null> {
   try {

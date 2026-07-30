@@ -15,7 +15,7 @@ export function WhatsAppFloat() {
       <span className="flex size-10 items-center justify-center rounded-full bg-white/15">
         <MessageCircleMore className="size-5" />
       </span>
-      <span className="hidden text-sm font-semibold sm:inline">WhatsApp 0799 102 030</span>
+      <span className="text-sm font-semibold">Online now! WhatsApp</span>
     </Link>
   );
 }

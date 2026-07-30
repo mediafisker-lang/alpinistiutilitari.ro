@@ -20,7 +20,7 @@ const openingVariants = [
 const selectionVariants = [
   "În cererea de ofertă merită să precizezi zona exactă, tipul suprafeței, dacă există acces din interior sau doar din exterior și dacă lucrarea se poate programa în afara orelor de trafic.",
   "Pentru o estimare mai bună, ajută să menționezi înălțimea aproximativă, suprafața, obstacolele din jur, eventualele restricții de acces și dacă este nevoie de protejarea unor zone sensibile.",
-  "Firmele pot răspunde mai repede când primesc poze clare, adresa aproximativă, descrierea problemei și detalii despre termenul în care vrei să fie făcută intervenția.",
+  "Firmele pot răspunde mai repede când completezi adresa aproximativă, descrierea problemei și termenul dorit, iar pozele clare le trimiți prin butonul WhatsApp de suport.",
 ];
 
 const processVariants = [
@@ -90,7 +90,7 @@ const supportSections: Record<
       "când există ramuri rupte sau coroane care pun în pericol circulația",
     ],
     checklist: [
-      "poze clare cu arborele și zona din jur",
+      "poze clare cu arborele și zona din jur, trimise prin butonul WhatsApp de suport",
       "dacă sunt cabluri, acoperișuri, garduri sau alte obstacole aproape",
       "dacă este nevoie de toaletare, îndepărtare totală sau doar reducerea coronamentului",
     ],
@@ -108,13 +108,13 @@ function defaultSupport(serviceName: string) {
       "când vrei o echipă care poate lucra controlat pe verticală și în spații sensibile",
     ],
     checklist: [
-      "adresa aproximativă și fotografii clare din zona lucrării",
+      "adresa aproximativă în formular și fotografii clare trimise prin butonul WhatsApp de suport",
       "suprafața, înălțimea și principalele obstacole din jur",
       "dacă lucrarea este urgentă sau poate fi programată într-un interval mai larg",
     ],
     faqQuestion: `Ce trebuie să trimiți într-o cerere pentru ${serviceName.toLowerCase()}?`,
     faqAnswer:
-      "Ajută să incluzi adresa aproximativă, poze, descrierea problemei, înălțimea estimată și orice restricții de acces sau program.",
+      "Ajută să incluzi în formular adresa aproximativă, descrierea problemei, înălțimea estimată și restricțiile de acces, iar pozele să le trimiți prin butonul WhatsApp de suport.",
   };
 }
 
@@ -129,7 +129,7 @@ export const serviceArticleSeeds: ArticleSeed[] = serviceCatalog.map((service, i
   const excerpt = `${service.name} explicat simplu: când merită cerut, ce informații să trimiți în ofertă și cum alegi o firmă de alpinism utilitar potrivită pentru lucrarea ta.`;
   const seoTitle = `${service.name} in Romania: ghid, pret si alegerea firmei potrivite`;
   const seoDescription = `Afla când ai nevoie de ${service.name.toLowerCase()}, cum pregătești cererea și ce verifici înainte să alegi o firmă pentru lucrarea la înălțime.`;
-  const coverImageUrl = `/blog-covers/${slug}`;
+  const coverImageUrl = getArticleCoverUrl(slug);
 
   const content = [
     `${service.name} ${opening}`,
@@ -150,7 +150,7 @@ export const serviceArticleSeeds: ArticleSeed[] = serviceCatalog.map((service, i
     `## Intrebare frecventa`,
     `${support.faqQuestion} ${support.faqAnswer}`,
     "## Concluzie",
-    `Dacă ai nevoie de ${service.name.toLowerCase()}, cel mai eficient este să trimiți o cerere clară, cu poze și adresa aproximativă. Astfel ajungi mai repede la firmele din zona ta și poți compara oferte reale pentru lucrarea respectivă.`,
+    `Dacă ai nevoie de ${service.name.toLowerCase()}, cel mai eficient este să trimiți o cerere clară cu adresa aproximativă, iar pozele să le trimiți prin butonul WhatsApp de suport. Astfel ajungi mai repede la firmele din zona ta și poți compara oferte reale pentru lucrarea respectivă.`,
   ].join("\n\n");
 
   return {
@@ -164,4 +164,4 @@ export const serviceArticleSeeds: ArticleSeed[] = serviceCatalog.map((service, i
     serviceSlug: service.slug,
   };
 });
-
+import { getArticleCoverUrl } from "@/lib/article-cover";

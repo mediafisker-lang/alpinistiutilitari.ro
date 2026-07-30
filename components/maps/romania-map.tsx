@@ -198,7 +198,9 @@ export function RomaniaMap({ counties }: RomaniaMapProps) {
     .filter((county): county is CountyWithStats => Boolean(county));
   const highlightedCountySlugs = new Set(strategicCounties.map((county) => county.slug));
   const [labelPositions, setLabelPositions] = useState<Record<string, LabelPosition>>({});
+  const [selectedCountySlug, setSelectedCountySlug] = useState<string | null>(null);
   const pathRefs = useRef<Record<string, SVGPathElement | null>>({});
+  const selectedCounty = visibleCounties.find((county) => county.slug === selectedCountySlug);
 
   useEffect(() => {
     const nextPositions: Record<string, LabelPosition> = {};
@@ -224,7 +226,7 @@ export function RomaniaMap({ counties }: RomaniaMapProps) {
             <p className="text-xs font-semibold uppercase tracking-[0.28em] text-sky-700">
               Harta rapida
             </p>
-            <h2 className="text-2xl font-black tracking-tight sm:text-3xl">
+            <h2 className="text-xl font-black leading-tight tracking-tight sm:text-2xl">
               Romania organizata pe judete
             </h2>
             <p className="max-w-2xl text-sm leading-7 text-slate-600">
@@ -235,7 +237,7 @@ export function RomaniaMap({ counties }: RomaniaMapProps) {
       </div>
 
       <div className="block p-3 sm:p-4">
-        <div className="relative rounded-[1.75rem] border border-slate-200 bg-[linear-gradient(180deg,#f8fbff,#eef6ff)] p-4 pb-20 sm:p-5 sm:pb-20">
+        <div className="rounded-[1.75rem] border border-slate-200 bg-[linear-gradient(180deg,#f8fbff,#eef6ff)] p-4 sm:p-5">
           <div className="mx-auto max-w-[960px]">
           <svg
             viewBox={`0 0 ${VIEWBOX_WIDTH} ${VIEWBOX_HEIGHT}`}
@@ -263,13 +265,10 @@ export function RomaniaMap({ counties }: RomaniaMapProps) {
               const isSmall = width < 72 || height < 44;
               const labelLines = getDisplayLabel(county, isSmall || isTiny);
               const topCities = (county.cities ?? []).slice(0, 3).map((city) => city.name).join(", ");
-              const tooltipWidth = Math.max(150, Math.min(210, county.name.length * 10 + 64));
               const labelX = labelPosition.x + (nudge.dx ?? 0);
               const labelY = labelPosition.y + (nudge.dy ?? 0);
               const countX = labelPosition.x + (nudge.countDx ?? nudge.dx ?? 0);
               const countY = labelPosition.y + (nudge.countDy ?? 0);
-              const tooltipX = labelPosition.x - tooltipWidth / 2 + (nudge.tooltipDx ?? 0);
-              const tooltipY = Math.max(12, labelPosition.y - 104 + (nudge.tooltipDy ?? 0));
               const isHighlighted = highlightedCountySlugs.has(county.slug);
               const fillColor = getCountyColorByCount(count);
               const labelFontSize = isTiny ? 7.2 : isSmall ? 8 : 9.6;
@@ -280,7 +279,16 @@ export function RomaniaMap({ counties }: RomaniaMapProps) {
               const showCountOnMap = !isTiny;
 
               return (
-                <a key={county.id} href={`/${county.slug}`} className="group">
+                <a
+                  key={county.id}
+                  href={`/${county.slug}`}
+                  className="group cursor-pointer"
+                  aria-label={`Selectează județul ${county.name}`}
+                  onClick={(event) => {
+                    event.preventDefault();
+                    setSelectedCountySlug(county.slug);
+                  }}
+                >
                   <title>{`${county.name} - ${count} firme${topCities ? ` - ${topCities}` : ""}`}</title>
                   <g
                     className="transition duration-200 ease-out group-hover:scale-[1.035] group-active:scale-[0.992]"
@@ -340,36 +348,13 @@ export function RomaniaMap({ counties }: RomaniaMapProps) {
                       </text>
                     ) : null}
                   </g>
-                  <foreignObject
-                    x={tooltipX}
-                    y={tooltipY}
-                    width={tooltipWidth}
-                    height="86"
-                    className="pointer-events-none hidden opacity-0 transition duration-200 lg:block group-hover:opacity-100"
-                  >
-                    <div className="rounded-2xl border border-sky-200 bg-white/95 px-3 py-2 text-center text-slate-950 shadow-2xl shadow-slate-300/60">
-                      <div className="text-xs font-bold uppercase tracking-[0.16em] text-sky-700">
-                        {county.name}
-                      </div>
-                      <div className="mt-1 text-sm font-semibold text-slate-950">{count} firme</div>
-                      {topCities ? (
-                        <div className="mt-1 text-[11px] leading-4 text-slate-600">
-                          {topCities}
-                        </div>
-                      ) : null}
-                    </div>
-                  </foreignObject>
                 </a>
               );
             })}
           </svg>
           </div>
 
-          <div className="absolute inset-x-4 bottom-4 flex flex-col gap-2 sm:inset-x-5 sm:bottom-5 lg:inset-x-auto lg:right-5 lg:max-w-[34rem] lg:items-end">
-            <div className="rounded-2xl border border-white/70 bg-white/85 px-3 py-2 text-center text-xs leading-5 text-slate-500 shadow-lg backdrop-blur lg:text-left">
-              Numerele din hartă folosesc aceeași bază de firme publicate și active.
-            </div>
-            <div className="flex flex-wrap items-center justify-center gap-2 rounded-2xl border border-white/70 bg-white/85 px-3 py-2 shadow-lg backdrop-blur lg:justify-end">
+          <div className="mt-4 flex flex-wrap items-center justify-center gap-2 rounded-2xl border border-white/70 bg-white/85 px-3 py-2 shadow-lg backdrop-blur">
               <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">
                 Legendă
               </span>
@@ -385,8 +370,33 @@ export function RomaniaMap({ counties }: RomaniaMapProps) {
                   <span className="text-xs font-medium text-slate-600">{item.label}</span>
                 </div>
               ))}
-            </div>
           </div>
+
+          {selectedCounty ? (
+            <div
+              className="mt-4 rounded-2xl border border-sky-200 bg-white p-4 shadow-lg sm:flex sm:items-center sm:justify-between sm:gap-5"
+              aria-live="polite"
+            >
+              <div>
+                <p className="text-xs font-bold uppercase tracking-[0.18em] text-sky-700">
+                  Județ selectat
+                </p>
+                <h3 className="mt-1 text-lg font-black text-slate-950">{selectedCounty.name}</h3>
+                <p className="mt-1 text-sm text-slate-600">
+                  {getCountyCount(selectedCounty)} firme disponibile
+                  {selectedCounty.cities?.length
+                    ? ` · ${selectedCounty.cities.slice(0, 3).map((city) => city.name).join(", ")}`
+                    : ""}
+                </p>
+              </div>
+              <a
+                href={`/${selectedCounty.slug}`}
+                className="mt-4 inline-flex min-h-11 items-center justify-center rounded-xl bg-[#F97316] px-5 py-2.5 text-sm font-bold text-white transition hover:bg-[#EA580C] sm:mt-0"
+              >
+                Vezi firmele din județ
+              </a>
+            </div>
+          ) : null}
         </div>
       </div>
 

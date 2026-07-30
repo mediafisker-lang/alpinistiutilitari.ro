@@ -1,7 +1,8 @@
 import { buildMetadata } from "@/lib/seo";
-import { getCompanies, getQuickSearchOptions } from "@/lib/data/queries";
+import { getCompaniesPage, getCompany, getQuickSearchOptions } from "@/lib/data/queries";
 import { Breadcrumbs } from "@/components/site/breadcrumbs";
 import { LeadForm } from "@/components/forms/lead-form";
+import { SupportContactStrip } from "@/components/site/support-contact-strip";
 
 export const metadata = buildMetadata({
   title: "Cere ofertă pentru alpinism utilitar în România",
@@ -16,10 +17,12 @@ type OfferPageProps = {
 
 export default async function OfferPage({ searchParams }: OfferPageProps) {
   const params = await searchParams;
-  const [options, companies] = await Promise.all([getQuickSearchOptions(), getCompanies()]);
-  const preselectedCompany = params.company
-    ? companies.find((company) => company.slug === params.company)
-    : undefined;
+  const [options, companyPage, preselectedCompany] = await Promise.all([
+    getQuickSearchOptions(),
+    getCompaniesPage({}, 1, 12),
+    params.company ? getCompany(params.company) : Promise.resolve(null),
+  ]);
+  const companies = companyPage.companies;
   const companySelections = companies.slice(0, 12).map((company) => ({
     id: company.id,
     label: `${company.name} · ${company.city?.name ?? "Localitate neprecizată"}, ${company.county?.name ?? "Județ neprecizat"}`,
@@ -58,6 +61,8 @@ export default async function OfferPage({ searchParams }: OfferPageProps) {
           </div>
         </div>
       </section>
+
+      <SupportContactStrip />
     </div>
   );
 }

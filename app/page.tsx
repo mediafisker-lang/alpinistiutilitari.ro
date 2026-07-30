@@ -15,13 +15,12 @@ import { RomaniaMap } from "@/components/maps/romania-map";
 import { CountyCard } from "@/components/site/county-card";
 import { ServiceCard } from "@/components/site/service-card";
 import { ArticleCard } from "@/components/site/article-card";
-import { CompanyCard } from "@/components/site/company-card";
 import { SeoLinkCloud } from "@/components/site/seo-link-cloud";
 import { LeadForm } from "@/components/forms/lead-form";
 import { Button } from "@/components/ui/button";
 import { FAQBlock } from "@/components/site/faq-block";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 300;
 
 export const metadata = buildMetadata({
   title: "Firme de alpinism utilitar in Romania",
@@ -370,7 +369,7 @@ export default async function HomePage() {
               Servicii populare
             </p>
             <h2 className="font-display mt-2 text-3xl font-black tracking-tight text-slate-950 sm:text-4xl">
-              Începe de la serviciul care te interesează
+              Servicii uzuale oferite de firmele listate
             </h2>
           </div>
           <Link href="/firme" className="text-sm font-semibold text-[#0063f7]">
@@ -396,7 +395,7 @@ export default async function HomePage() {
               Judete populare
             </p>
             <h2 className="font-display mt-2 text-3xl font-black tracking-tight text-slate-950 sm:text-4xl">
-              Navigare locală pentru căutări rapide în Google
+              Situația firmelor înscrise pe județe în România
             </h2>
           </div>
           <Link href="/judete" className="text-sm font-semibold text-[#0063f7]">
@@ -415,23 +414,6 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section id="firme-recomandate" className="mx-auto max-w-[1240px] px-4 py-8 sm:px-6 lg:px-8">
-        <div className="mb-8 flex items-end justify-between gap-4">
-          <div>
-            <p className="section-eyebrow">Firme recomandate</p>
-            <h2 className="section-title mt-2">Profiluri gata să primească solicitări</h2>
-          </div>
-          <Link href="/firme" className="text-sm font-bold text-[#176B87]">
-            Vezi toate firmele
-          </Link>
-        </div>
-        <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-          {featuredCompanies.slice(0, 3).map((company) => (
-            <CompanyCard key={company.id} company={company} />
-          ))}
-        </div>
-      </section>
-
       <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
         <div className="grid gap-6 lg:grid-cols-[1.05fr_0.95fr]">
           <div className="rounded-[2rem] bg-slate-950 p-8 text-white">
@@ -439,7 +421,7 @@ export default async function HomePage() {
               De ce funcționează bine
             </p>
             <h2 className="font-display mt-3 text-3xl font-black tracking-tight">
-              Structură gândită pentru conversie și SEO local.
+              Interfață rapidă, servicii clare, oferte corecte
             </h2>
             <div className="mt-6 space-y-4 text-sm leading-7 text-slate-300">
               {[
@@ -489,8 +471,8 @@ export default async function HomePage() {
       <section className="mx-auto max-w-7xl px-4 py-2 sm:px-6 lg:px-8">
         <SeoLinkCloud
           eyebrow="Căutări populare"
-          title="Combinații locale cu intenție comercială mare"
-          description="Aceste pagini sunt gândite pentru interogări de tip «serviciu + județ», foarte utile pentru lead-uri locale."
+          title="Ultimele căutări în website"
+          description="Servicii disponibile în județul tău, executate de firme locale."
           links={localDemandLinks}
         />
       </section>
@@ -531,7 +513,7 @@ export default async function HomePage() {
               Cerere finală
             </p>
             <h2 className="font-display text-3xl font-black tracking-tight text-slate-950 sm:text-4xl">
-              Completează lucrarea o singură dată și continuăm noi filtrarea.
+              Completează cererea și trimite direct către firmele interesate!
             </h2>
             <p className="text-base leading-8 text-slate-600">
               Formularul mare rămâne punctul principal de conversie. L-am păstrat și în partea de

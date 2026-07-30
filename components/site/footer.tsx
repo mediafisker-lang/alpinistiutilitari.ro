@@ -34,14 +34,14 @@ export async function SiteFooter() {
       <div className="mx-auto grid max-w-[1240px] gap-10 px-4 py-14 sm:px-6 lg:grid-cols-[1.2fr_0.8fr_0.9fr] lg:px-8">
         <div className="space-y-4">
           <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#7FC5D8]">
-            Lead generation pentru servicii la inaltime
+            Platformă pentru servicii cu alpiniști utilitari și firme specializate
           </p>
           <h2 className="max-w-2xl text-3xl font-bold text-white">
-            Platforma care ajuta clientii sa gaseasca rapid firme de alpinism utilitar in Romania.
+            Ajutăm clienții să își găsească oferta corectă pentru serviciile lor de alpinism utilitar.
           </h2>
           <p className="max-w-2xl text-sm leading-7 text-slate-300">
-            Structura SEO este gandita pe judete, orase, servicii, firme si articole.
-            Obiectivul principal este inregistrarea unei cereri clare in platforma, urmata de selectie manuala a executantilor potriviti.
+            Interfața este gândită pe județe, orașe, servicii, firme și articole.
+            Obiectivul principal este obținerea unui preț corect și execuția de calitate a lucrărilor la înălțime.
           </p>
           <a
             href="tel:+40799102030"

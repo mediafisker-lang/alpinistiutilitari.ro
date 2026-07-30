@@ -1,9 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import { Manrope } from "next/font/google";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
-import { SiteHeader } from "@/components/site/header";
-import { SiteFooter } from "@/components/site/footer";
-import { WhatsAppFloat } from "@/components/site/whatsapp-float";
+import { SiteShell } from "@/components/site/site-shell";
 import { PwaRegistrar } from "@/components/site/pwa-registrar";
 import {
   buildMetadata,
@@ -68,12 +67,8 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessJsonLd) }}
         />
         <PwaRegistrar />
-        <div className="flex min-h-screen flex-col">
-          <SiteHeader />
-          <main className="flex-1">{children}</main>
-          <SiteFooter />
-          <WhatsAppFloat />
-        </div>
+        <SiteShell>{children}</SiteShell>
+        <SpeedInsights />
       </body>
     </html>
   );

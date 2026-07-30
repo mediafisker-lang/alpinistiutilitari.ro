@@ -11,6 +11,7 @@ const links = [
   { href: "/firme", label: "FIRME" },
   { href: "/judete", label: "JUDETE" },
   { href: "/despre-noi", label: "DESPRE" },
+  { href: "/contact", label: "CONTACT" },
 ];
 
 const serviceMenuLinks = [
@@ -31,7 +32,10 @@ export function SiteHeader() {
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-2 text-xs font-semibold sm:px-6 lg:px-8">
           <div className="flex items-center gap-2">
             <Zap className="size-3.5" />
-            <span>Solicitări preluate rapid pentru lucrări la înălțime din toată România</span>
+            <span>
+              Cereri de lucrări la înălțime preluate rapid din toată România și trimise către
+              firmele de execuție corespunzătoare, pe județe.
+            </span>
           </div>
           <div className="hidden items-center gap-2 md:flex">
             <ShieldCheck className="size-3.5" />
