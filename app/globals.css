@@ -1,19 +1,29 @@
 @import "tailwindcss";
 
 :root {
-  --background: #eef4ff;
-  --foreground: #0f172a;
-  --brand-blue: #0063f7;
-  --brand-blue-dark: #0a3c9e;
-  --brand-red: #e31e24;
+  --background: #f5f7f9;
+  --foreground: #16202a;
+  --brand-navy: #102a43;
+  --brand-petrol: #176b87;
+  --brand-petrol-dark: #0f526a;
+  --brand-orange: #f97316;
+  --brand-orange-dark: #ea580c;
   --surface: #ffffff;
+  --surface-muted: #edf2f5;
+  --border: #dce4e9;
+  --radius-card: 16px;
+  --radius-control: 12px;
+  --shadow-card: 0 12px 32px rgba(16, 42, 67, 0.07);
+  --shadow-card-hover: 0 18px 44px rgba(16, 42, 67, 0.12);
+  --section-space: clamp(3rem, 6vw, 5.5rem);
+  --container: 1240px;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-sans);
-  --font-display: var(--font-display);
+  --font-display: var(--font-sans);
 }
 
 * {
@@ -25,12 +35,8 @@ html {
 }
 
 body {
-  background:
-    radial-gradient(circle at top center, rgba(0, 99, 247, 0.18), transparent 24rem),
-    radial-gradient(circle at 18% 12%, rgba(227, 30, 36, 0.1), transparent 18rem),
-    radial-gradient(circle at 84% 10%, rgba(0, 99, 247, 0.12), transparent 20rem),
-    linear-gradient(135deg, rgba(255, 255, 255, 0.88), rgba(240, 246, 255, 0.84)),
-    var(--background);
+  overflow-x: hidden;
+  background: var(--background);
   color: var(--foreground);
 }
 
@@ -40,7 +46,7 @@ a {
 
 select,
 option {
-  color: #0f172a;
+  color: var(--foreground);
 }
 
 a[href*="/cere-oferta"],
@@ -53,51 +59,74 @@ button[data-offer-cta="true"] {
 }
 
 .font-display {
-  font-family: var(--font-display), var(--font-sans), sans-serif;
+  font-family: var(--font-sans), sans-serif;
 }
 
-.animate-rise-in {
-  animation: rise-in 0.65s cubic-bezier(0.22, 1, 0.36, 1) both;
+.site-container {
+  width: min(calc(100% - 2rem), var(--container));
+  margin-inline: auto;
 }
 
-.animate-delay-1 {
-  animation-delay: 0.08s;
+.public-page {
+  color: var(--foreground);
 }
 
-.animate-delay-2 {
-  animation-delay: 0.16s;
+.public-page section {
+  scroll-margin-top: 7rem;
 }
 
-@keyframes rise-in {
-  from {
-    opacity: 0;
-    transform: translateY(18px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.section-shell {
+  padding-block: var(--section-space);
 }
 
-@keyframes offer-cta-pulse {
-  0%,
-  100% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.04);
-  }
+.surface-card {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  background: var(--surface);
+  box-shadow: var(--shadow-card);
+}
+
+.section-eyebrow {
+  color: var(--brand-petrol);
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.section-title {
+  color: var(--brand-navy);
+  font-size: clamp(1.75rem, 4vw, 2.6rem);
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 1.12;
+}
+
+main :is(.rounded-\[2rem\], .rounded-\[2\.4rem\], .rounded-\[2\.6rem\], .rounded-3xl) {
+  border-radius: var(--radius-card);
+}
+
+main :is(.shadow-sm, .shadow-xl) {
+  box-shadow: var(--shadow-card);
+}
+
+main :is(h1, h2, h3) {
+  color: var(--brand-navy);
+}
+
+.hero-shell :is(h1, h2, h3) {
+  color: white;
+}
+
+main :is(p, li) {
+  text-wrap: pretty;
 }
 
 @media (hover: hover) {
-  a[href*="/cere-oferta"]:hover,
-  a[href*="/cere-oferta"]:hover > * {
-    animation: offer-cta-pulse 0.9s ease-in-out infinite;
-  }
-
-  button[data-offer-cta="true"]:hover {
-    animation: offer-cta-pulse 0.9s ease-in-out infinite;
+  .ui-card-hover:hover {
+    transform: translateY(-3px);
+    border-color: rgba(23, 107, 135, 0.34);
+    box-shadow: var(--shadow-card-hover);
   }
 }
 
@@ -106,6 +135,20 @@ button[data-offer-cta="true"] {
   .animate-delay-1,
   .animate-delay-2 {
     animation: none;
+  }
+
+  main h1 {
+    font-size: clamp(2.1rem, 10vw, 2.5rem) !important;
+    line-height: 1.08 !important;
+  }
+
+  main section {
+    padding-inline: 1rem;
+  }
+
+  button,
+  a[class*="inline-flex"] {
+    min-height: 44px;
   }
 }
 

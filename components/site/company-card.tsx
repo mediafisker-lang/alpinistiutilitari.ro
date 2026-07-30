@@ -17,7 +17,7 @@ export function CompanyCard({ company, localBadge, areaBadge }: CompanyCardProps
   const isCountyPriority = areaBadge === "county";
 
   return (
-    <Card className="group flex h-full flex-col rounded-[2rem] border border-slate-200/90 bg-white p-6 shadow-sm shadow-slate-950/5 transition hover:-translate-y-1 hover:border-sky-200 hover:shadow-xl hover:shadow-sky-100/60">
+    <Card className="ui-card-hover group flex h-full flex-col rounded-2xl border border-[#DCE4E9] bg-white p-6 shadow-[0_12px_32px_rgba(16,42,67,0.07)] transition">
       <div className="flex items-start justify-between gap-3">
         <div className="space-y-2">
           <div className="flex flex-wrap gap-2">
@@ -46,9 +46,9 @@ export function CompanyCard({ company, localBadge, areaBadge }: CompanyCardProps
               </Badge>
             ) : null}
           </div>
-          <h3 className="text-xl font-bold text-slate-950">{company.name}</h3>
+          <h3 className="text-xl font-extrabold text-[#102A43]">{company.name}</h3>
         </div>
-        <div className="rounded-2xl bg-gradient-to-br from-sky-100 to-sky-50 p-3 text-sky-700 shadow-inner">
+        <div className="rounded-xl bg-[#E8F0F3] p-3 text-[#176B87]">
           <Building2 className="size-5" />
         </div>
       </div>
@@ -98,10 +98,10 @@ export function CompanyCard({ company, localBadge, areaBadge }: CompanyCardProps
 
       <div className="mt-auto flex gap-3 pt-6">
         <Link href={`/firme/${company.slug}`} className="flex-1">
-          <Button className="w-full">Vezi profilul</Button>
+          <Button variant="secondary" className="w-full">Vezi profilul</Button>
         </Link>
         <Link href={`/cere-oferta?company=${company.slug}`} className="flex-1">
-          <Button variant="secondary" className="w-full">
+          <Button className="w-full">
             Cere oferta
           </Button>
         </Link>

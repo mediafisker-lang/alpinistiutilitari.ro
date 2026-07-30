@@ -14,26 +14,10 @@ export function slugify(value: string) {
     .replace(/(^-|-$)/g, "");
 }
 
-function normalizeBaseUrl(value: string) {
-  return value.trim().replace(/\/+$/, "");
-}
+export const CANONICAL_SITE_URL = "https://alpinistiutilitari.ro";
 
 export function getSiteUrl() {
-  if (process.env.NEXT_PUBLIC_SITE_URL?.trim()) {
-    return normalizeBaseUrl(process.env.NEXT_PUBLIC_SITE_URL);
-  }
-
-  if (process.env.VERCEL_PROJECT_PRODUCTION_URL?.trim()) {
-    return normalizeBaseUrl(`https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`);
-  }
-
-  if (process.env.VERCEL_URL?.trim()) {
-    return normalizeBaseUrl(`https://${process.env.VERCEL_URL}`);
-  }
-
-  return process.env.NODE_ENV === "development"
-    ? "http://localhost:3000"
-    : "https://alpinistiutilitari.ro";
+  return CANONICAL_SITE_URL;
 }
 
 export function absoluteUrl(path = "") {

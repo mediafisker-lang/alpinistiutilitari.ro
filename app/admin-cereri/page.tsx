@@ -92,6 +92,12 @@ export default async function AdminCereriPage({ searchParams }: AdminCereriPageP
       description: true,
       countyId: true,
       countyText: true,
+      county: {
+        select: {
+          name: true,
+          shortCode: true,
+        },
+      },
     },
     orderBy: { createdAt: "desc" },
   });
@@ -174,7 +180,9 @@ export default async function AdminCereriPage({ searchParams }: AdminCereriPageP
           <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">
             Selectează cererile pe care vrei să le ștergi
           </p>
-          <p className="text-xs font-semibold text-slate-500">Tip: J = județ, N = național</p>
+          <p className="text-xs font-semibold text-slate-500">
+            Tip: cod județ (ex. CL, IF, BV), N = național
+          </p>
           <button
             type="submit"
             className="h-10 rounded-xl border border-rose-200 bg-rose-50 px-4 text-sm font-semibold text-rose-700 transition hover:border-rose-300 hover:bg-rose-100"
@@ -190,7 +198,7 @@ export default async function AdminCereriPage({ searchParams }: AdminCereriPageP
                 <th className="px-4 py-4 font-medium">Selectează</th>
                 <th className="px-4 py-4 font-medium">Data și ora</th>
                 <th className="px-4 py-4 font-medium">Nume</th>
-                <th className="px-4 py-4 font-medium">Tip</th>
+                <th className="px-4 py-4 font-medium">Tip / județ</th>
                 <th className="px-4 py-4 font-medium">Mesaj</th>
                 <th className="px-4 py-4 font-medium">Telefon</th>
               </tr>
@@ -215,8 +223,11 @@ export default async function AdminCereriPage({ searchParams }: AdminCereriPageP
                           N
                         </span>
                       ) : (
-                        <span className="inline-flex min-w-6 items-center justify-center rounded-full bg-emerald-100 px-2 py-1 text-xs font-bold text-emerald-700">
-                          J
+                        <span
+                          title={lead.county?.name ?? lead.countyText ?? "Județ selectat"}
+                          className="inline-flex min-w-7 items-center justify-center rounded-full bg-emerald-100 px-2 py-1 text-xs font-bold text-emerald-700"
+                        >
+                          {lead.county?.shortCode ?? "J"}
                         </span>
                       )}
                     </td>

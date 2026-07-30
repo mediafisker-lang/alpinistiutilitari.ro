@@ -51,7 +51,25 @@ type LandingContent = {
   relatedLocationSlugs: string[];
 };
 
-const priorityCountySlugs = new Set(["bucuresti", "ilfov"]);
+const priorityCountySlugs = new Set([
+  "bucuresti",
+  "ilfov",
+  "brasov",
+  "arges",
+  "bihor",
+  "constanta",
+  "prahova",
+  "sibiu",
+  "cluj",
+  "timis",
+  "iasi",
+  "galati",
+  "braila",
+  "dolj",
+  "gorj",
+  "mures",
+  "arad",
+]);
 const priorityLocalitySlugs = new Set([
   "sector-1",
   "sector-2",
@@ -61,10 +79,215 @@ const priorityLocalitySlugs = new Set([
   "sector-6",
   "voluntari",
   "otopeni",
-  "tunari",
+  "pipera",
   "chiajna",
   "popesti-leordeni",
+  "brasov",
+  "pitesti",
+  "oradea",
+  "constanta",
+  "ploiesti",
+  "sibiu",
+  "cluj-napoca",
+  "timisoara",
+  "iasi",
+  "galati",
+  "braila",
+  "navodari",
+  "craiova",
+  "targu-jiu",
+  "targu-mures",
+  "arad",
 ]);
+
+export const priorityCommercialServiceSlugs = [
+  "alpinism-utilitar",
+  "spalare-geamuri-la-inaltime",
+  "reparatii-fatade",
+  "reparatii-acoperisuri",
+  "hidroizolatii-acoperisuri",
+  "montaj-bannere",
+  "interventii-urgente-la-inaltime",
+  "taiere-copaci",
+] as const;
+
+export const industrialServiceSlugs = [
+  "alpinism-industrial-greu",
+  "inspectii-ndt-la-inaltime",
+  "protectie-anticoroziva-la-inaltime",
+  "mentenanta-cosuri-industriale",
+  "mentenanta-turbine-eoliene",
+  "mentenanta-structuri-metalice-industriale",
+] as const;
+
+type IndustrialRegionProfile = {
+  focus: string;
+  assets: string[];
+  works: string[];
+  risks: string[];
+  zones: string[];
+};
+
+const industrialRegionProfiles: Record<string, IndustrialRegionProfile> = {
+  ploiesti: {
+    focus: "rafinarii, petrochimie si infrastructura de petrol si gaze",
+    assets: ["cosuri industriale si turnuri tehnologice", "conducte, estacade si rezervoare", "structuri metalice din opriri planificate"],
+    works: ["acces pentru inspectii vizuale si NDT", "protectii anticorozive si izolatii tehnice", "mentenanta pe cosuri, conducte si turnuri"],
+    risks: ["atmosfere potential explozive", "expunere chimica si temperaturi ridicate", "proceduri stricte de permis de lucru si oprire"],
+    zones: ["Ploiesti", "Brazi", "Teleajen", "Campina", "axa industriala Prahova"],
+  },
+  prahova: {
+    focus: "rafinarii si infrastructura energetica pe axa Prahovei",
+    assets: ["rafinarii si parcuri de rezervoare", "cosuri si turnuri tehnologice", "conducte si structuri suspendate"],
+    works: ["inspectii la inaltime si suport NDT", "protectie anticoroziva", "mentenanta in opriri planificate"],
+    risks: ["medii cu risc chimic", "zone ATEX", "coordonare cu operarea instalatiei"],
+    zones: ["Ploiesti", "Brazi", "Campina", "Valea Prahovei"],
+  },
+  constanta: {
+    focus: "port, naval, rafinare si energie eoliana",
+    assets: ["macarale si structuri portuare", "nave si hale de santier naval", "turnuri si pale de turbine eoliene"],
+    works: ["inspectii si protectii anticorozive in mediu marin", "acces pentru reparatii navale la inaltime", "inspectii de pale si suport pentru reparatii compozite"],
+    risks: ["vant puternic si aerosoli salini", "lucru deasupra apei", "ferestre meteo si opriri operationale"],
+    zones: ["Constanta", "Midia", "Navodari", "Agigea", "Dobrogea"],
+  },
+  navodari: {
+    focus: "rafinare, port Midia si energie eoliana in Dobrogea",
+    assets: ["instalatii de rafinare", "rezervoare si conducte", "turbine eoliene si structuri maritime"],
+    works: ["inspectii tehnice si NDT", "protectie anticoroziva", "mentenanta turnuri si pale"],
+    risks: ["mediu marin si petrochimic", "vant", "control strict al accesului"],
+    zones: ["Navodari", "Midia", "Corbu", "Constanta", "Dobrogea"],
+  },
+  galati: {
+    focus: "siderurgie, naval si infrastructura metalica grea",
+    assets: ["hale si instalatii siderurgice", "macarale si nave", "poduri, piloni si cabluri"],
+    works: ["vopsitorie si protectie anticoroziva grea", "inspectii pe structuri metalice", "interventii pe macarale, hale si infrastructura suspendata"],
+    risks: ["structuri masive si zone fierbinti", "coroziune severa", "lucru deasupra apei sau fluxurilor tehnologice"],
+    zones: ["Galati", "Braila", "zona portuara Dunare", "Santierul Naval"],
+  },
+  braila: {
+    focus: "infrastructura de pod, port si structuri metalice dunarene",
+    assets: ["poduri suspendate si piloni", "macarale portuare", "hale si structuri navale"],
+    works: ["inspectii pe cabluri si elemente metalice", "protectie anticoroziva", "mentenanta la inaltime in zona portuara"],
+    risks: ["vant si lucru deasupra apei", "trafic si zone publice", "coroziune accelerata"],
+    zones: ["Braila", "Galati", "Dunare", "zona portuara"],
+  },
+  craiova: {
+    focus: "energie, automotive si infrastructura industriala din Oltenia",
+    assets: ["termocentrale si cosuri", "hale automotive", "benzi transportoare si estacade"],
+    works: ["mentenanta cosuri si turnuri de racire", "tubulaturi si retele suspendate", "inspectii si reparatii pe hale"],
+    risks: ["inaltimi extreme", "praf si temperaturi", "opriri tehnologice"],
+    zones: ["Craiova", "Isalnita", "Turceni", "Rovinari", "Bazinul Olteniei"],
+  },
+  "targu-jiu": {
+    focus: "energie termica si exploatari industriale in Bazinul Olteniei",
+    assets: ["cosuri industriale", "turnuri de racire", "benzi transportoare suspendate"],
+    works: ["reparatii structurale la cosuri", "curatare si mentenanta turnuri", "interventii pe transportoare si estacade"],
+    risks: ["inaltimi extreme", "praf industrial", "zone in exploatare"],
+    zones: ["Targu Jiu", "Rovinari", "Turceni", "Motru"],
+  },
+  "targu-mures": {
+    focus: "industrie chimica, ingrasaminte si infrastructura de gaze",
+    assets: ["silozuri si turnuri de sinteza", "conducte si instalatii chimice", "structuri metalice expuse"],
+    works: ["verificari de etanseitate la inaltime", "sablare si straturi protectoare", "inspectii tehnice in zone greu accesibile"],
+    risks: ["medii toxice sau corozive", "proceduri de decontaminare", "protectie respiratorie si autorizari speciale"],
+    zones: ["Targu Mures", "Azomures", "Medias", "axa de transport gaze"],
+  },
+  timisoara: {
+    focus: "parcuri logistice, automotive si hale industriale de mari dimensiuni",
+    assets: ["acoperisuri metalice extinse", "tubulaturi de ventilatie", "retele de senzori si cabluri suspendate"],
+    works: ["mentenanta acoperisuri industriale", "montaj tubulaturi si trasee tehnice", "inspectii pe hale si structuri"],
+    risks: ["lucru deasupra productiei active", "suprafete fragile", "coordonare cu fluxurile logistice"],
+    zones: ["Timisoara", "Freidorf", "Ghiroda", "Dumbravita", "axa Timis-Arad"],
+  },
+  arad: {
+    focus: "logistica, automotive si productie industriala pe axa de Vest",
+    assets: ["hale si depozite", "acoperisuri metalice", "tubulaturi si retele suspendate"],
+    works: ["mentenanta anvelope industriale", "montaj tehnic la inaltime", "inspectii si protectie anticoroziva"],
+    risks: ["productie activa", "suprafete mari si fragile", "trafic logistic"],
+    zones: ["Arad", "Arad Vest", "Nadlac", "axa Arad-Timisoara"],
+  },
+};
+
+const commercialLocalProfiles: Record<
+  string,
+  { context: string; buildingTypes: string[]; zones: string[] }
+> = {
+  pipera: {
+    context: "cladiri office, ansambluri rezidentiale noi si spatii comerciale din nordul Capitalei",
+    buildingTypes: ["turnuri de birouri si pereti cortina", "ansambluri rezidentiale", "showroom-uri si cladiri mixed-use"],
+    zones: ["Pipera", "Dimitrie Pompeiu", "Aviatiei", "Voluntari"],
+  },
+  voluntari: {
+    context: "dezvoltari rezidentiale si comerciale cu fatade moderne si acoperisuri tehnice",
+    buildingTypes: ["blocuri si ansambluri noi", "cladiri comerciale", "vile si sedii de firma"],
+    zones: ["Voluntari", "Pipera", "Iancu Nicolae", "Andronache"],
+  },
+  otopeni: {
+    context: "hoteluri, hale, cladiri logistice si proprietati aflate pe axa aeroportului",
+    buildingTypes: ["hoteluri si cladiri vitrate", "hale logistice", "spatii comerciale si rezidentiale"],
+    zones: ["Otopeni", "Odai", "Aeroport Henri Coanda", "DN1"],
+  },
+  chiajna: {
+    context: "ansambluri rezidentiale dense, retail si hale din vestul Bucurestiului",
+    buildingTypes: ["blocuri noi", "centre comerciale", "hale si depozite"],
+    zones: ["Chiajna", "Rosu", "Militari Residence", "Autostrada A1"],
+  },
+  "popesti-leordeni": {
+    context: "blocuri noi, spatii comerciale si dezvoltari rezidentiale din sud-estul Capitalei",
+    buildingTypes: ["ansambluri rezidentiale", "fatade vitrate", "hale si cladiri comerciale"],
+    zones: ["Popesti-Leordeni", "Berceni", "IMGB", "Soseaua Oltenitei"],
+  },
+  brasov: {
+    context: "hoteluri, cladiri turistice, hale industriale si imobile expuse unui climat montan",
+    buildingTypes: ["hoteluri si pensiuni", "hale industriale", "blocuri si cladiri istorice"],
+    zones: ["Brasov", "Tractorul", "Bartolomeu", "Poiana Brasov"],
+  },
+  pitesti: {
+    context: "hale automotive, cladiri comerciale si ansambluri rezidentiale de pe axa Arges",
+    buildingTypes: ["fabrici si hale", "centre comerciale", "blocuri si sedii administrative"],
+    zones: ["Pitesti", "Mioveni", "Bradu", "Stefanesti"],
+  },
+  oradea: {
+    context: "parcuri industriale, cladiri comerciale si patrimoniu urban cu fatade complexe",
+    buildingTypes: ["hale din parcurile industriale", "cladiri istorice", "hoteluri si centre comerciale"],
+    zones: ["Oradea", "Calea Borsului", "Nufarul", "Sanmartin"],
+  },
+  constanta: {
+    context: "hoteluri, blocuri de litoral, port si cladiri expuse vantului si aerosolilor salini",
+    buildingTypes: ["hoteluri si cladiri turistice", "blocuri si fatade maritime", "hale si structuri portuare"],
+    zones: ["Constanta", "Mamaia", "Agigea", "Portul Constanta"],
+  },
+  ploiesti: {
+    context: "cladiri comerciale, platforme industriale si infrastructura energetica din Prahova",
+    buildingTypes: ["hale si instalatii industriale", "cladiri office", "blocuri si centre comerciale"],
+    zones: ["Ploiesti", "Blejoi", "Brazi", "Paulesti"],
+  },
+  sibiu: {
+    context: "hale automotive, centre logistice, hoteluri si cladiri din zona istorica",
+    buildingTypes: ["fabrici si hale", "hoteluri si cladiri istorice", "centre comerciale"],
+    zones: ["Sibiu", "Selimbar", "Zona Industriala Vest", "Cisnadie"],
+  },
+  "cluj-napoca": {
+    context: "cladiri office, campusuri, ansambluri rezidentiale si dezvoltari cu fatade vitrate",
+    buildingTypes: ["turnuri si cladiri de birouri", "blocuri noi", "hoteluri si centre comerciale"],
+    zones: ["Cluj-Napoca", "Floresti", "Buna Ziua", "Marasti"],
+  },
+  timisoara: {
+    context: "cladiri office, parcuri industriale, hale logistice si ansambluri rezidentiale",
+    buildingTypes: ["hale automotive si logistice", "cladiri office", "blocuri si centre comerciale"],
+    zones: ["Timisoara", "Freidorf", "Ghiroda", "Dumbravita"],
+  },
+  iasi: {
+    context: "campusuri, cladiri office, spitale si ansambluri rezidentiale aflate in dezvoltare",
+    buildingTypes: ["cladiri de birouri", "spitale si institutii", "blocuri si centre comerciale"],
+    zones: ["Iasi", "Palas", "Pacurari", "Miroslava"],
+  },
+  galati: {
+    context: "blocuri inalte, infrastructura portuara si cladiri expuse mediului industrial dunarean",
+    buildingTypes: ["blocuri si cladiri comerciale", "hale industriale", "structuri portuare"],
+    zones: ["Galati", "Port Galati", "Barbosi", "Braila"],
+  },
+};
 
 const countySeoOverrides: Record<string, CountySeoOverride> = {
   bucuresti: {
@@ -450,6 +673,63 @@ const serviceSectionTemplates: Record<
     relatedServiceSlugs: string[];
   }
 > = {
+  "alpinism-industrial-greu": {
+    works: [
+      "Acces pe coarda pentru inspectii, mentenanta si reparatii in instalatii industriale.",
+      "Interventii pe cosuri, turnuri, rezervoare, estacade si structuri metalice.",
+      "Lucrari planificate in ferestre de mentenanta sau opriri tehnologice.",
+    ],
+    buildingTypes: [
+      "Rafinarii, combinate, termocentrale si fabrici.",
+      "Porturi, santiere navale, macarale si infrastructura energetica.",
+      "Hale logistice, silozuri si instalatii tehnologice.",
+    ],
+    urgentCases: [
+      "Cand defectul poate opri productia sau afecta siguranta instalatiei.",
+      "Cand accesul clasic ar prelungi fereastra de mentenanta.",
+      "Cand sunt necesare inspectii rapide dupa incident sau vreme severa.",
+    ],
+    relatedServiceSlugs: [
+      "inspectii-ndt-la-inaltime",
+      "protectie-anticoroziva-la-inaltime",
+      "mentenanta-cosuri-industriale",
+      "mentenanta-structuri-metalice-industriale",
+    ],
+  },
+  "inspectii-ndt-la-inaltime": {
+    works: [
+      "Acces si pozitionare pentru inspectii vizuale si examinari nedistructive.",
+      "Documentare foto-video, cartografiere defecte si marcarea zonelor de interes.",
+      "Suport pentru personal autorizat NDT pe structuri greu accesibile.",
+    ],
+    buildingTypes: ["Conducte si rezervoare.", "Cosuri, turnuri si macarale.", "Poduri, hale si structuri metalice."],
+    urgentCases: ["Dupa incident sau suprasarcina.", "In opriri planificate cu timp limitat.", "Cand apar coroziune, fisuri sau deformari vizibile."],
+    relatedServiceSlugs: ["alpinism-industrial-greu", "protectie-anticoroziva-la-inaltime", "inspectii-tehnice-vizuale"],
+  },
+  "protectie-anticoroziva-la-inaltime": {
+    works: ["Pregatire mecanica si curatare controlata.", "Sablare locala unde procedura permite.", "Aplicare grunduri si sisteme anticorozive compatibile."],
+    buildingTypes: ["Structuri portuare si navale.", "Hale, estacade si macarale.", "Conducte, rezervoare si turnuri."],
+    urgentCases: ["Cand coroziunea reduce sectiunea elementelor.", "Inaintea sezonului agresiv sau a repunerii in functiune.", "Cand stratul existent este desprins sau contaminat."],
+    relatedServiceSlugs: ["alpinism-industrial-greu", "inspectii-ndt-la-inaltime", "mentenanta-structuri-metalice-industriale"],
+  },
+  "mentenanta-cosuri-industriale": {
+    works: ["Inspectarea anvelopei si coronamentului.", "Reparatii locale, etansari si protectii.", "Acces pentru zidarie, elemente metalice si balizaj."],
+    buildingTypes: ["Cosuri de rafinarie.", "Cosuri de termocentrala.", "Turnuri de racire si evacuare industriala."],
+    urgentCases: ["Cand apar fisuri, desprinderi sau infiltratii.", "Dupa opriri neplanificate.", "Cand balizajul sau elementele metalice sunt degradate."],
+    relatedServiceSlugs: ["alpinism-industrial-greu", "inspectii-ndt-la-inaltime", "protectie-anticoroziva-la-inaltime"],
+  },
+  "mentenanta-turbine-eoliene": {
+    works: ["Inspectii vizuale pe turn si pale.", "Curatare tehnica si documentarea defectelor.", "Suport de acces pentru reparatii compozite specializate."],
+    buildingTypes: ["Turbine eoliene onshore.", "Turnuri si nacela.", "Pale din materiale compozite."],
+    urgentCases: ["Dupa furtuni sau impact.", "Cand sunt observate eroziuni si fisuri.", "In ferestre meteo scurte de mentenanta."],
+    relatedServiceSlugs: ["alpinism-industrial-greu", "inspectii-ndt-la-inaltime", "protectie-anticoroziva-la-inaltime"],
+  },
+  "mentenanta-structuri-metalice-industriale": {
+    works: ["Inspectii, fixari si reparatii pe structuri metalice.", "Montaj tubulaturi, senzori si trasee suspendate.", "Mentenanta hale, macarale si benzi transportoare."],
+    buildingTypes: ["Hale si parcuri logistice.", "Macarale si estacade.", "Poduri tehnologice si transportoare."],
+    urgentCases: ["Cand elementele slabite afecteaza productia.", "Cand coroziunea sau vibratiile produc defecte.", "In opriri tehnologice cu durata limitata."],
+    relatedServiceSlugs: ["alpinism-industrial-greu", "inspectii-ndt-la-inaltime", "protectie-anticoroziva-la-inaltime"],
+  },
   "alpinism-utilitar": {
     works: [
       "Mentenanta si reparatii punctuale pe fatade, acoperisuri si structuri exterioare.",
@@ -613,12 +893,26 @@ const serviceSectionTemplates: Record<
 
 const defaultRelatedServiceSlugs = ["alpinism-utilitar", "spalare-geamuri-la-inaltime", "interventii-urgente-la-inaltime"];
 
-function buildDefaultLandingTitle(locationName: string, serviceName: string) {
-  return `${serviceName} in ${locationName} | Oferte locale rapide`;
+function buildDefaultLandingTitle(
+  locationName: string,
+  serviceName: string,
+  type: "county" | "city",
+) {
+  const scope = type === "city" ? `municipiul ${locationName}` : `judetul ${locationName}`;
+  return `${serviceName} in ${scope} | Oferte locale rapide`;
 }
 
-function buildDefaultLandingDescription(locationName: string, countyName: string, serviceName: string) {
-  return `Ceri ${serviceName.toLowerCase()} in ${locationName}, ${countyName}, compari oferte locale si alegi executantul potrivit pentru cladirea si lucrarea ta in timp scurt.`;
+function buildDefaultLandingDescription(
+  locationName: string,
+  countyName: string,
+  serviceName: string,
+  type: "county" | "city",
+) {
+  const scope =
+    type === "city"
+      ? `municipiul ${locationName}, judetul ${countyName}`
+      : `judetul ${countyName}`;
+  return `Ceri ${serviceName.toLowerCase()} in ${scope}, compari oferte locale si alegi executantul potrivit pentru cladirea si lucrarea ta in timp scurt.`;
 }
 
 function buildLocalLandingFaq(context: LocalLandingContext, zones: string[]): FaqItem[] {
@@ -661,7 +955,34 @@ export function isPriorityLocalitySlug(locationSlug: string) {
 }
 
 export function isPriorityLandingPath(locationSlug: string, serviceSlug: string) {
-  return Boolean(landingSeoOverrides[`${locationSlug}/${serviceSlug}`]);
+  if (landingSeoOverrides[`${locationSlug}/${serviceSlug}`]) return true;
+  if (
+    (priorityLocalitySlugs.has(locationSlug) || priorityCountySlugs.has(locationSlug)) &&
+    priorityCommercialServiceSlugs.includes(
+      serviceSlug as (typeof priorityCommercialServiceSlugs)[number],
+    )
+  ) {
+    return true;
+  }
+
+  return Boolean(
+    industrialRegionProfiles[locationSlug] &&
+      industrialServiceSlugs.includes(serviceSlug as (typeof industrialServiceSlugs)[number]),
+  );
+}
+
+export function getPriorityLocalitySlugs() {
+  return [...priorityLocalitySlugs];
+}
+
+export function getPriorityLandingServiceSlugs(locationSlug: string) {
+  const slugs: string[] = priorityLocalitySlugs.has(locationSlug)
+    ? [...priorityCommercialServiceSlugs]
+    : [];
+  if (industrialRegionProfiles[locationSlug]) {
+    slugs.push(...industrialServiceSlugs);
+  }
+  return [...new Set(slugs)];
 }
 
 export function getCountySeoOverride(countySlug: string) {
@@ -681,29 +1002,105 @@ export function getCountyLocalitySlugs(countySlug: string) {
 }
 
 export function getCountyServiceSlugs(countySlug: string) {
-  return countySeoOverrides[countySlug]?.serviceSlugs ?? [];
+  const slugs: string[] = countySeoOverrides[countySlug]?.serviceSlugs ??
+    (priorityCountySlugs.has(countySlug) ? [...priorityCommercialServiceSlugs] : []);
+  if (industrialRegionProfiles[countySlug]) {
+    slugs.push(...industrialServiceSlugs);
+  }
+  return [...new Set(slugs)];
 }
 
 export function getLocalLandingContent(context: LocalLandingContext): LandingContent {
   const key = `${context.locationSlug}/${context.serviceSlug}`;
   const override = landingSeoOverrides[key];
   const template = serviceSectionTemplates[context.serviceSlug];
-  const zones = override?.zones ?? [context.locationName];
+  const industrialProfile = industrialRegionProfiles[context.locationSlug];
+  const commercialProfile = commercialLocalProfiles[context.locationSlug];
+  const isIndustrial = industrialServiceSlugs.includes(
+    context.serviceSlug as (typeof industrialServiceSlugs)[number],
+  );
+  const zones =
+    override?.zones ??
+    (isIndustrial ? industrialProfile?.zones : commercialProfile?.zones) ??
+    [context.locationName];
+  const industrialIntro =
+    isIndustrial && industrialProfile
+      ? `Pagina este dedicata proiectelor de ${context.serviceName.toLowerCase()} din ${context.locationName}, cu accent pe ${industrialProfile.focus}. Cererea trebuie sa includa tipul structurii, regimul de functionare, riscurile cunoscute si fereastra disponibila pentru evaluare sau executie.`
+      : null;
+  const commercialIntro =
+    commercialProfile && !isIndustrial
+      ? `Pagina raspunde cererilor de ${context.serviceName.toLowerCase()} pentru ${commercialProfile.context}. Continutul si selectia firmelor sunt orientate spre tipurile de cladiri si zonele in care apar frecvent lucrari cu acces dificil.`
+      : null;
+  const sameNamedCountyAndCity =
+    context.locationName.localeCompare(context.countyName, "ro", { sensitivity: "base" }) === 0;
+  const scopeSuffix = context.type === "city" ? "Municipiu" : "Judet";
+  const scopeDescription =
+    context.type === "city"
+      ? `Aria acestei pagini este municipiul ${context.locationName}, judetul ${context.countyName}.`
+      : `Aria acestei pagini este judetul ${context.countyName}.`;
+  const defaultTitle = buildDefaultLandingTitle(
+    context.locationName,
+    context.serviceName,
+    context.type,
+  );
+  const defaultDescription = buildDefaultLandingDescription(
+    context.locationName,
+    context.countyName,
+    context.serviceName,
+    context.type,
+  );
+  const resolvedTitle =
+    override?.title && sameNamedCountyAndCity
+      ? `${override.title} | ${scopeSuffix}`
+      : override?.title ?? defaultTitle;
+  const resolvedDescription =
+    override?.description && sameNamedCountyAndCity
+      ? `${override.description} ${scopeDescription}`
+      : override?.description ?? defaultDescription;
+  const resolvedH1 =
+    override?.h1 && sameNamedCountyAndCity
+      ? `${override.h1} - ${scopeSuffix.toLowerCase()}`
+      : override?.h1 ??
+        `${context.serviceName} in ${
+          context.type === "city"
+            ? `municipiul ${context.locationName}`
+            : `judetul ${context.locationName}`
+        }`;
 
   return {
-    title: override?.title ?? buildDefaultLandingTitle(context.locationName, context.serviceName),
-    description:
-      override?.description ??
-      buildDefaultLandingDescription(
-        context.locationName,
-        context.countyName,
-        context.serviceName,
-      ),
-    h1: override?.h1 ?? `${context.serviceName} in ${context.locationName}`,
+    title: resolvedTitle,
+    description: resolvedDescription,
+    h1: resolvedH1,
     intro:
       override?.intro ??
+      industrialIntro ??
+      commercialIntro ??
       `Pagina este optimizata pentru cautari de tip ${context.serviceSlug.replaceAll("-", " ")} + ${context.locationName}, cu accent pe cereri comerciale reale.`,
     sections: [
+      ...(isIndustrial && industrialProfile
+        ? [
+            {
+              title: `Profil industrial: ${industrialProfile.focus}`,
+              points: industrialProfile.assets,
+            },
+            {
+              title: "Lucrari cu potential local",
+              points: industrialProfile.works,
+            },
+            {
+              title: "Riscuri si cerinte de planificare",
+              points: industrialProfile.risks,
+            },
+          ]
+        : []),
+      ...(!isIndustrial && commercialProfile
+        ? [
+            {
+              title: "Contextul local al lucrarii",
+              points: commercialProfile.buildingTypes,
+            },
+          ]
+        : []),
       {
         title: "Ce lucrari se fac",
         points:

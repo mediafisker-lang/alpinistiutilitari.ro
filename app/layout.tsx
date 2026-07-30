@@ -1,21 +1,20 @@
 import type { Metadata, Viewport } from "next";
-import { Plus_Jakarta_Sans, Space_Grotesk } from "next/font/google";
+import { Manrope } from "next/font/google";
 import "./globals.css";
 import { SiteHeader } from "@/components/site/header";
 import { SiteFooter } from "@/components/site/footer";
 import { WhatsAppFloat } from "@/components/site/whatsapp-float";
-import { buildMetadata, buildOrganizationJsonLd } from "@/lib/seo";
+import { PwaRegistrar } from "@/components/site/pwa-registrar";
+import {
+  buildMetadata,
+  buildOrganizationJsonLd,
+  buildPlatformLocalBusinessJsonLd,
+} from "@/lib/seo";
 
-const plusJakarta = Plus_Jakarta_Sans({
+const manrope = Manrope({
   subsets: ["latin"],
   display: "swap",
   variable: "--font-sans",
-});
-
-const spaceGrotesk = Space_Grotesk({
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--font-display",
 });
 
 const baseMetadata = buildMetadata({
@@ -51,18 +50,24 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   const organizationJsonLd = buildOrganizationJsonLd();
+  const localBusinessJsonLd = buildPlatformLocalBusinessJsonLd();
 
   return (
     <html
       lang="ro-RO"
       data-scroll-behavior="smooth"
-      className={`${plusJakarta.variable} ${spaceGrotesk.variable}`}
+      className={manrope.variable}
     >
-      <body className="min-h-screen bg-slate-50 font-sans text-slate-950 antialiased selection:bg-[#0063f7]/20 selection:text-slate-950">
+      <body className="min-h-screen bg-[#F5F7F9] font-sans text-[#16202A] antialiased selection:bg-[#176B87]/20 selection:text-[#16202A]">
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
         />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessJsonLd) }}
+        />
+        <PwaRegistrar />
         <div className="flex min-h-screen flex-col">
           <SiteHeader />
           <main className="flex-1">{children}</main>

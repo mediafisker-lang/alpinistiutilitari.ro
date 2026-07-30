@@ -9,6 +9,66 @@ export type ServiceSeed = {
 
 export const serviceCatalog: ServiceSeed[] = [
   {
+    name: "Alpinism industrial greu",
+    slug: "alpinism-industrial-greu",
+    category: "Industrial",
+    shortDescription:
+      "Interventii complexe pe rafinarii, cosuri, hale, silozuri, structuri metalice si instalatii industriale.",
+    longDescription:
+      "Alpinismul industrial greu acopera lucrari cu acces pe coarda in obiective cu inaltimi mari, geometrii dificile si cerinte stricte de securitate: rafinarii, combinate, termocentrale, porturi, santiere navale, silozuri si hale industriale.",
+    icon: "factory",
+  },
+  {
+    name: "Inspectii NDT la inaltime",
+    slug: "inspectii-ndt-la-inaltime",
+    category: "Industrial",
+    shortDescription:
+      "Acces tehnic pentru inspectii vizuale si examinari nedistructive pe structuri industriale greu accesibile.",
+    longDescription:
+      "Serviciul faciliteaza inspectii tehnice si NDT la inaltime pe conducte, rezervoare, cosuri, macarale, poduri si structuri metalice, cu documentarea zonelor evaluate si coordonare cu personal autorizat pentru metoda de examinare.",
+    icon: "scan-search",
+  },
+  {
+    name: "Protectie anticoroziva la inaltime",
+    slug: "protectie-anticoroziva-la-inaltime",
+    category: "Industrial",
+    shortDescription:
+      "Pregatire, sablare locala si aplicare de sisteme anticorozive pe metal, conducte, turnuri si hale.",
+    longDescription:
+      "Protectia anticoroziva la inaltime include pregatirea controlata a suprafetelor si aplicarea sistemelor compatibile cu mediul de exploatare pe structuri metalice, conducte, rezervoare, turnuri si infrastructura portuara.",
+    icon: "shield-check",
+  },
+  {
+    name: "Mentenanta cosuri industriale",
+    slug: "mentenanta-cosuri-industriale",
+    category: "Industrial",
+    shortDescription:
+      "Inspectii, reparatii, etansari si interventii structurale pe cosuri industriale si turnuri de racire.",
+    longDescription:
+      "Mentenanta cosurilor industriale vizeaza inspectii ale anvelopei si elementelor metalice, reparatii locale, etansari, protectii anticorozive si acces pentru lucrari specializate la inaltimi extreme.",
+    icon: "factory",
+  },
+  {
+    name: "Mentenanta turbine eoliene",
+    slug: "mentenanta-turbine-eoliene",
+    category: "Industrial",
+    shortDescription:
+      "Inspectii vizuale si interventii de acces pe turnuri si pale de turbine eoliene.",
+    longDescription:
+      "Mentenanta turbinelor eoliene prin acces pe coarda poate include inspectarea turnului si palelor, documentarea defectelor, curatare tehnica si suport pentru reparatii de materiale compozite executate de personal calificat.",
+    icon: "wind",
+  },
+  {
+    name: "Mentenanta structuri metalice industriale",
+    slug: "mentenanta-structuri-metalice-industriale",
+    category: "Industrial",
+    shortDescription:
+      "Interventii pe hale, macarale, estacade, benzi transportoare si structuri metalice suspendate.",
+    longDescription:
+      "Serviciul acopera accesul si interventiile pe structuri metalice industriale: hale, macarale, estacade, poduri tehnologice, benzi transportoare, tubulaturi si retele suspendate.",
+    icon: "construction",
+  },
+  {
     name: "Alpinism utilitar",
     slug: "alpinism-utilitar",
     category: "Lucrari la inaltime",

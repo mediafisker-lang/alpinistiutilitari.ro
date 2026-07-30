@@ -10,14 +10,6 @@
     "prisma:generate": "prisma generate",
     "db:push": "prisma db push",
     "db:seed": "tsx prisma/seed.ts",
-    "import:places": "tsx scripts/import-places.ts",
-    "import:places:all": "tsx scripts/import-all-counties.ts",
-    "review:google-places": "tsx scripts/review-google-places-companies.ts",
-    "refresh:featured": "tsx scripts/refresh-featured-companies.ts",
-    "sync:counties": "tsx scripts/sync-romanian-counties.ts",
-    "sync:services": "tsx scripts/sync-services.ts",
-    "sync:articles": "tsx scripts/sync-service-articles.ts",
-    "sync:local-articles": "tsx scripts/sync-local-articles.ts",
     "audit:live-seo": "tsx scripts/audit-live-seo.ts"
   },
   "dependencies": {

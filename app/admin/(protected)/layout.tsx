@@ -4,7 +4,7 @@ import { requireAdmin } from "@/lib/auth/require-admin";
 
 export const metadata: Metadata = {
   title: "Admin | AlpinistiUtilitari.ro",
-  description: "Administrare internă pentru cereri, firme și conținut.",
+  description: "Administrare internă pentru cererile clienților.",
   robots: {
     index: false,
     follow: false,

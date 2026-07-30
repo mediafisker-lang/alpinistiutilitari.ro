@@ -9,16 +9,17 @@ import {
   ShieldCheck,
   Sparkles,
 } from "lucide-react";
-import { buildMetadata } from "@/lib/seo";
+import { buildFaqJsonLd, buildMetadata } from "@/lib/seo";
 import { getHomepageData, getQuickSearchOptions } from "@/lib/data/queries";
 import { RomaniaMap } from "@/components/maps/romania-map";
-import { CompanyCard } from "@/components/site/company-card";
 import { CountyCard } from "@/components/site/county-card";
 import { ServiceCard } from "@/components/site/service-card";
 import { ArticleCard } from "@/components/site/article-card";
+import { CompanyCard } from "@/components/site/company-card";
 import { SeoLinkCloud } from "@/components/site/seo-link-cloud";
 import { LeadForm } from "@/components/forms/lead-form";
 import { Button } from "@/components/ui/button";
+import { FAQBlock } from "@/components/site/faq-block";
 
 export const dynamic = "force-dynamic";
 
@@ -72,35 +73,57 @@ export default async function HomePage() {
   const quickAnchors = [
     { href: "#servicii", label: "Servicii" },
     { href: "#judete", label: "Județe" },
-    { href: "#firme", label: "Firme" },
     { href: "#ghiduri", label: "Articole" },
+    { href: "#intrebari-frecvente", label: "Întrebări" },
     { href: "#cerere", label: "Cerere" },
   ];
 
+  const homeFaqs = [
+    {
+      question: "Cum solicit o ofertă pentru o lucrare la înălțime?",
+      answer:
+        "Completezi formularul cu județul, serviciul dorit și descrierea lucrării. Cererea este verificată înainte de selectarea executanților potriviți.",
+    },
+    {
+      question: "Pot trimite o cerere pentru orice județ din România?",
+      answer:
+        "Da. Platforma primește cereri din toate județele, iar localitatea și tipul lucrării ajută la identificarea firmelor relevante.",
+    },
+    {
+      question: "Ce servicii de alpinism utilitar pot solicita?",
+      answer:
+        "Poți solicita lucrări la fațade și acoperișuri, spălări la înălțime, intervenții industriale, protecție anticorozivă, inspecții și alte servicii care necesită acces pe coardă.",
+    },
+  ];
+  const faqJsonLd = buildFaqJsonLd(homeFaqs);
+
   return (
-    <div className="pb-16">
-      <section className="mx-auto max-w-7xl px-4 py-5 sm:px-6 lg:px-8 lg:py-8">
-        <div className="relative overflow-hidden rounded-[2.6rem] border border-white/70 bg-[linear-gradient(135deg,rgba(4,23,52,0.98),rgba(0,87,219,0.96)_52%,rgba(0,99,247,0.94)_72%,rgba(227,30,36,0.90)_100%)] px-5 py-6 text-white shadow-[0_34px_90px_rgba(8,26,58,0.24)] sm:px-7 sm:py-8 lg:px-8 lg:py-10">
+    <div className="public-page pb-16">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      />
+      <section className="mx-auto max-w-[1240px] px-4 py-5 sm:px-6 lg:px-8 lg:py-8">
+        <div className="hero-shell relative overflow-hidden rounded-2xl border border-white/20 bg-[linear-gradient(120deg,#102A43_0%,#0F526A_58%,#176B87_100%)] px-5 py-6 text-white shadow-[0_24px_70px_rgba(16,42,67,0.22)] sm:px-7 sm:py-8 lg:px-10 lg:py-12">
           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.18),transparent_26%),radial-gradient(circle_at_bottom_right,rgba(255,255,255,0.16),transparent_22%)]" />
           <div className="pointer-events-none absolute -left-16 top-16 hidden h-52 w-52 rounded-full bg-white/10 blur-3xl sm:block" />
-          <div className="pointer-events-none absolute bottom-0 right-0 hidden h-64 w-64 rounded-full bg-[#e31e24]/30 blur-3xl sm:block" />
           <div
             aria-hidden="true"
-            className="pointer-events-none absolute inset-y-0 right-0 hidden w-[42%] overflow-hidden lg:block"
+            className="pointer-events-none absolute inset-y-0 right-0 z-0 hidden w-[42%] overflow-hidden lg:block"
           >
-            <div className="absolute inset-0 bg-gradient-to-r from-[#0b1d3f] via-transparent to-transparent" />
+            <div className="absolute inset-0 z-10 bg-gradient-to-r from-[#102A43] via-[#102A43]/35 to-transparent" />
             <Image
               src="/hero-alpinisti-photo.jpg"
               alt="Echipă de alpinism utilitar la lucru pe fațadă"
               fill
               sizes="(min-width: 1024px) 42vw, 0px"
-              className="object-cover object-[82%_center] opacity-30 mix-blend-screen"
+              className="object-cover object-[72%_center] opacity-70"
             />
           </div>
 
-          <div className="relative grid gap-8 lg:grid-cols-[1.08fr_0.92fr]">
-            <div className="space-y-6">
-              <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.22em] text-white/85">
+          <div className="relative z-20 grid min-w-0 gap-8 lg:grid-cols-[1.08fr_0.92fr]">
+            <div className="min-w-0 space-y-6">
+              <div className="inline-flex max-w-full items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-center text-xs font-semibold uppercase tracking-[0.16em] text-white/85 sm:tracking-[0.22em]">
                 <Sparkles className="size-4" />
                 PLATFORMA NATIONALA DE ALPINISM UTILITAR
               </div>
@@ -120,14 +143,14 @@ export default async function HomePage() {
               <div className="flex flex-col gap-3 sm:flex-row">
                 <Link
                   href="/cere-oferta"
-                  className="inline-flex items-center justify-center rounded-full bg-white px-6 py-3.5 text-sm font-bold text-slate-950 shadow-lg shadow-slate-950/20 transition hover:bg-slate-100"
+                  className="inline-flex min-h-12 items-center justify-center rounded-xl bg-[#F97316] px-6 py-3.5 text-sm font-bold text-white shadow-[0_10px_24px_rgba(249,115,22,0.25)] transition hover:bg-[#EA580C]"
                 >
                   Trimite cererea acum
                   <ArrowRight className="ml-2 size-4" />
                 </Link>
                 <Link
                   href="/firme"
-                  className="inline-flex items-center justify-center rounded-full border border-white/24 bg-white/10 px-6 py-3.5 text-sm font-bold text-white transition hover:bg-white/14"
+                  className="inline-flex min-h-12 items-center justify-center rounded-xl border border-white/60 bg-transparent px-6 py-3.5 text-sm font-bold text-white transition hover:bg-white/10"
                 >
                   Vezi firmele listate
                 </Link>
@@ -146,7 +169,7 @@ export default async function HomePage() {
                     reparații fațade, intervenții pe acoperișuri sau copaci?
                   </p>
                   <p>
-                    Pe <span className="font-bold text-white">www.alpinistiutilitari.ro</span> trimiți o
+                    Pe <span className="font-bold text-white">alpinistiutilitari.ro</span> trimiți o
                     singură cerere și primești oferte de la mai multe firme de alpinism utilitar din
                     județul tău sau din toată țara, în aproximativ 15 minute.
                   </p>
@@ -158,7 +181,7 @@ export default async function HomePage() {
                 <div className="mt-5">
                   <a
                     href="#cerere"
-                    className="inline-flex items-center justify-center rounded-full bg-white px-6 py-3.5 text-sm font-black uppercase tracking-[0.08em] text-slate-950 transition hover:bg-slate-100"
+                    className="inline-flex items-center justify-center rounded-xl bg-[#F97316] px-6 py-3.5 text-sm font-black uppercase tracking-[0.08em] text-white transition hover:bg-[#EA580C]"
                   >
                     Cere ofertă acum
                     <ArrowRight className="ml-2 size-4" />
@@ -217,7 +240,7 @@ export default async function HomePage() {
               </nav>
             </div>
 
-            <div className="space-y-4">
+            <div className="min-w-0 space-y-4">
               <div className="rounded-[2.1rem] border border-white/16 bg-white/10 p-2 shadow-[0_24px_60px_rgba(2,12,27,0.24)] md:backdrop-blur-xl">
                 <LeadForm
                   variant="compact"
@@ -392,23 +415,18 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section id="firme" className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+      <section id="firme-recomandate" className="mx-auto max-w-[1240px] px-4 py-8 sm:px-6 lg:px-8">
         <div className="mb-8 flex items-end justify-between gap-4">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#0063f7]">
-              Firme recomandate
-            </p>
-            <h2 className="font-display mt-2 text-3xl font-black tracking-tight text-slate-950 sm:text-4xl">
-              Profiluri gata să primească solicitări
-            </h2>
+            <p className="section-eyebrow">Firme recomandate</p>
+            <h2 className="section-title mt-2">Profiluri gata să primească solicitări</h2>
           </div>
-          <Link href="/contact" className="text-sm font-semibold text-[#0063f7]">
-            Trimite o cerere unică
+          <Link href="/firme" className="text-sm font-bold text-[#176B87]">
+            Vezi toate firmele
           </Link>
         </div>
-
         <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-          {featuredCompanies.map((company) => (
+          {featuredCompanies.slice(0, 3).map((company) => (
             <CompanyCard key={company.id} company={company} />
           ))}
         </div>
@@ -497,6 +515,13 @@ export default async function HomePage() {
             <ArticleCard key={article.id} article={article} />
           ))}
         </div>
+      </section>
+
+      <section
+        id="intrebari-frecvente"
+        className="mx-auto max-w-7xl scroll-mt-32 px-4 py-8 sm:px-6 lg:px-8"
+      >
+        <FAQBlock title="Întrebări frecvente despre cererile de ofertă" items={homeFaqs} />
       </section>
 
       <section id="cerere" className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 lg:py-12">

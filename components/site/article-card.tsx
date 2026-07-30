@@ -9,9 +9,9 @@ export function ArticleCard({
 }) {
   return (
     <Link href={`/blog/${article.slug}`}>
-      <Card className="h-full p-6 transition hover:-translate-y-1 hover:border-sky-200 hover:shadow-xl hover:shadow-sky-100">
+      <Card className="ui-card-hover h-full rounded-2xl border border-[#DCE4E9] bg-white p-6 shadow-[0_12px_32px_rgba(16,42,67,0.07)] transition">
         {article.coverImageUrl ? (
-          <div className="overflow-hidden rounded-[1.4rem] border border-slate-200 bg-slate-50">
+          <div className="overflow-hidden rounded-xl border border-[#DCE4E9] bg-slate-50">
             <img
               src={article.coverImageUrl}
               alt={article.title}
@@ -20,7 +20,7 @@ export function ArticleCard({
             />
           </div>
         ) : null}
-        <h3 className="mt-3 text-xl font-bold text-slate-950">{article.title}</h3>
+        <h3 className="mt-3 text-xl font-extrabold text-[#102A43]">{article.title}</h3>
         <p className="mt-3 text-sm leading-7 text-slate-600">{article.excerpt}</p>
         {article.services?.length ? (
           <div className="mt-4 flex flex-wrap gap-2">

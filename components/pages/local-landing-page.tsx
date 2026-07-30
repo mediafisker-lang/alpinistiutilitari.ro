@@ -22,16 +22,18 @@ import {
 type LocalLandingContentProps = {
   locationSlug: string;
   serviceSlug: string;
+  locationType: "county" | "city";
   sourcePage?: string;
 };
 
 export async function LocalLandingPageContent({
   locationSlug,
   serviceSlug,
+  locationType,
   sourcePage,
 }: LocalLandingContentProps) {
   const [data, options] = await Promise.all([
-    resolveLocalLanding(locationSlug, serviceSlug),
+    resolveLocalLanding(locationSlug, serviceSlug, locationType),
     getQuickSearchOptions(),
   ]);
 

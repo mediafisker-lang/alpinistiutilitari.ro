@@ -69,12 +69,12 @@ export function LeadForm({
       ref={formRef}
       action={formAction}
       className={[
-        "rounded-3xl border border-slate-200 bg-white shadow-sm shadow-slate-950/5",
+        "rounded-2xl border border-[#DCE4E9] bg-white shadow-[0_16px_40px_rgba(16,42,67,0.12)]",
         isCompact ? "space-y-3 p-4 sm:p-5" : "space-y-4 p-6",
       ].join(" ")}
     >
       <div className="space-y-2">
-        <p className="text-xs font-semibold uppercase tracking-[0.24em] text-sky-700">
+        <p className="text-xs font-extrabold uppercase tracking-[0.2em] text-[#176B87]">
           Cerere unica de oferta
         </p>
       </div>
@@ -104,8 +104,8 @@ export function LeadForm({
           <label className={[
             "flex cursor-pointer items-center justify-center rounded-xl border px-3 py-2 text-sm font-semibold transition",
             distributionScope === "judet"
-              ? "border-sky-300 bg-sky-50 text-sky-800"
-              : "border-slate-200 bg-white text-slate-700 hover:border-slate-300",
+              ? "border-[#176B87] bg-[#E8F0F3] text-[#102A43]"
+              : "border-[#DCE4E9] bg-white text-[#334E68] hover:border-[#176B87]/40",
           ].join(" ")}>
             <input
               type="radio"
@@ -120,8 +120,8 @@ export function LeadForm({
           <label className={[
             "flex cursor-pointer items-center justify-center rounded-xl border px-3 py-2 text-sm font-semibold transition",
             distributionScope === "national"
-              ? "border-sky-300 bg-sky-50 text-sky-800"
-              : "border-slate-200 bg-white text-slate-700 hover:border-slate-300",
+              ? "border-[#176B87] bg-[#E8F0F3] text-[#102A43]"
+              : "border-[#DCE4E9] bg-white text-[#334E68] hover:border-[#176B87]/40",
           ].join(" ")}>
             <input
               type="radio"
@@ -148,8 +148,8 @@ export function LeadForm({
           disabled={isNational}
           required={!isNational}
           className={[
-            "w-full border border-slate-200 bg-white px-4 text-sm text-slate-900 outline-none focus:border-sky-300 disabled:cursor-not-allowed disabled:bg-slate-100 disabled:text-slate-400",
-            isCompact ? "h-11 rounded-xl" : "h-12 rounded-2xl",
+            "w-full border border-[#DCE4E9] bg-white px-4 text-sm text-[#16202A] outline-none focus:border-[#176B87] focus:shadow-[0_0_0_4px_rgba(23,107,135,0.12)] disabled:cursor-not-allowed disabled:bg-slate-100 disabled:text-slate-400",
+            isCompact ? "h-12 rounded-xl" : "h-12 rounded-xl",
           ].join(" ")}
         >
           <option value="" className="text-slate-900">Selecteaza judet</option>
@@ -174,7 +174,7 @@ export function LeadForm({
       <Button
         data-offer-cta="true"
         disabled={pending}
-        className={isCompact ? "h-11 w-full rounded-xl" : "w-full"}
+        className="h-12 w-full rounded-xl"
       >
         {pending ? "Se inregistreaza..." : "Trimite cererea"}
       </Button>

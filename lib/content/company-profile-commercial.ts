@@ -80,6 +80,23 @@ const countyHotspots: Record<string, string[]> = {
   ilfov: ["Voluntari", "Otopeni", "Tunari", "Chiajna", "Popesti-Leordeni", "Buftea"],
 };
 
+export function canIndexCompanyProfile(input: {
+  countySlug: string;
+  serviceCount: number;
+  hasSubstantialDescription: boolean;
+  hasContact: boolean;
+  coveredZoneCount: number;
+}) {
+  if (priorityCountySlugs.has(input.countySlug)) return true;
+
+  return [
+    input.serviceCount >= 2,
+    input.hasSubstantialDescription,
+    input.hasContact,
+    input.coveredZoneCount >= 3,
+  ].filter(Boolean).length >= 3;
+}
+
 function dedupe(items: string[]) {
   const seen = new Set<string>();
   const output: string[] = [];
@@ -317,13 +334,13 @@ export function buildCompanyProfileCommercialContent(company: CompanyDetail): Co
   const lead = buildProfileLead(company, zones, serviceNames);
   const longDescription = buildProfileLongDescription(company, zones, serviceNames, buildingTypes);
 
-  const indexSignals = [
-    company.services.length >= 2,
-    longDescription.length >= 220,
-    Boolean(company.phone || company.email || company.website),
-    zones.length >= 3,
-  ].filter(Boolean).length;
-  const shouldIndex = priorityCountySlugs.has(company.county.slug) || indexSignals >= 3;
+  const shouldIndex = canIndexCompanyProfile({
+    countySlug: company.county.slug,
+    serviceCount: company.services.length,
+    hasSubstantialDescription: longDescription.length >= 220,
+    hasContact: Boolean(company.phone || company.email || company.website),
+    coveredZoneCount: zones.length,
+  });
 
   const primaryServiceName = serviceNames[0] ?? "Alpinism utilitar";
   const metaTitle = `${company.name} | ${primaryServiceName} in ${company.city.name}, ${company.county.name}`;

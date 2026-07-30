@@ -19,7 +19,6 @@ import {
   getFallbackServices,
 } from "@/lib/data/fallback";
 import type {
-  AdminDashboardData,
   ArticleCardData,
   CityDetail,
   CompanyCardData,
@@ -797,7 +796,11 @@ export async function getRelatedArticles(serviceIds: string[], excludeSlug?: str
   }
 }
 
-export async function resolveLocalLanding(locationSlug: string, serviceSlug: string) {
+export async function resolveLocalLanding(
+  locationSlug: string,
+  serviceSlug: string,
+  preferredType?: "county" | "city",
+) {
   const [countyDb, cityDb, serviceDb] = await Promise.all([
     prisma.county.findUnique({ where: { slug: locationSlug }, include: { cities: true } }).catch(() => null),
     prisma.city.findUnique({ where: { slug: locationSlug }, include: { county: true } }).catch(() => null),
@@ -820,7 +823,7 @@ export async function resolveLocalLanding(locationSlug: string, serviceSlug: str
 
   if (!service) return null;
 
-  if (city) {
+  if (city && preferredType !== "county") {
     const candidates = await prisma.company.findMany({
       where: {
         isPublished: true,
@@ -853,7 +856,7 @@ export async function resolveLocalLanding(locationSlug: string, serviceSlug: str
     return { type: "city" as const, city, county: city.county, service, companies };
   }
 
-  if (county) {
+  if (county && preferredType !== "city") {
     const candidates = await prisma.company.findMany({
       where: {
         isPublished: true,
@@ -922,47 +925,4 @@ export async function getLeadRequest(id: string): Promise<LeadRequestDetail | nu
       events: { orderBy: { createdAt: "desc" } },
     },
   });
-}
-
-export async function getAdminDashboardData(): Promise<AdminDashboardData> {
-  const [stats, latestLeads, recentImports] = await Promise.all([
-    Promise.all([
-      prisma.company.count(),
-      prisma.company.count({ where: { isPublished: true } }),
-      prisma.leadRequest.count(),
-      prisma.article.count(),
-      prisma.county.count(),
-    ]),
-    prisma.leadRequest.findMany({
-      include: {
-        company: true,
-        selections: { include: { company: true } },
-        county: true,
-        city: true,
-        service: true,
-        images: true,
-        notes: { include: { adminUser: true } },
-        events: true,
-      },
-      orderBy: { createdAt: "desc" },
-      take: 5,
-    }),
-    prisma.companyImportRun.findMany({
-      include: { county: true, city: true },
-      orderBy: { startedAt: "desc" },
-      take: 5,
-    }),
-  ]);
-
-  return {
-    stats: {
-      companies: stats[0],
-      activeCompanies: stats[1],
-      leads: stats[2],
-      articles: stats[3],
-      counties: stats[4],
-    },
-    latestLeads,
-    recentImports,
-  };
 }
