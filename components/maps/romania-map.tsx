@@ -78,30 +78,6 @@ const countyLayouts: Record<string, CountyLayout> = {
   bucuresti: { x: 424, y: 343, width: 36, height: 22 },
 };
 
-const labelNudges: Record<
-  string,
-  { dx?: number; dy?: number; countDx?: number; countDy?: number; tooltipDx?: number; tooltipDy?: number }
-> = {
-  bucuresti: { dx: 12, dy: 16, countDx: 12, countDy: 20, tooltipDx: 14, tooltipDy: 18 },
-  ilfov: { dx: 12, dy: -10, countDx: 12, countDy: -2, tooltipDx: 16, tooltipDy: -6 },
-  giurgiu: { dx: 12, dy: 18, countDx: 12, countDy: 26, tooltipDx: 12, tooltipDy: 18 },
-  calarasi: { dx: 16, dy: 8, countDx: 16, countDy: 16, tooltipDx: 22, tooltipDy: 8 },
-  ialomita: { dx: 18, dy: -2, countDx: 18, countDy: 8, tooltipDx: 24, tooltipDy: -6 },
-  braila: { dx: 18, dy: -2, countDx: 18, countDy: 8, tooltipDx: 24, tooltipDy: -6 },
-  galati: { dx: 20, dy: -2, countDx: 20, countDy: 8, tooltipDx: 26, tooltipDy: -6 },
-  tulcea: { dx: 18, dy: 4, countDx: 18, countDy: 14, tooltipDx: 24, tooltipDy: 2 },
-  constanta: { dx: 14, dy: 14, countDx: 14, countDy: 22, tooltipDx: 18, tooltipDy: 12 },
-  covasna: { dx: 10, dy: 4, countDx: 10, countDy: 14 },
-  vrancea: { dx: 10, dy: 4, countDx: 10, countDy: 14 },
-  bacau: { dx: 8, dy: -4, countDx: 8, countDy: 8 },
-  neamt: { dx: 8, dy: -4, countDx: 8, countDy: 8 },
-  botosani: { dx: 12, dy: -4, countDx: 12, countDy: 8 },
-  iasi: { dx: 14, dy: 0, countDx: 14, countDy: 10 },
-  vaslui: { dx: 12, dy: 4, countDx: 12, countDy: 14 },
-  sibiu: { dx: 8, dy: 2, countDx: 8, countDy: 12 },
-  salaj: { dx: 8, dy: -2, countDx: 8, countDy: 10 },
-};
-
 const countLegend = [
   { label: "0-4 firme", color: "#BFDBFE" },
   { label: "5-14 firme", color: "#86EFAC" },
@@ -143,51 +119,56 @@ const mapLocationBySlug = new Map(
   (romania.locations as RomaniaSvgLocation[]).map((location) => [slugify(location.name), location]),
 );
 
-function getDisplayLabel(county: CountyWithStats, isSmall: boolean) {
-  if (isSmall && county.shortCode) {
+function getDisplayLabel(county: CountyWithStats, width: number, height: number) {
+  const lines = getLabelLines(county.name);
+  const longestLine = Math.max(...lines.map((line) => line.length));
+  const doesNotFit = longestLine * 5.2 > width * 0.82 || lines.length * 10 > height * 0.7;
+
+  if ((width < 60 || height < 34 || doesNotFit) && county.shortCode) {
     return [county.shortCode.toUpperCase()];
   }
 
-  return getLabelLines(county.name);
+  return lines;
 }
 
-function getPathCentroid(pathElement: SVGPathElement) {
-  const totalLength = pathElement.getTotalLength();
-  const sampleCount = 180;
-  const points = Array.from({ length: sampleCount }, (_, index) => {
-    const distance = (totalLength * index) / sampleCount;
-    return pathElement.getPointAtLength(distance);
-  });
+function getPathLabelPosition(pathElement: SVGPathElement): LabelPosition {
+  const bbox = pathElement.getBBox();
+  const center = { x: bbox.x + bbox.width / 2, y: bbox.y + bbox.height / 2 };
+  const gridSize = 17;
+  let bestPoint = center;
+  let bestScore = Number.NEGATIVE_INFINITY;
 
-  let twiceArea = 0;
-  let centroidX = 0;
-  let centroidY = 0;
-
-  for (let index = 0; index < points.length; index += 1) {
-    const current = points[index];
-    const next = points[(index + 1) % points.length];
-    const factor = current.x * next.y - next.x * current.y;
-
-    twiceArea += factor;
-    centroidX += (current.x + next.x) * factor;
-    centroidY += (current.y + next.y) * factor;
+  if (typeof pathElement.isPointInFill !== "function") {
+    return { ...center, width: bbox.width, height: bbox.height };
   }
 
-  if (Math.abs(twiceArea) < 1) {
-    const bbox = pathElement.getBBox();
-    return {
-      x: bbox.x + bbox.width / 2,
-      y: bbox.y + bbox.height / 2,
-      width: bbox.width,
-      height: bbox.height,
-    };
+  for (let row = 1; row < gridSize; row += 1) {
+    for (let column = 1; column < gridSize; column += 1) {
+      const x = bbox.x + (bbox.width * column) / gridSize;
+      const y = bbox.y + (bbox.height * row) / gridSize;
+      const point = new DOMPoint(x, y);
+      if (!pathElement.isPointInFill(point)) continue;
+
+      const edgeDistance = Math.min(
+        x - bbox.x,
+        bbox.x + bbox.width - x,
+        y - bbox.y,
+        bbox.y + bbox.height - y,
+      );
+      const centerDistance = Math.hypot(x - center.x, y - center.y);
+      const score = edgeDistance - centerDistance * 0.12;
+
+      if (score > bestScore) {
+        bestScore = score;
+        bestPoint = { x, y };
+      }
+    }
   }
 
   return {
-    x: centroidX / (3 * twiceArea),
-    y: centroidY / (3 * twiceArea),
-    width: pathElement.getBBox().width,
-    height: pathElement.getBBox().height,
+    ...bestPoint,
+    width: bbox.width,
+    height: bbox.height,
   };
 }
 
@@ -203,16 +184,20 @@ export function RomaniaMap({ counties }: RomaniaMapProps) {
   const selectedCounty = visibleCounties.find((county) => county.slug === selectedCountySlug);
 
   useEffect(() => {
-    const nextPositions: Record<string, LabelPosition> = {};
+    const frame = requestAnimationFrame(() => {
+      const nextPositions: Record<string, LabelPosition> = {};
 
-    for (const county of visibleCounties) {
-      const pathElement = pathRefs.current[county.slug];
-      if (!pathElement) continue;
+      for (const county of visibleCounties) {
+        const pathElement = pathRefs.current[county.slug];
+        if (!pathElement) continue;
 
-      nextPositions[county.slug] = getPathCentroid(pathElement);
-    }
+        nextPositions[county.slug] = getPathLabelPosition(pathElement);
+      }
 
-    setLabelPositions(nextPositions);
+      setLabelPositions(nextPositions);
+    });
+
+    return () => cancelAnimationFrame(frame);
   }, [visibleCounties]);
 
   return (
@@ -258,25 +243,23 @@ export function RomaniaMap({ counties }: RomaniaMapProps) {
                 width: fallbackLayout.width ?? 70,
                 height: fallbackLayout.height ?? 44,
               };
-              const nudge = labelNudges[county.slug] ?? {};
               const width = labelPosition.width ?? fallbackLayout.width ?? 70;
               const height = labelPosition.height ?? fallbackLayout.height ?? 44;
               const isTiny = width < 56 || height < 34;
               const isSmall = width < 72 || height < 44;
-              const labelLines = getDisplayLabel(county, isSmall || isTiny);
+              const labelLines = getDisplayLabel(county, width, height);
               const topCities = (county.cities ?? []).slice(0, 3).map((city) => city.name).join(", ");
-              const labelX = labelPosition.x + (nudge.dx ?? 0);
-              const labelY = labelPosition.y + (nudge.dy ?? 0);
-              const countX = labelPosition.x + (nudge.countDx ?? nudge.dx ?? 0);
-              const countY = labelPosition.y + (nudge.countDy ?? 0);
+              const labelX = labelPosition.x;
+              const labelY = labelPosition.y;
               const isHighlighted = highlightedCountySlugs.has(county.slug);
               const fillColor = getCountyColorByCount(count);
               const labelFontSize = isTiny ? 7.2 : isSmall ? 8 : 9.6;
               const countFontSize = isTiny ? 0 : isSmall ? 6.5 : 7.8;
               const lineGap = isTiny ? 7.2 : isSmall ? 8 : 9.5;
-              const labelTopY = labelY - (labelLines.length > 1 ? lineGap / 1.3 : 1);
-              const countTextY = countY + (labelLines.length > 1 ? lineGap * 1.35 : 10);
               const showCountOnMap = !isTiny;
+              const rowCount = labelLines.length + (showCountOnMap ? 1 : 0);
+              const labelTopY = labelY - ((rowCount - 1) * lineGap) / 2;
+              const countTextY = labelTopY + labelLines.length * lineGap;
 
               return (
                 <a
@@ -336,7 +319,7 @@ export function RomaniaMap({ counties }: RomaniaMapProps) {
                     </text>
                     {showCountOnMap ? (
                       <text
-                        x={countX}
+                        x={labelX}
                         y={countTextY}
                         textAnchor="middle"
                         fontFamily="Arial, Helvetica, sans-serif"

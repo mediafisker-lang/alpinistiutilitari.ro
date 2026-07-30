@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Manrope } from "next/font/google";
+import Script from "next/script";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
 import { SiteShell } from "@/components/site/site-shell";
@@ -66,6 +67,8 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessJsonLd) }}
         />
+        <Script src="/pwa-install-delay.js" strategy="beforeInteractive" />
+        <script src="/lead-form-scope.js" defer />
         <PwaRegistrar />
         <SiteShell>{children}</SiteShell>
         <SpeedInsights />

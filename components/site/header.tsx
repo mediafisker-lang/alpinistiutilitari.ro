@@ -27,9 +27,9 @@ const serviceMenuLinks = [
 
 export function SiteHeader() {
   return (
-    <header className="sticky top-0 z-40 border-b border-[#DCE4E9] bg-white/96 shadow-[0_8px_30px_rgba(16,42,67,0.07)] backdrop-blur-xl">
+    <header className="site-header sticky top-0 z-[100] border-b border-[#DCE4E9] bg-white/96 shadow-[0_8px_30px_rgba(16,42,67,0.07)] backdrop-blur-xl">
       <div className="bg-[#102A43] text-white">
-        <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-2 text-xs font-semibold sm:px-6 lg:px-8">
+        <div className="site-topbar mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-2 text-xs font-semibold sm:px-6 lg:px-8">
           <div className="flex items-center gap-2">
             <Zap className="size-3.5" />
             <span>
@@ -45,9 +45,21 @@ export function SiteHeader() {
       </div>
 
       <div className="bg-white">
-        <div className="mx-auto flex max-w-[1240px] items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:px-8">
+        <div className="site-mainbar mx-auto flex max-w-[1240px] items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:px-8">
           <div className="flex min-w-0 items-center gap-3 xl:gap-4">
-            <Link href="/" className="flex min-w-0 items-center gap-3">
+            <Link href="/" className="hidden shrink-0 items-center lg:flex" aria-label="AlpinistiUtilitari.ro">
+              <Image
+                src="/logo-desktop-v2-trimmed.webp"
+                alt="AlpinistiUtilitari.ro – Platforma Națională"
+                width={300}
+                height={125}
+                className="h-[58px] w-auto object-contain xl:h-[64px]"
+                preload
+                unoptimized
+              />
+            </Link>
+
+            <Link href="/" className="flex min-w-0 items-center gap-3 lg:hidden">
               <div className="flex size-11 items-center justify-center rounded-xl border border-[#DCE4E9] bg-white">
                 <Image
                   src="/logo-alpinistiutilitari.svg"
@@ -66,13 +78,6 @@ export function SiteHeader() {
               </div>
             </Link>
 
-            <Link
-              href="/"
-              className="hidden rounded-xl border border-[#DCE4E9] bg-[#F5F7F9] px-4 py-2 text-[11px] font-bold uppercase leading-5 text-[#176B87] transition hover:border-[#176B87]/35 lg:block xl:hidden"
-            >
-              <span className="block whitespace-nowrap">Lansezi o cerere,</span>
-              <span className="block whitespace-nowrap">primești mai multe oferte locale!</span>
-            </Link>
           </div>
 
           <nav className="hidden items-center gap-4 lg:flex xl:gap-5">

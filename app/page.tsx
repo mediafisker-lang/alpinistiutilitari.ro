@@ -102,26 +102,28 @@ export default async function HomePage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
-      <section className="mx-auto max-w-[1240px] px-4 py-5 sm:px-6 lg:px-8 lg:py-8">
+      <section className="home-hero mx-auto max-w-[1240px] px-4 py-5 sm:px-6 lg:px-8 lg:py-8">
         <div className="hero-shell relative overflow-hidden rounded-2xl border border-white/20 bg-[linear-gradient(120deg,#102A43_0%,#0F526A_58%,#176B87_100%)] px-5 py-6 text-white shadow-[0_24px_70px_rgba(16,42,67,0.22)] sm:px-7 sm:py-8 lg:px-10 lg:py-12">
           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.18),transparent_26%),radial-gradient(circle_at_bottom_right,rgba(255,255,255,0.16),transparent_22%)]" />
           <div className="pointer-events-none absolute -left-16 top-16 hidden h-52 w-52 rounded-full bg-white/10 blur-3xl sm:block" />
           <div
             aria-hidden="true"
-            className="pointer-events-none absolute inset-y-0 right-0 z-0 hidden w-[42%] overflow-hidden lg:block"
+            className="hero-photo pointer-events-none absolute inset-y-0 right-0 z-0 w-full overflow-hidden lg:w-[42%]"
           >
             <div className="absolute inset-0 z-10 bg-gradient-to-r from-[#102A43] via-[#102A43]/35 to-transparent" />
             <Image
-              src="/hero-alpinisti-photo.jpg"
-              alt="Echipă de alpinism utilitar la lucru pe fațadă"
+              src="/hero-desktop-alpinist-v1.webp"
+              alt=""
               fill
-              sizes="(min-width: 1024px) 42vw, 0px"
-              className="object-cover object-[72%_center] opacity-70"
+              sizes="(max-width: 1023px) 100vw, 58vw"
+              preload
+              unoptimized
+              className="pointer-events-none object-cover object-[62%_center] opacity-90 lg:-translate-x-[28%] lg:scale-[1.03]"
             />
           </div>
 
-          <div className="relative z-20 grid min-w-0 gap-8 lg:grid-cols-[1.08fr_0.92fr]">
-            <div className="min-w-0 space-y-6">
+          <div className="hero-content relative z-20 grid min-w-0 gap-8 lg:grid-cols-[1.08fr_0.92fr]">
+            <div className="hero-copy min-w-0 space-y-6">
               <div className="inline-flex max-w-full items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-center text-xs font-semibold uppercase tracking-[0.16em] text-white/85 sm:tracking-[0.22em]">
                 <Sparkles className="size-4" />
                 PLATFORMA NATIONALA DE ALPINISM UTILITAR
@@ -155,7 +157,7 @@ export default async function HomePage() {
                 </Link>
               </div>
 
-              <div className="rounded-[2rem] border border-white/16 bg-white/10 p-5 text-white shadow-[0_20px_44px_rgba(2,12,27,0.2)] sm:p-6 sm:backdrop-blur-xl">
+              <div className="hero-promo hidden rounded-[2rem] border border-white/16 bg-white/10 p-5 text-white shadow-[0_20px_44px_rgba(2,12,27,0.2)] sm:p-6 sm:backdrop-blur-xl">
                 <p className="text-sm font-black uppercase tracking-[0.18em] text-sky-100/86">
                   Alpinism Utilitar România
                 </p>
@@ -188,23 +190,7 @@ export default async function HomePage() {
                 </div>
               </div>
 
-              <div className="grid gap-3 sm:grid-cols-3">
-                {[
-                  { value: `${stats.companies}+`, label: "firme active" },
-                  { value: `${stats.counties}`, label: "județe acoperite" },
-                  { value: `${stats.services}+`, label: "servicii populare" },
-                ].map((item) => (
-                  <div
-                    key={item.label}
-                    className="rounded-[1.6rem] border border-white/16 bg-white/10 px-4 py-4 md:backdrop-blur"
-                  >
-                    <p className="text-2xl font-black text-white">{item.value}</p>
-                    <p className="mt-1 text-sm text-white/78">{item.label}</p>
-                  </div>
-                ))}
-              </div>
-
-              <div className="grid gap-3 sm:grid-cols-3">
+              <div className="hero-highlights hidden grid gap-3 sm:grid-cols-3">
                 {heroHighlights.map((item) => {
                   const Icon = item.icon;
 
@@ -225,7 +211,7 @@ export default async function HomePage() {
 
               <nav
                 aria-label="Navigare în pagină"
-                className="flex flex-wrap gap-2 rounded-[1.7rem] border border-white/14 bg-white/8 p-3 md:backdrop-blur"
+                className="hero-anchors hidden flex-wrap gap-2 rounded-[1.7rem] border border-white/14 bg-white/8 p-3 md:backdrop-blur"
               >
                 {quickAnchors.map((anchor) => (
                   <a
@@ -239,7 +225,7 @@ export default async function HomePage() {
               </nav>
             </div>
 
-            <div className="min-w-0 space-y-4">
+            <div className="hero-form-column min-w-0 space-y-4">
               <div className="rounded-[2.1rem] border border-white/16 bg-white/10 p-2 shadow-[0_24px_60px_rgba(2,12,27,0.24)] md:backdrop-blur-xl">
                 <LeadForm
                   variant="compact"
@@ -259,7 +245,7 @@ export default async function HomePage() {
                 />
               </div>
 
-              <div className="grid gap-4 sm:grid-cols-2">
+              <div className="hero-secondary hidden gap-4 sm:grid-cols-2">
                 <div className="rounded-[1.8rem] border border-white/14 bg-white/10 p-5 md:backdrop-blur">
                   <p className="text-xs font-semibold uppercase tracking-[0.22em] text-sky-100/88">
                     Cereri populare
@@ -295,7 +281,7 @@ export default async function HomePage() {
                 </div>
               </div>
 
-              <div className="rounded-[1.9rem] border border-white/14 bg-white/10 p-5 text-white/82 md:backdrop-blur">
+              <div className="hero-secondary hidden rounded-[1.9rem] border border-white/14 bg-white/10 p-5 text-white/82 md:backdrop-blur">
                 <p className="text-xs font-semibold uppercase tracking-[0.22em] text-sky-100/88">
                   Flux simplificat
                 </p>
@@ -318,11 +304,31 @@ export default async function HomePage() {
                 </div>
               </div>
             </div>
+
+            <div className="hero-stats grid gap-3 sm:grid-cols-4 lg:col-span-2">
+              {[
+                { value: `${stats.companies}+`, label: "firme active" },
+                { value: `${stats.counties}`, label: "județe acoperite" },
+                { value: `${stats.services}+`, label: "servicii populare" },
+              ].map((item) => (
+                <div
+                  key={item.label}
+                  className="rounded-[1.6rem] border border-white/16 bg-white/10 px-4 py-4 md:backdrop-blur"
+                >
+                  <p className="text-2xl font-black text-white">{item.value}</p>
+                  <p className="mt-1 text-sm text-white/78">{item.label}</p>
+                </div>
+              ))}
+              <div className="hero-stat-extra rounded-[1.6rem] border border-white/16 bg-white/10 px-4 py-4 md:backdrop-blur">
+                <p className="text-2xl font-black text-white">100%</p>
+                <p className="mt-1 text-sm text-white/78">gratuit pentru beneficiari</p>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
-      <section id="judete" className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+      <section id="judete" className="home-counties-map mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
         <div className="grid gap-6 lg:grid-cols-[1.02fr_0.98fr]">
           <div className="rounded-[2rem] border border-slate-200/80 bg-white p-6 shadow-sm shadow-slate-950/5 sm:p-8">
             <div className="mb-6 flex items-end justify-between gap-4">
@@ -362,7 +368,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section id="servicii" className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+      <section id="servicii" className="home-services mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
         <div className="mb-8 flex items-end justify-between gap-4">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#0063f7]">
@@ -377,7 +383,7 @@ export default async function HomePage() {
           </Link>
         </div>
 
-        <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+        <div className="home-services-grid grid gap-5 md:grid-cols-2 xl:grid-cols-3">
           {services.map((service) => (
             <ServiceCard
               key={service.id}
