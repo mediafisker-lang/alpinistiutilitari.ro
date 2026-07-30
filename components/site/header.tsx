@@ -59,23 +59,20 @@ export function SiteHeader() {
               />
             </Link>
 
-            <Link href="/" className="flex min-w-0 items-center gap-3 lg:hidden">
-              <div className="flex size-11 items-center justify-center rounded-xl border border-[#DCE4E9] bg-white">
-                <Image
-                  src="/logo-alpinistiutilitari.svg"
-                  alt="Alpinisti Utilitari"
-                  width={48}
-                  height={48}
-                  className="size-11 rounded-xl"
-                  priority
-                />
-              </div>
-              <div className="min-w-0">
-                <p className="truncate text-[9px] font-bold uppercase tracking-[0.14em] text-[#176B87] sm:text-[10px] sm:tracking-[0.2em]">
-                  PLATFORMA NATIONALA
-                </p>
-                <p className="truncate text-lg font-extrabold text-[#102A43]">AlpinistiUtilitari.ro</p>
-              </div>
+            <Link
+              href="/"
+              className="flex min-w-0 items-center lg:hidden"
+              aria-label="AlpinistiUtilitari.ro"
+            >
+              <Image
+                src="/logo-mobile-v2.webp"
+                alt="AlpinistiUtilitari.ro – Platforma Națională"
+                width={720}
+                height={256}
+                className="mobile-brand-logo object-contain object-left"
+                preload
+                unoptimized
+              />
             </Link>
 
           </div>

@@ -134,7 +134,7 @@ export default async function HomePage() {
                   Interfață nouă, clară și rapidă
                 </p>
                 <h1 className="font-display max-w-4xl text-4xl font-black tracking-tight text-white sm:text-5xl lg:text-6xl">
-                  Trimite cererea ta direct către firmele din judet sau tara!
+                  Gaseste firma de alpinism utilitar pentru lucrarea ta
                 </h1>
                 <p className="max-w-3xl text-base leading-8 text-sky-50/88 sm:text-lg">
                   Pagina oficiala AlpinistiROmania, firmele inscrise primesc cererea ta si iti raspund direct!
@@ -336,9 +336,6 @@ export default async function HomePage() {
                 <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#0063f7]">
                   Acoperire națională
                 </p>
-                <h2 className="font-display mt-2 text-3xl font-black tracking-tight text-slate-950 sm:text-4xl">
-                  Harta te duce direct către județul și zona care te interesează.
-                </h2>
               </div>
             </div>
             <RomaniaMap counties={counties} />
@@ -471,7 +468,7 @@ export default async function HomePage() {
 
       <section className="mx-auto grid max-w-7xl gap-6 px-4 py-8 sm:px-6 lg:grid-cols-2 lg:px-8">
         <SeoLinkCloud eyebrow="Județe" title="Navigare locală pentru România" links={countyLinks} />
-        <SeoLinkCloud eyebrow="Servicii" title="Verticale SEO principale" links={serviceLinks} />
+        <SeoLinkCloud eyebrow="Servicii" title="Servicii cerute astazi:" links={serviceLinks} />
       </section>
 
       <section className="mx-auto max-w-7xl px-4 py-2 sm:px-6 lg:px-8">
@@ -490,7 +487,7 @@ export default async function HomePage() {
               Articole
             </p>
             <h2 className="font-display mt-2 text-3xl font-black tracking-tight text-slate-950 sm:text-4xl">
-              Conținut util pentru căutări orientate pe servicii
+              Detalii utile pentru si despre serviciile contractate
             </h2>
           </div>
           <Link href="/blog" className="text-sm font-semibold text-[#0063f7]">

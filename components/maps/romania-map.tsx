@@ -2,7 +2,7 @@
 
 import romania from "@svg-maps/romania";
 import { MapPinned } from "lucide-react";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useState } from "react";
 import type { CountyWithStats } from "@/lib/data/types";
 import { Card } from "@/components/ui/card";
 import { slugify } from "@/lib/utils";
@@ -11,72 +11,13 @@ type RomaniaMapProps = {
   counties?: CountyWithStats[];
 };
 
-type CountyLayout = {
-  x: number;
-  y: number;
-  width?: number;
-  height?: number;
-};
-
 type RomaniaSvgLocation = {
   name: string;
   id: string;
   path: string;
 };
 
-type LabelPosition = {
-  x: number;
-  y: number;
-  width: number;
-  height: number;
-};
-
 const [VIEWBOX_WIDTH, VIEWBOX_HEIGHT] = romania.viewBox.split(" ").slice(2).map(Number);
-
-const countyLayouts: Record<string, CountyLayout> = {
-  "satu-mare": { x: 100, y: 50, width: 70, height: 38 },
-  maramures: { x: 177, y: 42, width: 80, height: 42 },
-  bihor: { x: 70, y: 105, width: 74, height: 48 },
-  salaj: { x: 150, y: 90, width: 58, height: 38 },
-  cluj: { x: 220, y: 107, width: 78, height: 48 },
-  "bistrita-nasaud": { x: 294, y: 77, width: 66, height: 42 },
-  suceava: { x: 430, y: 56, width: 88, height: 52 },
-  botosani: { x: 515, y: 58, width: 60, height: 40 },
-  iasi: { x: 512, y: 120, width: 68, height: 52 },
-  vaslui: { x: 537, y: 185, width: 60, height: 54 },
-  neamt: { x: 434, y: 121, width: 74, height: 46 },
-  bacau: { x: 444, y: 182, width: 72, height: 48 },
-  vrancea: { x: 480, y: 251, width: 60, height: 54 },
-  galati: { x: 550, y: 285, width: 58, height: 52 },
-  braila: { x: 520, y: 330, width: 64, height: 44 },
-  tulcea: { x: 603, y: 299, width: 78, height: 62 },
-  constanta: { x: 571, y: 379, width: 84, height: 58 },
-  calarasi: { x: 493, y: 371, width: 70, height: 48 },
-  ialomita: { x: 478, y: 322, width: 68, height: 44 },
-  prahova: { x: 389, y: 269, width: 66, height: 46 },
-  dambovita: { x: 338, y: 308, width: 68, height: 46 },
-  arges: { x: 286, y: 280, width: 68, height: 48 },
-  buzau: { x: 444, y: 276, width: 66, height: 44 },
-  covasna: { x: 396, y: 214, width: 62, height: 40 },
-  brasov: { x: 345, y: 230, width: 72, height: 52 },
-  harghita: { x: 405, y: 170, width: 72, height: 50 },
-  mures: { x: 329, y: 144, width: 74, height: 46 },
-  sibiu: { x: 284, y: 209, width: 66, height: 42 },
-  alba: { x: 237, y: 182, width: 70, height: 46 },
-  hunedoara: { x: 176, y: 213, width: 80, height: 56 },
-  arad: { x: 89, y: 147, width: 84, height: 54 },
-  timis: { x: 85, y: 228, width: 90, height: 60 },
-  "caras-severin": { x: 137, y: 307, width: 94, height: 70 },
-  mehedinti: { x: 155, y: 351, width: 64, height: 38 },
-  dolj: { x: 255, y: 364, width: 84, height: 56 },
-  gorj: { x: 233, y: 307, width: 74, height: 46 },
-  valcea: { x: 291, y: 290, width: 58, height: 46 },
-  olt: { x: 322, y: 357, width: 62, height: 48 },
-  teleorman: { x: 390, y: 405, width: 88, height: 60 },
-  giurgiu: { x: 444, y: 399, width: 62, height: 42 },
-  ilfov: { x: 409, y: 320, width: 45, height: 26 },
-  bucuresti: { x: 424, y: 343, width: 36, height: 22 },
-};
 
 const countLegend = [
   { label: "0-4 firme", color: "#BFDBFE" },
@@ -92,7 +33,7 @@ function getCountyCount(county: CountyWithStats) {
 }
 
 function getVisibleCounties(counties?: CountyWithStats[]) {
-  return [...(counties ?? [])].filter((county) => county.slug in countyLayouts);
+  return [...(counties ?? [])].filter((county) => mapLocationBySlug.has(county.slug));
 }
 
 function getCountyColorByCount(count: number) {
@@ -102,75 +43,9 @@ function getCountyColorByCount(count: number) {
   return countLegend[0].color;
 }
 
-function getLabelLines(name: string) {
-  if (name.includes("-")) {
-    return name.split("-").map((part) => part.toUpperCase());
-  }
-
-  const parts = name.split(" ");
-  if (parts.length > 1) {
-    return parts.map((part) => part.toUpperCase());
-  }
-
-  return [name.toUpperCase()];
-}
-
 const mapLocationBySlug = new Map(
   (romania.locations as RomaniaSvgLocation[]).map((location) => [slugify(location.name), location]),
 );
-
-function getDisplayLabel(county: CountyWithStats, width: number, height: number) {
-  const lines = getLabelLines(county.name);
-  const longestLine = Math.max(...lines.map((line) => line.length));
-  const doesNotFit = longestLine * 5.2 > width * 0.82 || lines.length * 10 > height * 0.7;
-
-  if ((width < 60 || height < 34 || doesNotFit) && county.shortCode) {
-    return [county.shortCode.toUpperCase()];
-  }
-
-  return lines;
-}
-
-function getPathLabelPosition(pathElement: SVGPathElement): LabelPosition {
-  const bbox = pathElement.getBBox();
-  const center = { x: bbox.x + bbox.width / 2, y: bbox.y + bbox.height / 2 };
-  const gridSize = 17;
-  let bestPoint = center;
-  let bestScore = Number.NEGATIVE_INFINITY;
-
-  if (typeof pathElement.isPointInFill !== "function") {
-    return { ...center, width: bbox.width, height: bbox.height };
-  }
-
-  for (let row = 1; row < gridSize; row += 1) {
-    for (let column = 1; column < gridSize; column += 1) {
-      const x = bbox.x + (bbox.width * column) / gridSize;
-      const y = bbox.y + (bbox.height * row) / gridSize;
-      const point = new DOMPoint(x, y);
-      if (!pathElement.isPointInFill(point)) continue;
-
-      const edgeDistance = Math.min(
-        x - bbox.x,
-        bbox.x + bbox.width - x,
-        y - bbox.y,
-        bbox.y + bbox.height - y,
-      );
-      const centerDistance = Math.hypot(x - center.x, y - center.y);
-      const score = edgeDistance - centerDistance * 0.12;
-
-      if (score > bestScore) {
-        bestScore = score;
-        bestPoint = { x, y };
-      }
-    }
-  }
-
-  return {
-    ...bestPoint,
-    width: bbox.width,
-    height: bbox.height,
-  };
-}
 
 export function RomaniaMap({ counties }: RomaniaMapProps) {
   const visibleCounties = useMemo(() => getVisibleCounties(counties), [counties]);
@@ -178,27 +53,8 @@ export function RomaniaMap({ counties }: RomaniaMapProps) {
     .map((slug) => visibleCounties.find((county) => county.slug === slug))
     .filter((county): county is CountyWithStats => Boolean(county));
   const highlightedCountySlugs = new Set(strategicCounties.map((county) => county.slug));
-  const [labelPositions, setLabelPositions] = useState<Record<string, LabelPosition>>({});
   const [selectedCountySlug, setSelectedCountySlug] = useState<string | null>(null);
-  const pathRefs = useRef<Record<string, SVGPathElement | null>>({});
   const selectedCounty = visibleCounties.find((county) => county.slug === selectedCountySlug);
-
-  useEffect(() => {
-    const frame = requestAnimationFrame(() => {
-      const nextPositions: Record<string, LabelPosition> = {};
-
-      for (const county of visibleCounties) {
-        const pathElement = pathRefs.current[county.slug];
-        if (!pathElement) continue;
-
-        nextPositions[county.slug] = getPathLabelPosition(pathElement);
-      }
-
-      setLabelPositions(nextPositions);
-    });
-
-    return () => cancelAnimationFrame(frame);
-  }, [visibleCounties]);
 
   return (
     <Card className="overflow-hidden rounded-[2rem] border border-slate-200 bg-white p-0 text-slate-950 shadow-xl shadow-slate-950/8">
@@ -235,31 +91,9 @@ export function RomaniaMap({ counties }: RomaniaMapProps) {
               const mapLocation = mapLocationBySlug.get(county.slug);
               if (!mapLocation) return null;
 
-              const fallbackLayout = countyLayouts[county.slug];
-              const measuredLayout = labelPositions[county.slug];
-              const labelPosition = measuredLayout ?? {
-                x: fallbackLayout.x,
-                y: fallbackLayout.y,
-                width: fallbackLayout.width ?? 70,
-                height: fallbackLayout.height ?? 44,
-              };
-              const width = labelPosition.width ?? fallbackLayout.width ?? 70;
-              const height = labelPosition.height ?? fallbackLayout.height ?? 44;
-              const isTiny = width < 56 || height < 34;
-              const isSmall = width < 72 || height < 44;
-              const labelLines = getDisplayLabel(county, width, height);
               const topCities = (county.cities ?? []).slice(0, 3).map((city) => city.name).join(", ");
-              const labelX = labelPosition.x;
-              const labelY = labelPosition.y;
               const isHighlighted = highlightedCountySlugs.has(county.slug);
               const fillColor = getCountyColorByCount(count);
-              const labelFontSize = isTiny ? 7.2 : isSmall ? 8 : 9.6;
-              const countFontSize = isTiny ? 0 : isSmall ? 6.5 : 7.8;
-              const lineGap = isTiny ? 7.2 : isSmall ? 8 : 9.5;
-              const showCountOnMap = !isTiny;
-              const rowCount = labelLines.length + (showCountOnMap ? 1 : 0);
-              const labelTopY = labelY - ((rowCount - 1) * lineGap) / 2;
-              const countTextY = labelTopY + labelLines.length * lineGap;
 
               return (
                 <a
@@ -278,9 +112,6 @@ export function RomaniaMap({ counties }: RomaniaMapProps) {
                     style={{ transformBox: "fill-box", transformOrigin: "center" }}
                   >
                     <path
-                      ref={(element) => {
-                        pathRefs.current[county.slug] = element;
-                      }}
                       d={mapLocation.path}
                       fill={fillColor}
                       stroke={isHighlighted ? "#b45309" : "#1d4ed8"}
@@ -296,39 +127,6 @@ export function RomaniaMap({ counties }: RomaniaMapProps) {
                         strokeDasharray="3 2"
                         className="pointer-events-none opacity-80"
                       />
-                    ) : null}
-                    <text
-                      x={labelX}
-                      y={labelTopY}
-                      textAnchor="middle"
-                      dominantBaseline="middle"
-                      fontFamily="Arial, Helvetica, sans-serif"
-                      fill="#0f172a"
-                      className="pointer-events-none select-none font-black"
-                      style={{ fontSize: `${labelFontSize}px` }}
-                    >
-                      {labelLines.map((line, index) => (
-                        <tspan
-                          key={`${county.slug}-${line}`}
-                          x={labelX}
-                          dy={index === 0 ? 0 : lineGap}
-                        >
-                          {line}
-                        </tspan>
-                      ))}
-                    </text>
-                    {showCountOnMap ? (
-                      <text
-                        x={labelX}
-                        y={countTextY}
-                        textAnchor="middle"
-                        fontFamily="Arial, Helvetica, sans-serif"
-                        fill="#0f172a"
-                        className="pointer-events-none select-none font-bold"
-                        style={{ fontSize: `${countFontSize}px` }}
-                      >
-                        {count}
-                      </text>
                     ) : null}
                   </g>
                 </a>

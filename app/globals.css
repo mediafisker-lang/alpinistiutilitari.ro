@@ -109,6 +109,17 @@ button[data-offer-cta="true"] {
   }
 }
 
+@keyframes mobile-menu-enter {
+  from {
+    opacity: 0;
+    transform: translateX(1.5rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
 .public-page section {
   scroll-margin-top: 7rem;
 }
@@ -340,30 +351,60 @@ main :is(p, li) {
     padding-block: 0.65rem;
   }
 
-  .site-mainbar > div:first-child > a:first-child {
-    gap: 0.65rem;
+  .site-mainbar .mobile-brand-logo {
+    width: auto;
+    height: 3.5rem;
+    max-width: min(68vw, 16rem);
   }
 
-  .site-mainbar > div:first-child > a:first-child > div:first-child {
-    width: 2.5rem;
-    height: 2.5rem;
+  .mobile-menu-panel {
+    animation: mobile-menu-enter 180ms ease-out;
   }
 
-  .site-mainbar > div:first-child > a:first-child img {
-    width: 2.5rem;
-    height: 2.5rem;
+  .mobile-menu-panel::backdrop {
+    background: rgb(16 42 67 / 30%);
+    backdrop-filter: blur(2px);
   }
 
-  .site-mainbar p:last-child {
-    font-size: 1rem;
-  }
-
-  .mobile-nav > summary::-webkit-details-marker {
+  .mobile-services-menu > summary::-webkit-details-marker {
     display: none;
   }
 
-  .mobile-nav[open] .mobile-nav-trigger {
-    background: #edf2f5;
+  .mobile-services-menu[open] .mobile-services-chevron {
+    transform: rotate(90deg);
+  }
+
+  .mobile-menu-link {
+    display: flex;
+    min-height: 3rem;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 0.75rem;
+    padding: 0.65rem 0.25rem;
+    color: #102a43;
+    font-size: 0.95rem;
+    font-weight: 700;
+    transition:
+      color 160ms ease,
+      background-color 160ms ease;
+  }
+
+  .mobile-menu-link:hover {
+    background: #f5f7f9;
+    color: #176b87;
+  }
+
+  .mobile-menu-sublink {
+    border-radius: 0.5rem;
+    padding: 0.55rem 0.7rem;
+    color: #486581;
+    font-size: 0.82rem;
+    font-weight: 700;
+  }
+
+  .mobile-menu-sublink:hover {
+    background: #f5f7f9;
+    color: #176b87;
   }
 
   .home-hero {
