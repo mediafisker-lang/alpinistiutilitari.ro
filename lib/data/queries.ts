@@ -815,7 +815,7 @@ async function getServicesUncached(): Promise<ServiceWithStats[]> {
 
 export const getServices = unstable_cache(
   getServicesUncached,
-  ["public-services-directory"],
+  ["public-services-directory-v2"],
   { revalidate: 900, tags: ["public-directory-options"] },
 );
 
