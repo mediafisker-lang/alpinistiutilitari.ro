@@ -8,6 +8,11 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 
 const initialState: LeadFormState = {};
+const scopeButtonBase =
+  "flex min-h-11 cursor-pointer items-center justify-center rounded-xl border px-3 py-2 text-sm font-semibold transition";
+const scopeButtonActive = "border-[#176B87] bg-[#E8F0F3] text-[#102A43]";
+const scopeButtonInactive =
+  "border-[#DCE4E9] bg-white text-[#334E68] hover:border-[#176B87]/40";
 
 type Option = {
   id?: string;
@@ -43,6 +48,12 @@ export function LeadForm({
 }: LeadFormProps) {
   const [state, formAction, pending] = useActionState(submitLeadAction, initialState);
   const formRef = useRef<HTMLFormElement>(null);
+  const scopeInputRef = useRef<HTMLInputElement>(null);
+  const countySelectRef = useRef<HTMLSelectElement>(null);
+  const countyTextRef = useRef<HTMLInputElement>(null);
+  const countyButtonRef = useRef<HTMLButtonElement>(null);
+  const nationalButtonRef = useRef<HTMLButtonElement>(null);
+  const nationalHelpRef = useRef<HTMLParagraphElement>(null);
   const router = useRouter();
 
   useEffect(() => {
@@ -64,17 +75,42 @@ export function LeadForm({
     return counties.find((item) => item.id === selectedCountyId)?.label ?? "";
   }, [counties, selectedCountyId]);
 
+  function applyDistributionScope(nextScope: "judet" | "national") {
+    const national = nextScope === "national";
+    setDistributionScope(nextScope);
+
+    if (scopeInputRef.current) scopeInputRef.current.value = nextScope;
+    if (countySelectRef.current) {
+      countySelectRef.current.disabled = national;
+      countySelectRef.current.required = !national;
+      if (national) countySelectRef.current.value = "";
+    }
+    if (countyTextRef.current && national) countyTextRef.current.value = "National";
+    if (nationalHelpRef.current) nationalHelpRef.current.hidden = !national;
+
+    for (const [button, active] of [
+      [countyButtonRef.current, !national],
+      [nationalButtonRef.current, national],
+    ] as const) {
+      if (!button) continue;
+      button.setAttribute("aria-pressed", String(active));
+      button.className = [scopeButtonBase, active ? scopeButtonActive : scopeButtonInactive].join(" ");
+    }
+
+    if (national) setSelectedCountyId("");
+  }
+
   return (
     <form
       ref={formRef}
       action={formAction}
       className={[
-        "rounded-3xl border border-slate-200 bg-white shadow-sm shadow-slate-950/5",
+        "rounded-2xl border border-[#DCE4E9] bg-white shadow-[0_16px_40px_rgba(16,42,67,0.12)]",
         isCompact ? "space-y-3 p-4 sm:p-5" : "space-y-4 p-6",
       ].join(" ")}
     >
       <div className="space-y-2">
-        <p className="text-xs font-semibold uppercase tracking-[0.24em] text-sky-700">
+        <p className="text-xs font-extrabold uppercase tracking-[0.2em] text-[#176B87]">
           Cerere unica de oferta
         </p>
       </div>
@@ -88,8 +124,18 @@ export function LeadForm({
       <input type="hidden" name="address" value="Nespecificata in formular" />
       <input type="hidden" name="serviceId" value={serviceId ?? ""} />
       <input type="hidden" name="serviceText" value={defaultServiceText} />
-      <input type="hidden" name="distributionScope" value={distributionScope} />
-      <input type="hidden" name="countyText" value={isNational ? "National" : selectedCountyLabel || countyName || ""} />
+      <input
+        ref={scopeInputRef}
+        type="hidden"
+        name="distributionScopeInitial"
+        defaultValue={distributionScope}
+      />
+      <input
+        ref={countyTextRef}
+        type="hidden"
+        name="countyText"
+        defaultValue={isNational ? "National" : selectedCountyLabel || countyName || ""}
+      />
 
       <div className="grid gap-4 sm:grid-cols-2">
         <Input name="fullName" placeholder="Nume" required className={isCompact ? "h-11 rounded-xl" : undefined} />
@@ -101,55 +147,47 @@ export function LeadForm({
           Unde trimit cererea
         </p>
         <div className="grid grid-cols-2 gap-2">
-          <label className={[
-            "flex cursor-pointer items-center justify-center rounded-xl border px-3 py-2 text-sm font-semibold transition",
-            distributionScope === "judet"
-              ? "border-sky-300 bg-sky-50 text-sky-800"
-              : "border-slate-200 bg-white text-slate-700 hover:border-slate-300",
-          ].join(" ")}>
-            <input
-              type="radio"
-              name="distributionScopeChoice"
-              value="judet"
-              checked={distributionScope === "judet"}
-              onChange={() => setDistributionScope("judet")}
-              className="sr-only"
-            />
+          <button
+            ref={countyButtonRef}
+            type="button"
+            data-lead-scope="judet"
+            aria-pressed={distributionScope === "judet"}
+            onClick={() => applyDistributionScope("judet")}
+            className={[
+              scopeButtonBase,
+              distributionScope === "judet" ? scopeButtonActive : scopeButtonInactive,
+            ].join(" ")}
+          >
             Trimitere în județ
-          </label>
-          <label className={[
-            "flex cursor-pointer items-center justify-center rounded-xl border px-3 py-2 text-sm font-semibold transition",
-            distributionScope === "national"
-              ? "border-sky-300 bg-sky-50 text-sky-800"
-              : "border-slate-200 bg-white text-slate-700 hover:border-slate-300",
-          ].join(" ")}>
-            <input
-              type="radio"
-              name="distributionScopeChoice"
-              value="national"
-              checked={distributionScope === "national"}
-              onChange={() => {
-                setDistributionScope("national");
-                setSelectedCountyId("");
-              }}
-              className="sr-only"
-            />
+          </button>
+          <button
+            ref={nationalButtonRef}
+            type="button"
+            data-lead-scope="national"
+            aria-pressed={distributionScope === "national"}
+            onClick={() => applyDistributionScope("national")}
+            className={[
+              scopeButtonBase,
+              distributionScope === "national" ? scopeButtonActive : scopeButtonInactive,
+            ].join(" ")}
+          >
             Trimitere în țară
-          </label>
+          </button>
         </div>
       </div>
 
       <div className="space-y-2">
         <label className={isCompact ? "text-xs font-semibold uppercase tracking-[0.18em] text-slate-500" : "text-sm font-medium text-slate-700"}>Judet</label>
         <select
+          ref={countySelectRef}
           name="countyId"
-          value={selectedCountyId}
+          defaultValue={selectedCountyId}
           onChange={(event) => setSelectedCountyId(event.target.value)}
           disabled={isNational}
           required={!isNational}
           className={[
-            "w-full border border-slate-200 bg-white px-4 text-sm text-slate-900 outline-none focus:border-sky-300 disabled:cursor-not-allowed disabled:bg-slate-100 disabled:text-slate-400",
-            isCompact ? "h-11 rounded-xl" : "h-12 rounded-2xl",
+            "w-full border border-[#DCE4E9] bg-white px-4 text-sm text-[#16202A] outline-none focus:border-[#176B87] focus:shadow-[0_0_0_4px_rgba(23,107,135,0.12)] disabled:cursor-not-allowed disabled:bg-slate-100 disabled:text-slate-400",
+            isCompact ? "h-12 rounded-xl" : "h-12 rounded-xl",
           ].join(" ")}
         >
           <option value="" className="text-slate-900">Selecteaza judet</option>
@@ -159,9 +197,14 @@ export function LeadForm({
             </option>
           ))}
         </select>
-        {isNational ? (
-          <p className="text-xs text-slate-500">În modul „Trimitere în țară”, cererea merge la nivel național.</p>
-        ) : null}
+        <p
+          ref={nationalHelpRef}
+          data-national-scope-help
+          hidden={!isNational}
+          className="text-xs text-slate-500"
+        >
+          În modul „Trimitere în țară”, cererea merge la nivel național.
+        </p>
       </div>
 
       <Textarea
@@ -174,7 +217,7 @@ export function LeadForm({
       <Button
         data-offer-cta="true"
         disabled={pending}
-        className={isCompact ? "h-11 w-full rounded-xl" : "w-full"}
+        className="h-12 w-full rounded-xl"
       >
         {pending ? "Se inregistreaza..." : "Trimite cererea"}
       </Button>

@@ -15,6 +15,7 @@ import {
   buildCountySeoDescription,
   romanianCounties,
 } from "@/lib/data/romanian-counties";
+import { serviceCatalog } from "@/lib/data/service-catalog";
 
 type DemoCompany = Company & {
   county: County;
@@ -186,6 +187,26 @@ const services: Service[] = [
     updatedAt: now,
   },
 ];
+
+for (const catalogService of serviceCatalog) {
+  if (services.some((service) => service.slug === catalogService.slug)) continue;
+  services.push({
+    id: `service-${catalogService.slug}`,
+    name: catalogService.name,
+    slug: catalogService.slug,
+    category: catalogService.category,
+    shortName: catalogService.name,
+    shortDescription: catalogService.shortDescription,
+    longDescription: catalogService.longDescription,
+    seoTitle: `${catalogService.name} in Romania`,
+    seoDescription: catalogService.shortDescription,
+    seoIntro: null,
+    icon: catalogService.icon,
+    isActive: true,
+    createdAt: now,
+    updatedAt: now,
+  });
+}
 
 const fallbackCountyBucuresti = counties.find((item) => item.slug === "bucuresti")!;
 const fallbackCountyBrasov = counties.find((item) => item.slug === "brasov")!;

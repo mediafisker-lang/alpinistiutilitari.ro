@@ -366,7 +366,7 @@ export default async function CountyPage({ params }: Props) {
         <CTASection
           eyebrow="Cerere pentru județ"
           title={`Ai o lucrare în ${county.name}? Trimite detaliile și o analizăm intern.`}
-          description={`Poți atașa poze, adresă și detalii tehnice. Cererea rămâne în platformă și este procesată manual pentru a selecta executanții potriviți în ${county.name}.`}
+          description={`Completezi adresa și detaliile tehnice în formular, iar pozele le poți trimite prin butonul WhatsApp de suport. Cererea rămâne în platformă și este procesată pentru firmele potrivite din ${county.name}.`}
           primaryHref="/cere-oferta"
           primaryLabel="Trimite cerere"
           secondaryHref="/firme"

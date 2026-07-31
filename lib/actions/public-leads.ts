@@ -10,6 +10,14 @@ import {
   revokePublicLeadsAccess,
 } from "@/lib/public-leads-access";
 
+export type CompactLeadStatus = "noua" | "in_lucru" | "rezolvata";
+
+async function requirePublicLeadsAccess() {
+  if (!(await hasPublicLeadsAccess())) {
+    throw new Error("Sesiunea a expirat. Autentifică-te din nou.");
+  }
+}
+
 export async function unlockPublicLeadsAction(formData: FormData): Promise<void> {
   const password = formData.get("password")?.toString() ?? "";
 
@@ -63,4 +71,51 @@ export async function deleteSelectedPublicLeadsAction(formData: FormData): Promi
   }
   params.set("success", "Cererile selectate au fost șterse.");
   redirect(`/admin-cereri?${params.toString()}`);
+}
+
+export async function updatePublicLeadStatusAction(
+  leadId: string,
+  status: CompactLeadStatus,
+): Promise<{ ok: true } | { ok: false; error: string }> {
+  try {
+    await requirePublicLeadsAccess();
+    if (!leadId || !["noua", "in_lucru", "rezolvata"].includes(status)) {
+      return { ok: false, error: "Status invalid." };
+    }
+
+    await prisma.leadRequest.update({
+      where: { id: leadId },
+      data: { status },
+    });
+    revalidatePath("/admin-cereri");
+    return { ok: true };
+  } catch (error) {
+    return {
+      ok: false,
+      error: error instanceof Error ? error.message : "Statusul nu a putut fi salvat.",
+    };
+  }
+}
+
+export async function deletePublicLeadsAction(
+  leadIds: string[],
+): Promise<{ ok: true; deleted: number } | { ok: false; error: string }> {
+  try {
+    await requirePublicLeadsAccess();
+    const uniqueIds = [...new Set(leadIds.map((id) => id.trim()).filter(Boolean))];
+    if (!uniqueIds.length) {
+      return { ok: false, error: "Selectează cel puțin o cerere." };
+    }
+
+    const result = await prisma.leadRequest.deleteMany({
+      where: { id: { in: uniqueIds } },
+    });
+    revalidatePath("/admin-cereri");
+    return { ok: true, deleted: result.count };
+  } catch (error) {
+    return {
+      ok: false,
+      error: error instanceof Error ? error.message : "Cererile nu au putut fi șterse.",
+    };
+  }
 }

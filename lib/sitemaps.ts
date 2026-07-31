@@ -1,4 +1,5 @@
 import { filterCompaniesWithUtilityPortfolio } from "@/lib/company-ranking";
+import { canIndexCompanyProfile } from "@/lib/content/company-profile-commercial";
 import { prisma } from "@/lib/db";
 import {
   getFallbackArticles,
@@ -12,6 +13,11 @@ import {
   canIndexCountyPage,
   canIndexCountyServicePage,
 } from "@/lib/seo-rules";
+import {
+  getCountyServiceSlugs,
+  getPriorityLandingServiceSlugs,
+  getPriorityLocalitySlugs,
+} from "@/lib/content/local-commercial";
 import { absoluteUrl } from "@/lib/utils";
 
 export type SitemapEntry = {
@@ -56,12 +62,17 @@ type SitemapCompany = {
   ratingCount: number | null;
   website: string | null;
   phone: string | null;
+  email: string | null;
   countyId: string;
   cityId: string;
+  county: { name: string; slug: string };
+  city: { name: string };
   updatedAt: Date;
   coverage: Array<{
     countyId: string | null;
     cityId: string | null;
+    county: { name: string } | null;
+    city: { name: string } | null;
   }>;
   services: Array<{
     service: {
@@ -226,13 +237,18 @@ async function getDatabaseSitemapDataset(): Promise<SitemapDataset> {
         ratingCount: true,
         website: true,
         phone: true,
+        email: true,
         countyId: true,
         cityId: true,
+        county: { select: { name: true, slug: true } },
+        city: { select: { name: true } },
         updatedAt: true,
         coverage: {
           select: {
             countyId: true,
             cityId: true,
+            county: { select: { name: true } },
+            city: { select: { name: true } },
           },
         },
         services: {
@@ -315,12 +331,17 @@ function getFallbackSitemapDataset(): SitemapDataset {
     ratingCount: company.ratingCount ?? null,
     website: company.website ?? null,
     phone: company.phone ?? null,
+    email: company.email ?? null,
     countyId: company.countyId,
     cityId: company.cityId,
+    county: { name: company.county.name, slug: company.county.slug },
+    city: { name: company.city.name },
     updatedAt: company.updatedAt,
     coverage: (company.coverage ?? []).map((coverage) => ({
       countyId: coverage.countyId,
       cityId: coverage.cityId,
+      county: coverage.county ? { name: coverage.county.name } : null,
+      city: coverage.city ? { name: coverage.city.name } : null,
     })),
     services: company.services
       .filter((item) => item.service.isActive)
@@ -362,16 +383,14 @@ function getFallbackSitemapDataset(): SitemapDataset {
 }
 
 export function getSitemapIndexEntries() {
-  const now = new Date().toISOString();
-
   return [
-    toEntry("/sitemap-main.xml", now),
-    toEntry("/sitemap-counties.xml", now),
-    toEntry("/sitemap-cities.xml", now),
-    toEntry("/sitemap-services.xml", now),
-    toEntry("/sitemap-county-service.xml", now),
-    toEntry("/sitemap-companies.xml", now),
-    toEntry("/sitemap-blog.xml", now),
+    toEntry("/sitemap-main.xml"),
+    toEntry("/sitemap-counties.xml"),
+    toEntry("/sitemap-cities.xml"),
+    toEntry("/sitemap-services.xml"),
+    toEntry("/sitemap-county-service.xml"),
+    toEntry("/sitemap-companies.xml"),
+    toEntry("/sitemap-blog.xml"),
   ];
 }
 
@@ -570,12 +589,66 @@ export async function getCountyServiceSitemapEntries(): Promise<SitemapEntry[]> 
     );
   }
 
+  const existingLocations = new Set(entries.map((entry) => entry.loc));
+  for (const county of dataset.counties) {
+    for (const serviceSlug of getCountyServiceSlugs(county.slug)) {
+      const service = dataset.services.find((item) => item.slug === serviceSlug);
+      if (!service) continue;
+      const entry = toEntry(
+        `/${county.slug}/${service.slug}`,
+        pickLatest(county.updatedAt, service.updatedAt),
+      );
+      if (!existingLocations.has(entry.loc)) {
+        entries.push(entry);
+        existingLocations.add(entry.loc);
+      }
+    }
+  }
+
+  const priorityLocalities = new Set(getPriorityLocalitySlugs());
+  for (const city of dataset.cities) {
+    if (!priorityLocalities.has(city.slug)) continue;
+    for (const serviceSlug of getPriorityLandingServiceSlugs(city.slug)) {
+      const service = dataset.services.find((item) => item.slug === serviceSlug);
+      if (!service) continue;
+      const entry = toEntry(
+        `/${city.countySlug}/${city.slug}/${service.slug}`,
+        pickLatest(city.updatedAt, service.updatedAt),
+      );
+      if (!existingLocations.has(entry.loc)) {
+        entries.push(entry);
+        existingLocations.add(entry.loc);
+      }
+    }
+  }
+
   return entries.sort((left, right) => left.loc.localeCompare(right.loc, "ro"));
 }
 
 export async function getCompanySitemapEntries(): Promise<SitemapEntry[]> {
   const dataset = await getSitemapDataset();
   return dataset.companies
+    .filter((company) => {
+      const coveredZones = new Set(
+        [
+          company.city.name,
+          company.county.name,
+          ...company.coverage.map(
+            (coverage) => coverage.city?.name ?? coverage.county?.name ?? "",
+          ),
+        ]
+          .map((zone) => zone.trim().toLowerCase())
+          .filter(Boolean),
+      );
+
+      return canIndexCompanyProfile({
+        countySlug: company.county.slug,
+        serviceCount: company.services.length,
+        hasSubstantialDescription: true,
+        hasContact: Boolean(company.phone || company.email || company.website),
+        coveredZoneCount: coveredZones.size,
+      });
+    })
     .map((company) => toEntry(`/firme/${company.slug}`, company.updatedAt))
     .sort((left, right) => left.loc.localeCompare(right.loc, "ro"));
 }

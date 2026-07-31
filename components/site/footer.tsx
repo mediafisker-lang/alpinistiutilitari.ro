@@ -7,6 +7,7 @@ const footerLinks = [
   { href: "/cum-functioneaza", label: "Cum sa" },
   { href: "/firme", label: "Firme" },
   { href: "/despre-noi", label: "Despre platforma" },
+  { href: "/contact", label: "Contact" },
   { href: "/blog", label: "Articole" },
   { href: "/admin-cereri", label: "ADMIN" },
 ];
@@ -29,19 +30,25 @@ export async function SiteFooter() {
   ];
 
   return (
-    <footer className="border-t border-slate-200 bg-[linear-gradient(180deg,#07152e,#061125)] text-slate-200">
-      <div className="mx-auto grid max-w-7xl gap-10 px-4 py-14 sm:px-6 lg:grid-cols-[1.2fr_0.8fr_0.9fr] lg:px-8">
+    <footer className="border-t border-[#284B66] bg-[#102A43] text-slate-200">
+      <div className="mx-auto grid max-w-[1240px] gap-10 px-4 py-14 sm:px-6 lg:grid-cols-[1.2fr_0.8fr_0.9fr] lg:px-8">
         <div className="space-y-4">
-          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-sky-300">
-            Lead generation pentru servicii la inaltime
+          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#7FC5D8]">
+            Platformă pentru servicii cu alpiniști utilitari și firme specializate
           </p>
           <h2 className="max-w-2xl text-3xl font-bold text-white">
-            Platforma care ajuta clientii sa gaseasca rapid firme de alpinism utilitar in Romania.
+            Ajutăm clienții să își găsească oferta corectă pentru serviciile lor de alpinism utilitar.
           </h2>
           <p className="max-w-2xl text-sm leading-7 text-slate-300">
-            Structura SEO este gandita pe judete, orase, servicii, firme si articole.
-            Obiectivul principal este inregistrarea unei cereri clare in platforma, urmata de selectie manuala a executantilor potriviti.
+            Interfața este gândită pe județe, orașe, servicii, firme și articole.
+            Obiectivul principal este obținerea unui preț corect și execuția de calitate a lucrărilor la înălțime.
           </p>
+          <a
+            href="tel:+40799102030"
+            className="inline-flex min-h-11 rounded-xl border border-[#7FC5D8]/30 bg-white/5 px-4 py-2 text-sm font-bold text-[#A8D8E5] transition hover:bg-white/10 hover:text-white"
+          >
+            Telefon: 0799 102 030
+          </a>
         </div>
 
         <div className="grid gap-3 text-sm">

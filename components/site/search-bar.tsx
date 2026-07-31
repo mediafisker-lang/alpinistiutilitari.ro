@@ -1,26 +1,21 @@
 import Link from "next/link";
-import { prisma } from "@/lib/db";
-import { getFallbackCounties, getFallbackServices } from "@/lib/data/fallback";
 import { Button } from "@/components/ui/button";
 
-export async function SearchBar() {
-  const [counties, cities, services] = await (async () => {
-    try {
-      return await Promise.all([
-        prisma.county.findMany({ orderBy: { name: "asc" }, take: 10 }),
-        prisma.city.findMany({ orderBy: { name: "asc" }, take: 30 }),
-        prisma.service.findMany({ orderBy: { name: "asc" }, take: 10 }),
-      ]);
-    } catch {
-      const fallbackCounties = getFallbackCounties();
-      return [
-        fallbackCounties,
-        fallbackCounties.flatMap((county) => county.cities ?? []),
-        getFallbackServices(),
-      ];
-    }
-  })();
+type SearchOption = {
+  id: string;
+  name: string;
+  slug: string;
+};
 
+export function SearchBar({
+  counties,
+  cities,
+  services,
+}: {
+  counties: SearchOption[];
+  cities: SearchOption[];
+  services: SearchOption[];
+}) {
   return (
     <div className="rounded-[2rem] border border-slate-200 bg-white p-3 shadow-xl shadow-slate-950/5">
       <form action="/firme" className="grid gap-3 xl:grid-cols-[1.2fr_1fr_1fr_1fr_auto]">

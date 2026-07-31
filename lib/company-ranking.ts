@@ -537,7 +537,7 @@ export function hasUtilityPortfolio(company: RankedCompany) {
   );
   const hasCoreService = [...serviceSlugs].some((slug) => corePortfolioServiceSlugs.has(slug));
 
-  if ((company.ratingValue ?? 0) < 4) return false;
+  if (typeof company.ratingValue === "number" && company.ratingValue < 4) return false;
 
   if (isUnverifiedGooglePlace(company)) {
     if (negativeMatches >= 1 && brandDirectMatches === 0) return false;

@@ -128,15 +128,3 @@ export type QuickSearchOptions = {
   cities: Array<{ id: string; name: string; slug: string; countyId: string }>;
   services: Array<{ id: string; name: string; slug: string }>;
 };
-
-export type AdminDashboardData = {
-  stats: {
-    companies: number;
-    activeCompanies: number;
-    leads: number;
-    articles: number;
-    counties: number;
-  };
-  latestLeads: LeadRequestDetail[];
-  recentImports: Prisma.CompanyImportRunGetPayload<{ include: { county: true; city: true } }>[];
-};

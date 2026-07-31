@@ -53,7 +53,7 @@ export async function generateMetadata({ params }: Props) {
         city.introText ??
         city.intro ??
         `Gasesti firme din ${city.name}, ${city.county.name}, compari servicii locale si trimiti rapid cererea pentru lucrarea la inaltime.`,
-      path: `/${city.slug}`,
+      path: `/${city.county.slug}/${city.slug}`,
       noIndex: !hasEnoughContent && !shouldForceIndex,
     });
   }

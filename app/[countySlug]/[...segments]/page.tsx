@@ -3,7 +3,11 @@ import CityPage from "@/app/judet/[countySlug]/oras/[citySlug]/page";
 import { getCity, resolveLocalLanding } from "@/lib/data/queries";
 import { buildMetadata } from "@/lib/seo";
 import { LocalLandingPageContent } from "@/components/pages/local-landing-page";
-import { canIndexCityServicePage, canIndexCountyServicePage } from "@/lib/seo-rules";
+import {
+  canIndexCityPage,
+  canIndexCityServicePage,
+  canIndexCountyServicePage,
+} from "@/lib/seo-rules";
 import { getLocalLandingContent, isPriorityLandingPath } from "@/lib/content/local-commercial";
 
 type Props = {
@@ -28,10 +32,14 @@ export async function generateMetadata({ params }: Props) {
   if (segments.length === 1) {
     const [city, landing] = await Promise.all([
       getCity(countySlug, segments[0]),
-      resolveLocalLanding(countySlug, segments[0]),
+      resolveLocalLanding(countySlug, segments[0], "county"),
     ]);
 
     if (city) {
+      const hasEnoughContent = canIndexCityPage({
+        companyCount: city.companies.length,
+        hasIntro: Boolean(city.introText ?? city.intro),
+      });
       return buildMetadata({
         title: `Firme de alpinism utilitar in ${city.name}, ${city.county.name}`,
         description:
@@ -39,8 +47,8 @@ export async function generateMetadata({ params }: Props) {
           city.introText ??
           city.intro ??
           `Vezi firme active din ${city.name}, judetul ${city.county.name}, si trimite rapid o cerere de oferta.`,
-        path: `/${city.slug}`,
-        noIndex: true,
+        path: `/${city.county.slug}/${city.slug}`,
+        noIndex: !hasEnoughContent,
       });
     }
 
@@ -72,7 +80,7 @@ export async function generateMetadata({ params }: Props) {
   if (segments.length === 2) {
     const [city, data] = await Promise.all([
       getCity(countySlug, segments[0]),
-      resolveLocalLanding(segments[0], segments[1]),
+      resolveLocalLanding(segments[0], segments[1], "city"),
     ]);
 
     if (
@@ -95,8 +103,8 @@ export async function generateMetadata({ params }: Props) {
       return buildMetadata({
         title: landingContent.title,
         description: landingContent.description,
-        path: `/${city.slug}/${data.service.slug}`,
-        noIndex: true,
+        path: `/${data.county.slug}/${city.slug}/${data.service.slug}`,
+        noIndex: !shouldIndex,
       });
     }
   }
@@ -114,7 +122,7 @@ export default async function CountySegmentsPage({ params }: Props) {
   if (segments.length === 1) {
     const [city, landing] = await Promise.all([
       getCity(countySlug, segments[0]),
-      resolveLocalLanding(countySlug, segments[0]),
+      resolveLocalLanding(countySlug, segments[0], "county"),
     ]);
 
     if (city) {
@@ -130,6 +138,7 @@ export default async function CountySegmentsPage({ params }: Props) {
       return LocalLandingPageContent({
         locationSlug: countySlug,
         serviceSlug: segments[0],
+        locationType: "county",
         sourcePage: `/${countySlug}/${segments[0]}`,
       });
     }
@@ -137,7 +146,7 @@ export default async function CountySegmentsPage({ params }: Props) {
 
   if (segments.length === 2) {
     const city = await getCity(countySlug, segments[0]);
-    const data = await resolveLocalLanding(segments[0], segments[1]);
+    const data = await resolveLocalLanding(segments[0], segments[1], "city");
 
     if (
       city &&
@@ -150,6 +159,7 @@ export default async function CountySegmentsPage({ params }: Props) {
       return LocalLandingPageContent({
         locationSlug: segments[0],
         serviceSlug: segments[1],
+        locationType: "city",
         sourcePage: `/${countySlug}/${segments[0]}/${segments[1]}`,
       });
     }

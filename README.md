@@ -160,59 +160,6 @@ Statusuri disponibile:
 - `inchisa`
 - `respinsa`
 
-## Import firme din Google Places API
-
-Implementarea folosește sursa oficială Google Maps Platform Places API.
-
-### Ce se importă
-- `place_id`
-- nume firmă
-- adresă formatată
-- telefon public
-- website
-- coordonate
-- rating
-- număr recenzii
-- tipuri Google
-- program
-- link Google Maps
-
-### Ce NU se face
-- nu se scrapează HTML din Google Maps
-- nu se fac bulk extraction neoficiale
-- nu se copiază review-uri text
-
-### Script de import
-
-```bash
-npm run import:places -- --county=bucuresti
-```
-
-Exemple:
-
-```bash
-npm run import:places -- --city=brasov
-npm run import:places -- --query="alpinism utilitar Bucuresti"
-```
-
-Scripturi utile suplimentare:
-
-```bash
-npm run sync:counties
-npm run sync:articles
-npm run sync:local-articles
-npm run review:google-places
-npm run refresh:featured
-```
-
-La fiecare rulare:
-
-- se creează un `CompanyImportRun`
-- se jurnalizează evenimente în `CompanyImportEvent`
-- se face upsert pe `externalPlaceId`
-- se evită duplicatele și pe website / telefon / nume + oraș
-- se mapează automat serviciile în funcție de tipuri Google și query
-
 ## SEO tehnic inclus
 
 - metadata dinamică
@@ -274,7 +221,7 @@ npm run audit:live-seo -- --base=https://alpinistiutilitari.vercel.app
 ## Observații importante
 
 - partea publică funcționează și fără DB prin fallback demo pentru preview vizual
-- adminul și importul Places au nevoie de bază reală
+- administrarea cererilor are nevoie de bază reală
 - dacă `DATABASE_URL` nu este setat, build-ul trece, dar Prisma va afișa warnings în timpul generării paginilor dinamice
 
 ## Fișiere importante
@@ -289,13 +236,8 @@ npm run audit:live-seo -- --base=https://alpinistiutilitari.vercel.app
 - `lib/actions/leads.ts`
 - `lib/actions/admin.ts`
 - `lib/data/queries.ts`
-- `lib/integrations/google-places.ts`
-- `scripts/import-places.ts`
 
 ## Ce rămâne ușor de extins ulterior
 
-- importuri programate prin cron / queue
-- moderare avansată pentru firme
-- formular separat de revendicare profil firmă
-- galerie publică și logo-uri aprobate în admin
-- scoring mai avansat pentru firme recomandate
+- notificări pentru cereri noi
+- exportul cererilor în format CSV

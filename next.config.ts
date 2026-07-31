@@ -2,6 +2,24 @@ import type { NextConfig } from "next";
 
 const securityHeaders = [
   {
+    key: "Content-Security-Policy",
+    value: [
+      "default-src 'self'",
+      "base-uri 'self'",
+      "form-action 'self'",
+      "frame-ancestors 'self'",
+      "object-src 'none'",
+      "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com",
+      "style-src 'self' 'unsafe-inline'",
+      "img-src 'self' data: blob: https:",
+      "font-src 'self' data:",
+      "connect-src 'self' https://www.google-analytics.com https://region1.google-analytics.com https://www.googletagmanager.com",
+      "manifest-src 'self'",
+      "worker-src 'self' blob:",
+      "upgrade-insecure-requests",
+    ].join("; "),
+  },
+  {
     key: "Content-Language",
     value: "ro",
   },
@@ -32,50 +50,13 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
+  poweredByHeader: false,
+  skipTrailingSlashRedirect: true,
   async headers() {
     return [
       {
         source: "/:path*",
         headers: securityHeaders,
-      },
-    ];
-  },
-  async redirects() {
-    return [
-      {
-        source: "/articole",
-        destination: "/blog",
-        permanent: true,
-      },
-      {
-        source: "/articole/:slug",
-        destination: "/blog/:slug",
-        permanent: true,
-      },
-      {
-        source: "/firma/:slug",
-        destination: "/firme/:slug",
-        permanent: true,
-      },
-      {
-        source: "/judet/:countySlug",
-        destination: "/:countySlug",
-        permanent: true,
-      },
-      {
-        source: "/judet/:countySlug/oras/:citySlug",
-        destination: "/:countySlug/:citySlug",
-        permanent: true,
-      },
-      {
-        source: "/judet/:countySlug/:citySlug",
-        destination: "/:countySlug/:citySlug",
-        permanent: true,
-      },
-      {
-        source: "/despre",
-        destination: "/despre-noi",
-        permanent: true,
       },
     ];
   },

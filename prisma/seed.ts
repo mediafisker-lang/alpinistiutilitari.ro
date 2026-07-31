@@ -478,7 +478,7 @@ async function main() {
         seoDescription:
           "Ghid local pentru alegerea unei firme de alpinism utilitar in Bucuresti.",
         isPublished: true,
-        coverImageUrl: "/images/blog/ghid-firma.jpg",
+        coverImageUrl: "/images/articles/reparatii-fatade.jpg",
         services: {
           create: [{ serviceId: services.find((service) => service.slug === "reparatii-acoperisuri")!.id }],
         },
@@ -496,7 +496,7 @@ async function main() {
         seoDescription:
           "Afla cand este momentul potrivit pentru o interventie profesionala de spalare geamuri la inaltime.",
         isPublished: true,
-        coverImageUrl: "/images/blog/geamuri-inaltime.jpg",
+        coverImageUrl: "/images/articles/spalare-geamuri.jpg",
         services: {
           create: [{ serviceId: services.find((service) => service.slug === "spalare-geamuri-la-inaltime")!.id }],
         },
@@ -513,7 +513,7 @@ async function main() {
         seoTitle: "Cand ai nevoie de toaletare copaci cu alpinisti utilitari",
         seoDescription:
           "Afla cand este necesara toaletarea copacilor cu risc si cum alegi firma potrivita.",
-        coverImageUrl: "/images/blog/toaletare-copaci.jpg",
+        coverImageUrl: "/images/articles/arboricultura.jpg",
         isPublished: true,
         services: {
           create: [{ serviceId: services.find((service) => service.slug === "toaletare-copaci")!.id }],

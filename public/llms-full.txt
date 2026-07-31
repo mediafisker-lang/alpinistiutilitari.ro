@@ -1,0 +1,16 @@
+# AlpinistiUtilitari.ro
+
+AlpinistiUtilitari.ro centralizează informații despre servicii de alpinism utilitar, lucrări la înălțime și furnizori din România.
+
+Utilizatorii pot căuta după serviciu, județ și localitate și pot trimite o singură cerere de ofertă. Cererile sunt analizate în platformă înainte de contactarea executanților potriviți.
+
+Servicii prezentate: alpinism utilitar, alpinism industrial greu, lucrări și reparații la fațade și acoperișuri, spălare geamuri la înălțime, inspecții NDT, protecție anticorozivă și mentenanță pentru structuri industriale.
+
+Pagini canonice:
+- https://alpinistiutilitari.ro/
+- https://alpinistiutilitari.ro/servicii
+- https://alpinistiutilitari.ro/judete
+- https://alpinistiutilitari.ro/cum-functioneaza
+- https://alpinistiutilitari.ro/intrebari-frecvente
+- https://alpinistiutilitari.ro/contact
+- https://alpinistiutilitari.ro/cere-oferta

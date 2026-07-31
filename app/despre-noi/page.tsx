@@ -11,7 +11,7 @@ export const metadata = buildMetadata({
 
 export default function AboutUsPage() {
   const flowSteps = [
-    "Completezi formularul în mai puțin de 1 minut: județ, tip lucrare, detalii și poze.",
+    "Completezi formularul în mai puțin de 1 minut cu județul, tipul lucrării și detaliile, iar pozele le poți trimite prin butonul WhatsApp de suport.",
     "Cererea ta ajunge la firme de alpinism utilitar verificate din zona ta sau din țară.",
     "Primești oferte comparative rapid (orientativ 15 minute pentru primul răspuns).",
     "Compari preț, termen și experiență, apoi alegi varianta potrivită pentru tine.",

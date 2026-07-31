@@ -1,96 +1,153 @@
-"use client";
-
-import { useEffect, useState } from "react";
 import Link from "next/link";
-import { ChevronRight, Menu, X } from "lucide-react";
+import {
+  ArrowRight,
+  Building2,
+  CheckSquare,
+  ChevronRight,
+  FileText,
+  Headphones,
+  Home,
+  Mail,
+  MapPin,
+  Menu,
+  Phone,
+  UserRound,
+  Wrench,
+  X,
+} from "lucide-react";
 
 type MobileNavProps = {
   links: Array<{ href: string; label: string }>;
 };
 
+const icons = {
+  "/": Home,
+  "/servicii": Wrench,
+  "/cum-functioneaza": CheckSquare,
+  "/firme": Building2,
+  "/judete": MapPin,
+  "/despre-noi": UserRound,
+  "/contact": Mail,
+};
+
+const mobileLabels = {
+  "/": "Acasă",
+  "/servicii": "Servicii",
+  "/cum-functioneaza": "Cum să",
+  "/firme": "Firme",
+  "/judete": "Județe",
+  "/despre-noi": "Despre",
+  "/contact": "Contact",
+};
+
 export function MobileNav({ links }: MobileNavProps) {
-  const [open, setOpen] = useState(false);
-
-  useEffect(() => {
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = open ? "hidden" : previousOverflow;
-
-    return () => {
-      document.body.style.overflow = previousOverflow;
-    };
-  }, [open]);
+  const visibleLinks = links.filter((link) => link.href !== "/servicii/alpinism-industrial-greu");
+  const menuLinks = [{ href: "/", label: "Acasă" }, ...visibleLinks];
 
   return (
-    <div className="lg:hidden">
+    <div className="mobile-nav lg:hidden">
       <button
         type="button"
-        aria-expanded={open}
-        aria-label={open ? "Închide meniul" : "Deschide meniul"}
-        onClick={() => setOpen((value) => !value)}
-        className="inline-flex size-11 items-center justify-center rounded-2xl border border-slate-200 bg-white text-slate-900 shadow-sm"
+        aria-label="Deschide meniul"
+        aria-controls="mobile-navigation-panel"
+        popoverTarget="mobile-navigation-panel"
+        popoverTargetAction="toggle"
+        className="mobile-nav-trigger inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-[#FF5A0A] px-4 text-xs font-extrabold text-white shadow-[0_8px_18px_rgba(249,115,22,0.3)] transition hover:bg-[#E94F00]"
       >
-        {open ? <X className="size-5" /> : <Menu className="size-5" />}
+        <Menu className="size-5" aria-hidden="true" />
+        MENIU
       </button>
 
-      {open ? (
-        <div className="fixed inset-0 z-50 bg-slate-950/40 backdrop-blur-sm">
-          <div className="absolute inset-x-3 top-3 rounded-[2rem] border border-white/70 bg-white p-5 shadow-2xl shadow-slate-950/20">
-            <div className="flex items-center justify-between gap-3">
-              <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[#0063f7]">
-                  Navigare rapidă
-                </p>
-                <p className="mt-1 text-lg font-black text-slate-950">
-                  AlpinistiUtilitari.ro
-                </p>
-              </div>
+      <aside
+        id="mobile-navigation-panel"
+        aria-label="Meniu principal"
+        popover="auto"
+        className="mobile-menu-panel fixed bottom-0 right-0 top-[var(--mobile-header-height,6.85rem)] m-0 ml-auto h-auto w-[20rem] max-w-[calc(100vw-2.25rem)] overflow-y-auto rounded-tl-[18px] border-0 bg-white px-5 pb-5 pt-4 text-[#102A43] shadow-[-18px_24px_50px_rgba(16,42,67,0.22)]"
+      >
+        <div className="flex min-h-full flex-col">
+            <div className="mb-3 flex justify-end">
               <button
                 type="button"
                 aria-label="Închide meniul"
-                onClick={() => setOpen(false)}
-                className="inline-flex size-10 items-center justify-center rounded-2xl border border-slate-200"
+                popoverTarget="mobile-navigation-panel"
+                popoverTargetAction="hide"
+                className="inline-flex size-11 items-center justify-center rounded-full text-[#102A43] transition hover:bg-[#F1F5F7]"
               >
-                <X className="size-5" />
+                <X className="size-7" aria-hidden="true" />
               </button>
             </div>
 
-            <div className="mt-5 space-y-2">
-              {links.map((link) => {
+            <nav aria-label="Navigare mobilă" className="grid gap-1">
+              {menuLinks.map((link) => {
+                const Icon = icons[link.href as keyof typeof icons] ?? FileText;
+                const isServices = link.href === "/servicii";
+                const label = mobileLabels[link.href as keyof typeof mobileLabels] ?? link.label;
+
+                if (isServices) {
+                  return (
+                    <details key={link.href} className="mobile-services-menu">
+                      <summary className="mobile-menu-link w-full cursor-pointer list-none">
+                        <span className="flex items-center gap-3">
+                          <Icon className="size-5 text-[#176B87]" aria-hidden="true" />
+                          <span>{label}</span>
+                        </span>
+                        <ChevronRight className="mobile-services-chevron size-5 transition" aria-hidden="true" />
+                      </summary>
+                      <div className="mb-2 ml-8 grid gap-1 border-l border-[#DCE4E9] pl-4">
+                          <Link href="/servicii" className="mobile-menu-sublink">
+                            Toate serviciile
+                          </Link>
+                          <Link
+                            href="/servicii/alpinism-industrial-greu"
+                            className="mobile-menu-sublink"
+                          >
+                            Alpinism industrial greu
+                          </Link>
+                      </div>
+                    </details>
+                  );
+                }
+
                 return (
-                  <Link
-                    key={link.href}
-                    href={link.href}
-                    onClick={() => setOpen(false)}
-                    className={[
-                      "flex items-center justify-between rounded-2xl border px-4 py-3 text-sm font-semibold transition",
-                      "border-slate-200 bg-white text-slate-800 hover:border-[#0063f7]/30 hover:text-[#0063f7]",
-                    ].join(" ")}
-                  >
-                    <span>{link.label}</span>
-                    <ChevronRight className="size-4" />
+                  <Link key={link.href} href={link.href} className="mobile-menu-link">
+                    <span className="flex items-center gap-3">
+                      <Icon className="size-5 text-[#176B87]" aria-hidden="true" />
+                      <span>{label}</span>
+                    </span>
+                    {link.href === "/" ? null : <ChevronRight className="size-5" aria-hidden="true" />}
                   </Link>
                 );
               })}
-            </div>
+            </nav>
 
-            <div className="mt-5 rounded-[1.6rem] bg-[linear-gradient(135deg,#0063f7,#0a3c9e)] p-4 text-white">
-              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-white/70">
-                Cerere rapidă
-              </p>
-              <p className="mt-2 text-sm leading-6 text-white/90">
-                Completezi o singură solicitare și revenim cu executanții potriviți.
-              </p>
-              <Link
-                href="/cere-oferta"
-                onClick={() => setOpen(false)}
-                className="mt-4 inline-flex w-full items-center justify-center rounded-full bg-white px-4 py-3 text-sm font-bold text-slate-950"
-              >
-                Cere ofertă acum
-              </Link>
-            </div>
-          </div>
+            <div className="my-4 h-px bg-[#DCE4E9]" />
+
+            <Link
+              href="/cere-oferta"
+              className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-[#FF5A0A] px-5 py-3 text-sm font-extrabold text-white shadow-[0_12px_24px_rgba(249,115,22,0.25)] transition hover:bg-[#E94F00]"
+            >
+              <FileText className="size-5" aria-hidden="true" />
+              Cere ofertă
+              <ArrowRight className="ml-auto size-4" aria-hidden="true" />
+            </Link>
+
+            <a
+              href="tel:+40799102030"
+              className="mt-4 flex items-center gap-3 rounded-2xl bg-[#F1F5F7] p-3 text-[#102A43] transition hover:bg-[#E8F0F3]"
+            >
+              <span className="flex size-11 shrink-0 items-center justify-center rounded-full bg-[#DCE7EC]">
+                <Headphones className="size-6" aria-hidden="true" />
+              </span>
+              <span className="min-w-0">
+                <span className="block text-xs text-[#627D98]">Ai nevoie de ajutor?</span>
+                <span className="flex items-center gap-1.5 text-sm font-extrabold">
+                  <Phone className="size-3.5" aria-hidden="true" />
+                  0799102030
+                </span>
+              </span>
+            </a>
         </div>
-      ) : null}
+      </aside>
     </div>
   );
 }

@@ -1,25 +1,16 @@
 import Link from "next/link";
-import { LayoutDashboard, Building2, Map, MapPinned, Wrench, FileText, Inbox, LogOut, CircleHelp, Search } from "lucide-react";
+import { Inbox, LogOut } from "lucide-react";
 import { adminLogoutAction } from "@/lib/actions/admin";
 
 const links = [
-  { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
   { href: "/admin/cereri", label: "Cereri", icon: Inbox },
-  { href: "/admin/firme", label: "Firme", icon: Building2 },
-  { href: "/admin/judete", label: "Judete", icon: Map },
-  { href: "/admin/orase", label: "Orase", icon: MapPinned },
-  { href: "/admin/servicii", label: "Servicii", icon: Wrench },
-  { href: "/admin/articole", label: "Articole", icon: FileText },
-  { href: "/admin/faq", label: "FAQ", icon: CircleHelp },
-  { href: "/admin/seo", label: "SEO", icon: Search },
-  { href: "/admin/import", label: "Import firme", icon: Inbox },
 ];
 
 export function AdminSidebar() {
   return (
     <aside className="rounded-[2rem] border border-slate-200 bg-white p-5 shadow-sm shadow-slate-950/5">
       <p className="text-xs font-semibold uppercase tracking-[0.24em] text-sky-700">
-        Administrare
+        Administrare cereri
       </p>
       <nav className="mt-5 space-y-1">
         {links.map(({ href, label, icon: Icon }) => (

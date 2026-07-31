@@ -1,4 +1,8 @@
 import type { CountyDetail, CityDetail, ServiceDetail } from "@/lib/data/types";
+import {
+  getServiceSpecificCommercialBlocks,
+  getServiceSpecificFaqs,
+} from "@/lib/content/service-page-content";
 
 export type FaqItem = {
   question: string;
@@ -99,10 +103,13 @@ export function buildServiceFaqs(service: ServiceDetail): FaqItem[] {
       {
         question: "Cum aleg rapid o firma potrivita pentru interventie?",
         answer:
-          "Descrie clar riscul, adauga poze si mentioneaza zona. Cererea este apoi structurata intern pentru selectie si ofertare cat mai relevanta.",
+          "Descrie clar riscul și menționează zona în formular, iar pozele trimite-le prin butonul WhatsApp de suport. Cererea poate fi apoi ofertată cât mai relevant.",
       },
     ];
   }
+
+  const specificFaqs = getServiceSpecificFaqs(service.slug, service.name);
+  if (specificFaqs) return specificFaqs;
 
   return [
     {
@@ -162,10 +169,13 @@ export function buildServiceCommercialBlocks(service: ServiceDetail) {
       {
         title: "Cum trimiti o cerere completa",
         content:
-          "Include adresa, poze cu zona afectata, nivelurile implicate si gradul de urgenta. Astfel cererea poate fi clasificata si ofertata mai eficient.",
+          "Include în formular adresa, nivelurile implicate și gradul de urgență, iar pozele cu zona afectată trimite-le prin butonul WhatsApp de suport. Astfel cererea poate fi ofertată mai eficient.",
       },
     ];
   }
+
+  const specificBlocks = getServiceSpecificCommercialBlocks(service.slug);
+  if (specificBlocks) return specificBlocks;
 
   return [
     {
@@ -198,6 +208,6 @@ export function buildLocalLandingCopy(locationName: string, serviceName: string,
     why:
       "Poți compara mai rapid opțiunile listate, vezi ce servicii sunt asociate și trimiți o singură cerere către platformă, fără să contactezi separat mai multe firme.",
     cta:
-      "Dacă lucrarea este urgentă, completează formularul cu detalii și poze. Cererea se salvează intern și este analizată manual înainte de ofertare.",
+      "Dacă lucrarea este urgentă, completează formularul cu detalii și trimite pozele prin butonul WhatsApp de suport. Cererea se salvează intern înainte de ofertare.",
   };
 }

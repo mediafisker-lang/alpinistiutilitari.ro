@@ -89,7 +89,7 @@ export const localSeoArticleSeeds: LocalArticleSeed[] = localArticleInputs.map((
   const excerpt = `Ghid local pentru ${item.serviceName} in ${item.county}: când ai nevoie de intervenție, ce detalii trimiți în cererea de ofertă și cum filtrezi firmele potrivite.`;
   const seoTitle = `${item.serviceName} in ${item.county} - ghid local si cerere rapida de oferta`;
   const seoDescription = `Afla cum alegi rapid o firmă pentru ${item.serviceName} în ${item.county}, ce informații trimiți în cerere și la ce să fii atent înainte de ofertare.`;
-  const coverImageUrl = `/blog-covers/${item.slug}`;
+  const coverImageUrl = getArticleCoverUrl(item.slug);
 
   const content = [
     `${item.serviceName} în ${item.county} este o căutare comercială reală atunci când lucrarea trebuie rezolvată rapid și clientul vrea firme care pot interveni local, nu doar rezultate generale din alt județ.`,
@@ -100,7 +100,7 @@ export const localSeoArticleSeeds: LocalArticleSeed[] = localArticleInputs.map((
     "- o cerere unică, simplă, fără apeluri repetate către mai multe firme",
     "## Ce merită să trimiți în cerere",
     "- localitatea sau zona aproximativă",
-    "- poze clare din exterior",
+    "- poze clare din exterior, trimise prin butonul WhatsApp de suport",
     "- înălțimea aproximativă și accesul disponibil",
     "- dacă lucrarea este urgentă sau poate fi programată",
     "## Cum filtrezi firmele potrivite",
@@ -108,7 +108,7 @@ export const localSeoArticleSeeds: LocalArticleSeed[] = localArticleInputs.map((
     "## Întrebare frecventă",
     `De ce este utilă o pagină locală pentru ${item.serviceName} în ${item.county}? Pentru că intenția de căutare este locală și comercială: utilizatorul vrea executanți din apropiere, nu definiții generale sau pagini fără firme reale.`,
     "## Concluzie",
-    `Dacă ai nevoie de ${item.serviceName} în ${item.county}, cel mai eficient este să trimiți o cerere clară, cu detalii și poze. Astfel ajungi mai repede la firmele locale sau regionale care pot da o ofertă potrivită pentru lucrarea ta.`,
+    `Dacă ai nevoie de ${item.serviceName} în ${item.county}, cel mai eficient este să trimiți o cerere clară cu detalii, iar pozele să le trimiți separat prin butonul WhatsApp de suport. Astfel ajungi mai repede la firmele locale sau regionale care pot da o ofertă potrivită pentru lucrarea ta.`,
   ].join("\n\n");
 
   return {
@@ -122,3 +122,4 @@ export const localSeoArticleSeeds: LocalArticleSeed[] = localArticleInputs.map((
     serviceSlug: item.serviceSlug,
   };
 });
+import { getArticleCoverUrl } from "@/lib/article-cover";

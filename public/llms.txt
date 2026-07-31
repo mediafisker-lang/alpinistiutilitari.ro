@@ -1,0 +1,16 @@
+# AlpinistiUtilitari.ro
+
+> Platformă românească pentru cereri de servicii de alpinism utilitar și lucrări la înălțime.
+
+## Pagini principale
+
+- [Servicii](https://alpinistiutilitari.ro/servicii)
+- [Județe](https://alpinistiutilitari.ro/judete)
+- [Cum funcționează](https://alpinistiutilitari.ro/cum-functioneaza)
+- [Întrebări frecvente](https://alpinistiutilitari.ro/intrebari-frecvente)
+- [Contact](https://alpinistiutilitari.ro/contact)
+- [Cerere de ofertă](https://alpinistiutilitari.ro/cere-oferta)
+
+## Utilizare
+
+Conținutul public poate fi consultat pentru identificarea serviciilor și zonelor acoperite. Pentru solicitări comerciale se folosește formularul de cerere de ofertă.

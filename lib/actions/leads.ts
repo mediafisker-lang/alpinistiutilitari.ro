@@ -86,7 +86,6 @@ export async function submitLeadAction(
       },
     });
 
-    revalidatePath("/");
     revalidatePath("/admin/cereri");
 
     return {

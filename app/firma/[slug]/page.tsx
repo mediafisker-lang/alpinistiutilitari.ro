@@ -148,7 +148,7 @@ export default async function CompanyPage({ params }: Props) {
             </div>
             <div className="rounded-3xl bg-slate-50 p-5">
               <p className="text-xs font-semibold uppercase tracking-[0.24em] text-sky-700">Contact</p>
-              {company.phone ? <p className="mt-2 text-sm text-slate-900">{company.phone}</p> : null}
+              {company.phone ? <p className="mt-2 text-sm text-slate-900">Disponibil</p> : null}
               {company.email ? <p className="mt-2 text-sm text-slate-600">{company.email}</p> : null}
               {company.website ? (
                 <a

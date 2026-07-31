@@ -12,6 +12,42 @@ import { LeadForm } from "@/components/forms/lead-form";
 import { FAQBlock } from "@/components/site/faq-block";
 import { getPrimaryCompanies } from "@/lib/company-ranking";
 import { PaginationNav } from "@/components/site/pagination-nav";
+import {
+  industrialServiceSlugs,
+  priorityCommercialServiceSlugs,
+} from "@/lib/content/local-commercial";
+
+const priorityLocalPages = [
+  ["bucuresti", "bucuresti", "Bucuresti"],
+  ["ilfov", "pipera", "Pipera"],
+  ["ilfov", "voluntari", "Voluntari"],
+  ["ilfov", "otopeni", "Otopeni"],
+  ["ilfov", "popesti-leordeni", "Popesti-Leordeni"],
+  ["ilfov", "chiajna", "Chiajna"],
+  ["brasov", "brasov", "Brasov"],
+  ["arges", "pitesti", "Pitesti"],
+  ["bihor", "oradea", "Oradea"],
+  ["constanta", "constanta", "Constanta"],
+  ["prahova", "ploiesti", "Ploiesti"],
+  ["sibiu", "sibiu", "Sibiu"],
+  ["cluj", "cluj-napoca", "Cluj-Napoca"],
+  ["timis", "timisoara", "Timisoara"],
+  ["iasi", "iasi", "Iasi"],
+  ["galati", "galati", "Galati"],
+] as const;
+
+const industrialLocalPages = [
+  ["prahova", "ploiesti", "Ploiesti si axa Prahovei"],
+  ["constanta", "constanta", "Constanta"],
+  ["constanta", "navodari", "Midia-Navodari"],
+  ["galati", "galati", "Galati"],
+  ["braila", "braila", "Braila"],
+  ["dolj", "craiova", "Craiova si Bazinul Olteniei"],
+  ["gorj", "targu-jiu", "Targu Jiu"],
+  ["mures", "targu-mures", "Targu Mures"],
+  ["timis", "timisoara", "Timisoara"],
+  ["arad", "arad", "Arad"],
+] as const;
 
 type Props = {
   params: Promise<{ serviceSlug: string }>;
@@ -59,6 +95,22 @@ export default async function ServicePage({ params, searchParams }: Props) {
       { href: `/${company.county.slug}/${service.slug}`, label: `${service.name} în ${company.county.name}` },
     ]),
   ).values()];
+  const isIndustrialService = industrialServiceSlugs.includes(
+    service.slug as (typeof industrialServiceSlugs)[number],
+  );
+  const isPriorityCommercialService = priorityCommercialServiceSlugs.includes(
+    service.slug as (typeof priorityCommercialServiceSlugs)[number],
+  );
+  const priorityServiceLinks = (
+    isIndustrialService
+      ? industrialLocalPages
+      : isPriorityCommercialService
+        ? priorityLocalPages
+        : []
+  ).map(([countySlug, citySlug, label]) => ({
+    href: `/${countySlug}/${citySlug}/${service.slug}`,
+    label: `${service.name} in ${label}`,
+  }));
   const isFacadeRiskService =
     service.slug === "decopertari-tencuiala" || service.slug === "punere-in-siguranta-fatade";
   const strategicCountyLinks =
@@ -80,7 +132,7 @@ export default async function ServicePage({ params, searchParams }: Props) {
           ]
         : [];
   const countyLinks = [...new Map(
-    [...strategicCountyLinks, ...dynamicCountyLinks].map((item) => [item.href, item]),
+    [...priorityServiceLinks, ...strategicCountyLinks, ...dynamicCountyLinks].map((item) => [item.href, item]),
   ).values()].slice(0, 8);
   const breadcrumbItems = [
     { label: "Acasa", href: "/" },

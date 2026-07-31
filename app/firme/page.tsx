@@ -1,5 +1,5 @@
 import { buildMetadata } from "@/lib/seo";
-import { getCompanies, getCounties, getServices } from "@/lib/data/queries";
+import { getCompaniesPage, getCounties, getServices } from "@/lib/data/queries";
 import { Breadcrumbs } from "@/components/site/breadcrumbs";
 import { CompanyCard } from "@/components/site/company-card";
 import { SearchBar } from "@/components/site/search-bar";
@@ -26,21 +26,24 @@ type CompaniesPageProps = {
 
 export default async function CompaniesPage({ searchParams }: CompaniesPageProps) {
   const params = await searchParams;
-  const [companies, counties, services] = await Promise.all([
-    getCompanies({
-      q: params.q,
-      countySlug: params.county,
-      citySlug: params.city,
-      serviceSlug: params.service,
-    }),
+  const requestedPage = Math.max(1, Number(params.page ?? "1") || 1);
+  const [{ companies, total, page: safePage, totalPages }, counties, services] = await Promise.all([
+    getCompaniesPage(
+      {
+        q: params.q,
+        countySlug: params.county,
+        citySlug: params.city,
+        serviceSlug: params.service,
+      },
+      requestedPage,
+      12,
+    ),
     getCounties(),
     getServices(),
   ]);
-  const pageSize = 12;
-  const currentPage = Math.max(1, Number(params.page ?? "1") || 1);
-  const totalPages = Math.max(1, Math.ceil(companies.length / pageSize));
-  const safePage = Math.min(currentPage, totalPages);
-  const paginatedCompanies = companies.slice((safePage - 1) * pageSize, safePage * pageSize);
+  const searchCounties = counties.slice(0, 10);
+  const searchCities = counties.flatMap((county) => county.cities ?? []).slice(0, 30);
+  const searchServices = services.slice(0, 10);
 
   const countyLinks = counties.slice(0, 12).map((county) => ({
     href: `/${county.slug}`,
@@ -100,7 +103,6 @@ export default async function CompaniesPage({ searchParams }: CompaniesPageProps
             Firme de alpinism utilitar din Romania
           </h1>
           <p className="text-lg leading-8 text-slate-600">
-            Compare rapid firme din Bucuresti, Ilfov, Brasov, Cluj si din toate judetele tarii.
             Filtreaza dupa judet, oras si tip de lucrare, apoi trimite o singura cerere pentru a fi
             analizata intern si corelata cu executantii potriviti.
           </p>
@@ -110,7 +112,7 @@ export default async function CompaniesPage({ searchParams }: CompaniesPageProps
             </p>
           ) : (
             <p className="text-sm text-slate-500">
-              Acoperire nationala completa, cu prioritizare SEO/AEO in Bucuresti si Ilfov in aceasta etapa.
+              Acoperire nationala completa, cu prioritizare pe nevoile clientului si ofertare corecta.
             </p>
           )}
         </div>
@@ -125,12 +127,12 @@ export default async function CompaniesPage({ searchParams }: CompaniesPageProps
       </div>
 
       <div className="mt-8">
-        <SearchBar />
+        <SearchBar counties={searchCounties} cities={searchCities} services={searchServices} />
       </div>
 
       <section className="mt-10 grid gap-4 rounded-[2rem] border border-slate-200 bg-gradient-to-br from-sky-50 via-white to-slate-50 p-6 shadow-sm shadow-slate-950/5 md:grid-cols-3">
         <div>
-          <p className="text-3xl font-black text-slate-950">{companies.length}+</p>
+          <p className="text-3xl font-black text-slate-950">{total}+</p>
           <p className="mt-2 text-sm leading-7 text-slate-600">profile afisate in functie de filtrele actuale.</p>
         </div>
         <div>
@@ -160,13 +162,13 @@ export default async function CompaniesPage({ searchParams }: CompaniesPageProps
         {(params.county || params.city || params.service) ? (
           <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
             <div className="rounded-2xl bg-sky-50 px-4 py-3 text-sm text-sky-900">
-              <span className="font-semibold">{companies.length}</span> rezultate pentru filtrele active
+              <span className="font-semibold">{total}</span> rezultate pentru filtrele active
             </div>
             <div className="rounded-2xl bg-white px-4 py-3 text-sm text-slate-700 ring-1 ring-slate-200">
-              <span className="font-semibold">{directCount}</span> potriviri directe
+              <span className="font-semibold">{directCount}</span> potriviri directe pe pagina curenta
             </div>
             <div className="rounded-2xl bg-white px-4 py-3 text-sm text-slate-700 ring-1 ring-slate-200">
-              <span className="font-semibold">{coverageCount}</span> firme care acoperă zona
+              <span className="font-semibold">{coverageCount}</span> firme care acoperă zona pe pagina curenta
             </div>
             <div className="rounded-2xl bg-emerald-50 px-4 py-3 text-sm text-emerald-900">
               Primele rezultate favorizează proximitatea și serviciul cerut
@@ -176,7 +178,7 @@ export default async function CompaniesPage({ searchParams }: CompaniesPageProps
       </section>
 
       <div className="mt-6 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-        {paginatedCompanies.map((company) => (
+        {companies.map((company) => (
           <CompanyCard
             key={company.id}
             company={company}

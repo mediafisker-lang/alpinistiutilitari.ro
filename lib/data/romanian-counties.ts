@@ -50,6 +50,7 @@ export const romanianCounties: RomanianCountySeed[] = [
     shortCode: "IF",
     countySeat: "Voluntari",
     extraCities: [
+      "Pipera",
       "Otopeni",
       "Pantelimon",
       "Chiajna",
