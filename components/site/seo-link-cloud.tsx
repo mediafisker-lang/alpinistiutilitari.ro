@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 
 type LinkItem = {
   href: string;
@@ -10,9 +11,10 @@ type SeoLinkCloudProps = {
   title: string;
   description?: string;
   links: LinkItem[];
+  action?: LinkItem;
 };
 
-export function SeoLinkCloud({ eyebrow, title, description, links }: SeoLinkCloudProps) {
+export function SeoLinkCloud({ eyebrow, title, description, links, action }: SeoLinkCloudProps) {
   if (!links.length) return null;
 
   return (
@@ -33,6 +35,15 @@ export function SeoLinkCloud({ eyebrow, title, description, links }: SeoLinkClou
           </Link>
         ))}
       </div>
+      {action ? (
+        <Link
+          href={action.href}
+          className="mt-5 inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-[#082F55] px-5 text-sm font-extrabold text-white transition hover:bg-[#0B416F]"
+        >
+          {action.label}
+          <ArrowRight className="size-4" />
+        </Link>
+      ) : null}
     </div>
   );
 }

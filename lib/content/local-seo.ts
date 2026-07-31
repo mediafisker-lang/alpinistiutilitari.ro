@@ -1,4 +1,8 @@
 import type { CountyDetail, CityDetail, ServiceDetail } from "@/lib/data/types";
+import {
+  getServiceSpecificCommercialBlocks,
+  getServiceSpecificFaqs,
+} from "@/lib/content/service-page-content";
 
 export type FaqItem = {
   question: string;
@@ -104,6 +108,9 @@ export function buildServiceFaqs(service: ServiceDetail): FaqItem[] {
     ];
   }
 
+  const specificFaqs = getServiceSpecificFaqs(service.slug, service.name);
+  if (specificFaqs) return specificFaqs;
+
   return [
     {
       question: `Când ai nevoie de ${service.name.toLowerCase()}?`,
@@ -166,6 +173,9 @@ export function buildServiceCommercialBlocks(service: ServiceDetail) {
       },
     ];
   }
+
+  const specificBlocks = getServiceSpecificCommercialBlocks(service.slug);
+  if (specificBlocks) return specificBlocks;
 
   return [
     {

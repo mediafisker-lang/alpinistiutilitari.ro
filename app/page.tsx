@@ -3,6 +3,7 @@ import Link from "next/link";
 import {
   ArrowRight,
   Building2,
+  CalendarDays,
   CheckCircle2,
   Clock3,
   MapPinned,
@@ -12,7 +13,6 @@ import {
 import { buildFaqJsonLd, buildMetadata } from "@/lib/seo";
 import { getHomepageData, getQuickSearchOptions } from "@/lib/data/queries";
 import { RomaniaMap } from "@/components/maps/romania-map";
-import { CountyCard } from "@/components/site/county-card";
 import { ServiceCard } from "@/components/site/service-card";
 import { ArticleCard } from "@/components/site/article-card";
 import { SeoLinkCloud } from "@/components/site/seo-link-cloud";
@@ -41,13 +41,6 @@ export default async function HomePage() {
     href: `/servicii/${service.slug}`,
     label: service.name,
   }));
-  const localDemandLinks = counties.slice(0, 4).flatMap((county) =>
-    services.slice(0, 2).map((service) => ({
-      href: `/${county.slug}/${service.slug}`,
-      label: `${service.name} în ${county.name}`,
-    })),
-  );
-
   const heroHighlights = [
     {
       title: "Răspuns rapid",
@@ -102,28 +95,29 @@ export default async function HomePage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
-      <section className="home-hero mx-auto max-w-[1240px] px-4 py-5 sm:px-6 lg:px-8 lg:py-8">
-        <div className="hero-shell relative overflow-hidden rounded-2xl border border-white/20 bg-[linear-gradient(120deg,#102A43_0%,#0F526A_58%,#176B87_100%)] px-5 py-6 text-white shadow-[0_24px_70px_rgba(16,42,67,0.22)] sm:px-7 sm:py-8 lg:px-10 lg:py-12">
+      <section className="home-hero mx-auto max-w-[1440px] px-4 py-5 sm:px-6 lg:px-7 lg:py-7">
+        <div className="hero-shell relative overflow-hidden rounded-2xl border border-white/20 bg-[linear-gradient(120deg,#102A43_0%,#0F526A_58%,#176B87_100%)] px-5 py-6 text-white shadow-[0_24px_70px_rgba(16,42,67,0.22)] sm:px-7 sm:py-8 lg:min-h-[610px] lg:rounded-[1.35rem] lg:px-10 lg:pb-5 lg:pt-8">
           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.18),transparent_26%),radial-gradient(circle_at_bottom_right,rgba(255,255,255,0.16),transparent_22%)]" />
           <div className="pointer-events-none absolute -left-16 top-16 hidden h-52 w-52 rounded-full bg-white/10 blur-3xl sm:block" />
           <div
             aria-hidden="true"
-            className="hero-photo pointer-events-none absolute inset-y-0 right-0 z-0 w-full overflow-hidden lg:w-[42%]"
+            className="hero-photo pointer-events-none absolute inset-0 z-0 overflow-hidden"
           >
-            <div className="absolute inset-0 z-10 bg-gradient-to-r from-[#102A43] via-[#102A43]/35 to-transparent" />
+            <div className="absolute inset-0 z-10 bg-[linear-gradient(90deg,rgba(8,42,65,0.98)_0%,rgba(8,55,82,0.94)_31%,rgba(8,55,82,0.68)_48%,rgba(8,55,82,0.12)_69%,rgba(8,55,82,0.08)_100%)]" />
+            <div className="absolute inset-0 z-10 bg-[linear-gradient(0deg,rgba(5,39,61,0.72)_0%,transparent_34%)]" />
             <Image
               src="/hero-desktop-alpinist-v1.webp"
               alt=""
               fill
-              sizes="(max-width: 1023px) 100vw, 58vw"
+              sizes="100vw"
               preload
               unoptimized
-              className="pointer-events-none object-cover object-[62%_center] opacity-90 lg:-translate-x-[28%] lg:scale-[1.03]"
+              className="pointer-events-none object-cover object-[62%_48%] opacity-90 lg:object-[58%_47%]"
             />
           </div>
 
-          <div className="hero-content relative z-20 grid min-w-0 gap-8 lg:grid-cols-[1.08fr_0.92fr]">
-            <div className="hero-copy min-w-0 space-y-6">
+          <div className="hero-content relative z-20 grid min-w-0 gap-8 lg:grid-cols-[minmax(0,1.58fr)_minmax(355px,0.72fr)] lg:gap-x-8 lg:gap-y-5">
+            <div className="hero-copy min-w-0 space-y-6 lg:max-w-[660px] lg:space-y-5">
               <div className="inline-flex max-w-full items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-center text-xs font-semibold uppercase tracking-[0.16em] text-white/85 sm:tracking-[0.22em]">
                 <Sparkles className="size-4" />
                 PLATFORMA NATIONALA DE ALPINISM UTILITAR
@@ -133,8 +127,8 @@ export default async function HomePage() {
                 <p className="text-sm font-semibold uppercase tracking-[0.28em] text-sky-100/90">
                   Interfață nouă, clară și rapidă
                 </p>
-                <h1 className="font-display max-w-4xl text-4xl font-black tracking-tight text-white sm:text-5xl lg:text-6xl">
-                  Gaseste firma de alpinism utilitar pentru lucrarea ta
+                <h1 className="font-display max-w-4xl text-4xl font-black leading-[1.04] tracking-tight text-white sm:text-5xl lg:text-[3.35rem]">
+                  Trimite cererea ta direct către firmele din județ sau țară!
                 </h1>
                 <p className="max-w-3xl text-base leading-8 text-sky-50/88 sm:text-lg">
                   Pagina oficiala AlpinistiROmania, firmele inscrise primesc cererea ta si iti raspund direct!
@@ -225,8 +219,8 @@ export default async function HomePage() {
               </nav>
             </div>
 
-            <div className="hero-form-column min-w-0 space-y-4">
-              <div className="rounded-[2.1rem] border border-white/16 bg-white/10 p-2 shadow-[0_24px_60px_rgba(2,12,27,0.24)] md:backdrop-blur-xl">
+            <div className="hero-form-column min-w-0 space-y-4 lg:self-start">
+              <div className="rounded-[2.1rem] border border-white/30 bg-white/10 p-2 shadow-[0_24px_60px_rgba(2,12,27,0.24)] md:backdrop-blur-xl lg:rounded-[1.75rem] lg:bg-[#f5fafc]/95 lg:p-2.5">
                 <LeadForm
                   variant="compact"
                   sourcePage="/"
@@ -305,63 +299,35 @@ export default async function HomePage() {
               </div>
             </div>
 
-            <div className="hero-stats grid gap-3 sm:grid-cols-4 lg:col-span-2">
+            <div className="hero-stats grid gap-3 sm:grid-cols-4 lg:col-span-2 lg:mt-1 lg:rounded-2xl lg:border lg:border-white/20 lg:bg-[#174e6b]/82 lg:p-3 lg:backdrop-blur-md">
               {[
-                { value: `${stats.companies}+`, label: "firme active" },
-                { value: `${stats.counties}`, label: "județe acoperite" },
-                { value: `${stats.services}+`, label: "servicii populare" },
-              ].map((item) => (
+                { value: `${stats.companies}+`, label: "Firme verificate", detail: "la nivel national", icon: ShieldCheck },
+                { value: "1.200+", label: "Cereri preluate", detail: "in ultimul an", icon: CalendarDays },
+                { value: "< 30 min", label: "Raspuns mediu", detail: "timp mediu", icon: Clock3 },
+                { value: `${stats.counties}`, label: "Acoperire", detail: "judete si Bucuresti", icon: MapPinned },
+              ].map((item, index) => (
                 <div
                   key={item.label}
-                  className="rounded-[1.6rem] border border-white/16 bg-white/10 px-4 py-4 md:backdrop-blur"
+                  className="flex items-center gap-3 rounded-xl border border-white/12 bg-white/6 px-4 py-3.5 md:backdrop-blur lg:rounded-none lg:border-y-0 lg:border-l-0 lg:bg-transparent lg:px-5 lg:py-2 lg:last:border-r-0"
                 >
-                  <p className="text-2xl font-black text-white">{item.value}</p>
-                  <p className="mt-1 text-sm text-white/78">{item.label}</p>
+                  <div className="hero-stat-icon flex size-11 shrink-0 items-center justify-center rounded-xl border border-white/20 bg-white/8 text-white">
+                    <item.icon className="size-5" />
+                  </div>
+                  <div className={index === 3 ? "min-w-0" : undefined}>
+                    <p className="hero-stat-label text-[0.66rem] font-bold uppercase tracking-[0.12em] text-white/68">{item.label}</p>
+                    <p className="hero-stat-value mt-0.5 text-lg font-black leading-none text-white">{item.value}</p>
+                    <p className="hero-stat-detail mt-1 truncate text-[0.68rem] text-white/66">{item.detail}</p>
+                  </div>
                 </div>
               ))}
-              <div className="hero-stat-extra rounded-[1.6rem] border border-white/16 bg-white/10 px-4 py-4 md:backdrop-blur">
-                <p className="text-2xl font-black text-white">100%</p>
-                <p className="mt-1 text-sm text-white/78">gratuit pentru beneficiari</p>
-              </div>
             </div>
           </div>
         </div>
       </section>
 
-      <section id="judete" className="home-counties-map mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-        <div className="grid gap-6 lg:grid-cols-[1.02fr_0.98fr]">
-          <div className="rounded-[2rem] border border-slate-200/80 bg-white p-6 shadow-sm shadow-slate-950/5 sm:p-8">
-            <div className="mb-6 flex items-end justify-between gap-4">
-              <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#0063f7]">
-                  Acoperire națională
-                </p>
-              </div>
-            </div>
-            <RomaniaMap counties={counties} />
-          </div>
-
-          <div className="space-y-4">
-            <div className="rounded-[2rem] border border-slate-200/80 bg-white p-6 shadow-sm shadow-slate-950/5 sm:p-8">
-              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#e31e24]">
-                Cum funcționează
-              </p>
-              <div className="mt-5 space-y-3">
-                {[
-                  "Alegi trimitere în județ sau trimitere în toată țara direct din formular.",
-                  "Vezi servicii, firme recomandate și conținut util fără să părăsești homepage-ul.",
-                  "Trimiți cererea completă, iar selecția executanților se face intern și local.",
-                ].map((item, index) => (
-                  <div key={item} className="flex gap-3 rounded-[1.5rem] bg-slate-50 px-4 py-4">
-                    <div className="flex size-8 shrink-0 items-center justify-center rounded-full bg-slate-950 text-sm font-bold text-white">
-                      {index + 1}
-                    </div>
-                    <p className="text-sm leading-7 text-slate-600">{item}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
+      <section id="judete" className="home-counties-map mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+        <div className="rounded-[1.5rem] border border-slate-200/80 bg-[#FBFDFF] p-5 shadow-[0_18px_50px_rgba(16,42,67,0.08)] sm:p-7 lg:p-8">
+          <RomaniaMap counties={counties} />
         </div>
       </section>
 
@@ -386,32 +352,6 @@ export default async function HomePage() {
               key={service.id}
               service={service}
               count={service._count.companies}
-            />
-          ))}
-        </div>
-      </section>
-
-      <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-        <div className="mb-8 flex items-end justify-between gap-4">
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#0063f7]">
-              Judete populare
-            </p>
-            <h2 className="font-display mt-2 text-3xl font-black tracking-tight text-slate-950 sm:text-4xl">
-              Situația firmelor înscrise pe județe în România
-            </h2>
-          </div>
-          <Link href="/judete" className="text-sm font-semibold text-[#0063f7]">
-            Vezi toate judetele
-          </Link>
-        </div>
-
-        <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
-          {counties.map((county) => (
-            <CountyCard
-              key={county.id}
-              county={county}
-              count={county.companyCount ?? county._count.companies}
             />
           ))}
         </div>
@@ -466,17 +406,20 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="mx-auto grid max-w-7xl gap-6 px-4 py-8 sm:px-6 lg:grid-cols-2 lg:px-8">
-        <SeoLinkCloud eyebrow="Județe" title="Navigare locală pentru România" links={countyLinks} />
-        <SeoLinkCloud eyebrow="Servicii" title="Servicii cerute astazi:" links={serviceLinks} />
-      </section>
-
-      <section className="mx-auto max-w-7xl px-4 py-2 sm:px-6 lg:px-8">
+      <section className="mx-auto grid max-w-7xl gap-5 px-4 py-8 sm:px-6 lg:grid-cols-2 lg:px-8">
         <SeoLinkCloud
-          eyebrow="Căutări populare"
-          title="Ultimele căutări în website"
-          description="Servicii disponibile în județul tău, executate de firme locale."
-          links={localDemandLinks}
+          eyebrow="Județe populare"
+          title="Navigare locală pentru România"
+          description="Accesează rapid paginile locale cu firme și servicii disponibile."
+          links={countyLinks}
+          action={{ href: "/judete", label: "Vezi toate județele" }}
+        />
+        <SeoLinkCloud
+          eyebrow="Servicii"
+          title="Servicii populare"
+          description="Lucrări la înălțime căutate frecvent în România."
+          links={serviceLinks}
+          action={{ href: "/servicii", label: "Vezi toate serviciile" }}
         />
       </section>
 

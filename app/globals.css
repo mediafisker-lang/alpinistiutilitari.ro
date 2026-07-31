@@ -171,6 +171,11 @@ main :is(p, li) {
   text-wrap: pretty;
 }
 
+.service-directory-card {
+  content-visibility: auto;
+  contain-intrinsic-size: 245px;
+}
+
 @media (hover: hover) {
   .ui-card-hover:hover {
     transform: translateY(-3px);
@@ -209,17 +214,19 @@ main :is(p, li) {
 
   .home-hero .hero-shell > div:first-child {
     z-index: 1;
-    background:
-      linear-gradient(90deg, rgba(5, 48, 73, 0.98) 0%, rgba(5, 48, 73, 0.91) 34%, rgba(5, 48, 73, 0.38) 63%, rgba(5, 48, 73, 0.08) 100%),
-      linear-gradient(0deg, rgba(4, 40, 62, 0.72) 0%, transparent 40%);
+    background: radial-gradient(circle at top left, rgba(255, 255, 255, 0.12), transparent 28%);
   }
 
   .home-hero .hero-photo {
-    width: 60%;
+    width: 100%;
   }
 
-  .home-hero .hero-photo > div {
-    background: linear-gradient(90deg, #073b59 0%, rgba(7, 59, 89, 0.45) 25%, transparent 62%);
+  .home-hero .hero-photo > div:first-child {
+    background: linear-gradient(90deg, rgba(5, 48, 73, 0.99) 0%, rgba(5, 48, 73, 0.94) 30%, rgba(5, 48, 73, 0.73) 40%, rgba(5, 48, 73, 0.28) 53%, rgba(5, 48, 73, 0.08) 66%, rgba(5, 48, 73, 0.08) 100%);
+  }
+
+  .home-hero .hero-photo > div:nth-child(2) {
+    background: linear-gradient(0deg, rgba(4, 40, 62, 0.68) 0%, transparent 31%);
   }
 
   .home-hero .hero-content {
@@ -276,29 +283,38 @@ main :is(p, li) {
   }
 
   .home-hero .hero-stats > div {
+    display: flex;
     min-width: 0;
     border: 0;
     border-right: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 0;
     background: transparent;
-    padding: 1.1rem 1.4rem;
-    text-align: center;
+    padding: 0.8rem 1.15rem;
+    text-align: left;
   }
 
   .home-hero .hero-stats > div:last-child {
     border-right: 0;
   }
 
-  .home-hero .hero-stats p:first-child {
-    font-size: 1.45rem;
+  .home-hero .hero-stats .hero-stat-label {
+    margin: 0;
+    font-size: 0.64rem;
+    line-height: 1.2;
   }
 
-  .home-hero .hero-stats p:last-child {
+  .home-hero .hero-stats .hero-stat-value {
     margin-top: 0.2rem;
-    font-size: 0.72rem;
-    font-weight: 700;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
+    font-size: 1.12rem;
+    line-height: 1;
+  }
+
+  .home-hero .hero-stats .hero-stat-detail {
+    margin-top: 0.25rem;
+    font-size: 0.64rem;
+    font-weight: 500;
+    letter-spacing: 0;
+    text-transform: none;
   }
 
   .home-services {
@@ -441,8 +457,11 @@ main :is(p, li) {
 
   .home-hero .hero-content {
     display: grid;
+    grid-template-columns: minmax(0, 1fr);
     position: relative;
     z-index: 30;
+    width: 100%;
+    min-width: 0;
   }
 
   .home-hero :is(h1, h2, h3, p, a) {
@@ -506,7 +525,9 @@ main :is(p, li) {
   .home-hero .hero-stats {
     order: 4;
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(4, 25%);
+    width: 100%;
+    min-width: 0;
     gap: 0;
     margin-top: 0.1rem;
     overflow: hidden;
@@ -517,6 +538,7 @@ main :is(p, li) {
   }
 
   .home-hero .hero-stats > div {
+    display: block;
     min-width: 0;
     border: 0;
     border-right: 1px solid rgba(255, 255, 255, 0.2);
@@ -526,21 +548,35 @@ main :is(p, li) {
     text-align: center;
   }
 
+  .home-hero .hero-stats > div > div:last-child {
+    min-width: 0;
+  }
+
   .home-hero .hero-stats > div:last-child {
     border-right: 0;
   }
 
-  .home-hero .hero-stats p:first-child {
-    font-size: 1.1rem;
-    line-height: 1.1;
+  .home-hero .hero-stats .hero-stat-icon {
+    display: none;
   }
 
-  .home-hero .hero-stats p:last-child {
-    margin-top: 0.25rem;
+  .home-hero .hero-stats .hero-stat-label {
+    margin: 0;
     font-size: 0.58rem;
     font-weight: 700;
     line-height: 1.25;
     text-transform: uppercase;
+    overflow-wrap: anywhere;
+  }
+
+  .home-hero .hero-stats .hero-stat-value {
+    margin-top: 0.2rem;
+    font-size: 1rem;
+    line-height: 1.1;
+  }
+
+  .home-hero .hero-stats .hero-stat-detail {
+    display: none;
   }
 
   .home-hero .hero-form-column > div:first-child {
